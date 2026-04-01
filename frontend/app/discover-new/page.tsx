@@ -1,638 +1,776 @@
 "use client";
 
-import {
-  Box,
-  Button,
-  Chip,
-  Container,
-  Divider,
-  IconButton,
-  InputAdornment,
-  Paper,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { useState } from "react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import SearchRounded from "@mui/icons-material/SearchRounded";
-import MicRounded from "@mui/icons-material/MicRounded";
-import AttachFileRounded from "@mui/icons-material/AttachFileRounded";
-import ImageRounded from "@mui/icons-material/ImageRounded";
-import SendRounded from "@mui/icons-material/SendRounded";
 
-type Model = {
-  id: string;
-  name: string;
-  org: string;
-  icon: string;
-  iconBg: string;
-  live?: boolean;
-  desc: string;
-  ctx: string;
-  price: string;
-  rating: string;
-};
-
-const modelsSeed: Model[] = [
+const researchFeed = [
   {
-    id: "gpt54",
-    name: "GPT-5.4",
-    org: "OpenAI",
-    icon: "🧠",
-    iconBg: "rgba(30,77,168,0.08)",
-    live: true,
-    desc: "Flagship reasoning + multimodal. Great for guided discovery and fast prototyping.",
-    ctx: "1.05M",
-    price: "$2.50",
-    rating: "4.8⭐",
+    month: "Mar",
+    day: "26",
+    source: "Google DeepMind",
+    title: "Gemini 2.5 Pro achieves new SOTA on reasoning benchmarks",
+    desc: "Scores 83.2% on AIME 2025 math competition, outperforming all prior models on reasoning-intensive tasks.",
+    category: "language",
   },
   {
-    id: "claude-sonnet46",
-    name: "Claude Sonnet 4.6",
-    org: "Anthropic",
-    icon: "⚡",
-    iconBg: "rgba(20,184,166,0.10)",
-    live: true,
-    desc: "Fast, high-quality writing + coding. Strong for business workflows and content.",
-    ctx: "200K",
-    price: "$3.00",
-    rating: "4.8⭐",
+    month: "Mar",
+    day: "22",
+    source: "MIT CSAIL",
+    title: "Scaling laws for multimodal models: new empirical findings",
+    desc: "Researchers demonstrate that multimodal scaling follows different power laws than unimodal, with vision-language models showing steeper improvement curves.",
+    category: "language",
   },
   {
-    id: "gemini31-pro",
-    name: "Gemini 3.1 Pro",
-    org: "Google DeepMind",
-    icon: "🔬",
-    iconBg: "rgba(245,158,11,0.14)",
-    live: true,
-    desc: "Deep research, long-context analysis, and strong multimodal understanding.",
-    ctx: "1M",
-    price: "$2.00",
-    rating: "4.7⭐",
+    month: "Mar",
+    day: "18",
+    source: "Anthropic",
+    title: "Claude Opus 4.6 introduces extended thinking with tool use",
+    desc: "New capability allows the model to interleave reasoning steps with API calls, enabling more sophisticated agent workflows.",
+    category: "language",
   },
   {
-    id: "deepseek-r1",
-    name: "DeepSeek-R1",
-    org: "DeepSeek",
-    icon: "🧩",
-    iconBg: "rgba(180,83,9,0.12)",
-    live: true,
-    desc: "Reasoning-oriented model for math, logic, and structured problem solving.",
-    ctx: "128K",
-    price: "$0.90",
-    rating: "4.6⭐",
+    month: "Mar",
+    day: "14",
+    source: "Meta AI",
+    title: "Llama 4 Maverick open-sourced with 400B parameters",
+    desc: "Meta releases its most capable open model yet, matching GPT-4 Turbo on code generation while running 3x faster on consumer hardware.",
+    category: "code",
+  },
+  {
+    month: "Mar",
+    day: "10",
+    source: "OpenAI",
+    title: "GPT-5 introduces native computer-use agents",
+    desc: "New built-in capability for controlling desktop applications, browsing the web, and executing multi-step workflows autonomously.",
+    category: "language",
+  },
+  {
+    month: "Mar",
+    day: "7",
+    source: "Stability AI",
+    title: "Stable Diffusion 4 achieves photorealistic image generation",
+    desc: "New diffusion model with 12B parameters generates images indistinguishable from photographs in blind user studies.",
+    category: "image",
+  },
+  {
+    month: "Mar",
+    day: "3",
+    source: "DeepSeek",
+    title: "DeepSeek-R2 sets new MATH benchmark record",
+    desc: "Reasoning-focused model achieves 92.1% on competition-level mathematics, surpassing all proprietary models.",
+    category: "language",
+  },
+  {
+    month: "Feb",
+    day: "28",
+    source: "Mistral AI",
+    title: "Mistral Large 2 adds 32K context with function calling",
+    desc: "European AI lab releases update with improved code generation, structured output, and native function calling support.",
+    category: "code",
+  },
+  {
+    month: "Feb",
+    day: "24",
+    source: "ElevenLabs",
+    title: "Voice cloning reaches human-level quality with 3 seconds of audio",
+    desc: "New speech synthesis model produces indistinguishable voice clones from minimal reference audio, raising new possibilities and concerns.",
+    category: "audio",
+  },
+  {
+    month: "Feb",
+    day: "20",
+    source: "Google DeepMind",
+    title: "AlphaFold 3 predicts all molecular interactions in cells",
+    desc: "Breakthrough protein structure model now predicts DNA, RNA, and small molecule interactions with atomic-level accuracy.",
+    category: "language",
+  },
+  {
+    month: "Feb",
+    day: "15",
+    source: "NVIDIA",
+    title: "Nemotron-4 340B achieves SOTA on coding benchmarks",
+    desc: "NVIDIA's largest model demonstrates exceptional code generation across 20+ programming languages with strong reasoning.",
+    category: "code",
+  },
+  {
+    month: "Feb",
+    day: "10",
+    source: "Alibaba (Qwen)",
+    title: "Qwen 2.5 VL processes hour-long videos natively",
+    desc: "New vision-language model can understand and reason about hour-long video content without frame sampling or chunking.",
+    category: "vision",
   },
 ];
 
-const discoveryTiles = [
-  { icon: "✍️", label: "Write content", sub: "Emails, posts, stories" },
-  { icon: "🎨", label: "Create images", sub: "Art, photos, designs" },
-  { icon: "🛠️", label: "Build something", sub: "Apps, tools, websites" },
-  { icon: "⚡", label: "Automate work", sub: "Save hours every week" },
-  { icon: "📊", label: "Analyse data", sub: "PDFs, sheets, reports" },
-  { icon: "🔍", label: "Just exploring", sub: "Show me what's possible" },
-] as const;
+const filterCategories = [
+  { key: "all", label: "All" },
+  { key: "language", label: "Language" },
+  { key: "vision", label: "Vision" },
+  { key: "code", label: "Code" },
+  { key: "image", label: "Image Gen" },
+  { key: "audio", label: "Audio" },
+];
+
+const labs = [
+  { key: "all", icon: "🌐", label: "All Labs" },
+  { key: "OpenAI", icon: "🧠", label: "OpenAI" },
+  { key: "Anthropic", icon: "👑", label: "Anthropic" },
+  { key: "Google DeepMind", icon: "🔬", label: "Google DeepMind" },
+  { key: "Meta", icon: "🦙", label: "Meta" },
+  { key: "DeepSeek", icon: "💻", label: "DeepSeek" },
+  { key: "Mistral AI", icon: "🌀", label: "Mistral AI" },
+  { key: "NVIDIA", icon: "🟢", label: "NVIDIA" },
+  { key: "Stability AI", icon: "🎨", label: "Stability AI" },
+  { key: "ElevenLabs", icon: "🔊", label: "ElevenLabs" },
+  { key: "Alibaba", icon: "🀄", label: "Alibaba (Qwen)" },
+];
+
+const trendingModels = [
+  { icon: "🧠", name: "GPT-5", org: "OpenAI", badge: "Hot", rating: "4.9", price: "$7.50/1M tk", desc: "Native computer-use agents, advanced reasoning, 2M context." },
+  { icon: "👑", name: "Claude Opus 4.6", org: "Anthropic", badge: "New", rating: "4.8", price: "$15/1M tk", desc: "Extended thinking with tool use, exceptional writing quality." },
+  { icon: "🔬", name: "Gemini 2.5 Pro", org: "Google", badge: "Rising", rating: "4.7", price: "$3.50/1M tk", desc: "Deep research, long-context analysis, strong multimodal." },
+  { icon: "🦙", name: "Llama 4 Maverick", org: "Meta", badge: "Open", rating: "4.6", price: "Free", desc: "400B open-source model matching GPT-4 Turbo performance." },
+];
 
 export default function DiscoverNewPage() {
-  const [modelQuery, setModelQuery] = useState("");
-  const [activeModelId, setActiveModelId] = useState(modelsSeed[0]?.id ?? "");
-  const [input, setInput] = useState("");
+  const [activeFilter, setActiveFilter] = useState("all");
+  const [activeLab, setActiveLab] = useState("all");
+  const [search, setSearch] = useState("");
 
-  const active = useMemo(() => modelsSeed.find((m) => m.id === activeModelId) ?? modelsSeed[0], [activeModelId]);
-
-  const filteredModels = useMemo(() => {
-    const q = modelQuery.trim().toLowerCase();
-    if (!q) return modelsSeed;
-    return modelsSeed.filter((m) => `${m.name} ${m.org}`.toLowerCase().includes(q));
-  }, [modelQuery]);
+  const filteredFeed = researchFeed.filter((item) => {
+    const matchCategory = activeFilter === "all" || item.category === activeFilter;
+    const matchLab = activeLab === "all" || item.source === activeLab;
+    const matchSearch =
+      !search.trim() ||
+      item.title.toLowerCase().includes(search.toLowerCase()) ||
+      item.desc.toLowerCase().includes(search.toLowerCase()) ||
+      item.source.toLowerCase().includes(search.toLowerCase());
+    return matchCategory && matchLab && matchSearch;
+  });
 
   return (
-    <Box sx={{ minHeight: "calc(100vh - 64px)", bgcolor: "background.default" }}>
-      <Container maxWidth="xl" sx={{ pt: 2.5, pb: 3 }}>
-        <Paper
-          variant="outlined"
-          sx={{
-            borderRadius: 3,
-            bgcolor: "background.paper",
-            overflow: "hidden",
-            mb: 2,
-          }}
-        >
-          <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ px: 2, py: 1.25 }}>
-            <Stack direction="row" alignItems="center" spacing={1.25}>
-              <Box
-                sx={{
-                  width: 26,
-                  height: 26,
-                  borderRadius: 1.5,
-                  bgcolor: "primary.main",
-                  display: "grid",
-                  placeItems: "center",
-                  color: "common.white",
-                  fontFamily: "var(--font-syne)",
-                  fontWeight: 900,
-                  lineHeight: 1,
-                }}
-                aria-hidden="true"
-              >
-                ◇
-              </Box>
-              <Typography sx={{ fontFamily: "var(--font-syne)", fontWeight: 900, letterSpacing: "-0.03em" }}>
-                NexusAI
-              </Typography>
-            </Stack>
+    <div className="page">
+      <div className="app-nav">
+        <div className="logo-wrap">
+          <Link href="/" className="logo-link">
+            <div className="logo-box">◇</div>
+            <span className="logo-text">NexusAI</span>
+          </Link>
+        </div>
+        <div className="tabs">
+          <Link href="/chat-hub" className="tab">💬 Chat Hub</Link>
+          <Link href="/marketplace" className="tab">🛍 Marketplace</Link>
+          <Link href="/agents" className="tab">🤖 Agents</Link>
+          <span className="tab active">🔬 Discover New</span>
+        </div>
+        <div className="actions">
+          <button className="btn ghost">Sign in</button>
+          <button className="btn primary">Try free →</button>
+        </div>
+      </div>
 
-            <Stack direction="row" spacing={1} alignItems="center" sx={{ display: { xs: "none", md: "flex" } }}>
-              <Button component={Link} href="/" variant="text" sx={{ textTransform: "none", borderRadius: 999 }}>
-                💬 Chat Hub
-              </Button>
-              <Button component={Link} href="/marketplace" variant="text" sx={{ textTransform: "none", borderRadius: 999 }}>
-                🛍 Marketplace
-              </Button>
-              <Button component={Link} href="/agents" variant="text" sx={{ textTransform: "none", borderRadius: 999 }}>
-                🤖 Agents
-              </Button>
-              <Button variant="contained" sx={{ textTransform: "none", borderRadius: 999, fontWeight: 900 }}>
-                🔬 Discover New
-              </Button>
-            </Stack>
-
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Button variant="outlined" sx={{ borderRadius: 999, textTransform: "none", fontSize: 13 }}>
-                Sign in
-              </Button>
-              <Button variant="contained" sx={{ borderRadius: 999, textTransform: "none", fontSize: 13 }}>
-                Try free →
-              </Button>
-            </Stack>
-          </Stack>
-          <Divider />
-          <Stack direction="row" spacing={1} alignItems="center" sx={{ px: 2, py: 1.1 }}>
-            <Chip
-              size="small"
-              label={
-                <Box component="span" sx={{ display: "inline-flex", alignItems: "center", gap: 0.75 }}>
-                  <Box component="span" aria-hidden="true">
-                    ✦
-                  </Box>
-                  Guided discovery
-                </Box>
-              }
-              sx={{ borderRadius: 999, fontWeight: 800 }}
+      <div className="dn-header">
+        <div className="dn-header-top">
+          <div>
+            <h2 className="dn-title">AI Research Feed</h2>
+            <p className="dn-subtitle">Stay updated with the latest breakthroughs, model releases, and research papers in AI.</p>
+          </div>
+          <div className="dn-search-wrap">
+            <svg className="dn-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <circle cx="11" cy="11" r="8" />
+              <path d="m21 21-4.35-4.35" />
+            </svg>
+            <input
+              className="dn-search"
+              type="text"
+              placeholder="Search articles, models, labs..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
             />
-            <Typography sx={{ fontSize: 12.5, color: "text.secondary" }}>
-              No tech background needed. Tell us what you want to achieve — we’ll recommend models and next steps.
-            </Typography>
-          </Stack>
-        </Paper>
+          </div>
+        </div>
 
-        <Box sx={{ display: "flex", gap: 2, minHeight: 0 }}>
-          {/* Left sidebar */}
-          <Paper
-            variant="outlined"
-            sx={{
-              width: 280,
-              flexShrink: 0,
-              borderRadius: 3,
-              bgcolor: "background.paper",
-              p: 2,
-              display: { xs: "none", md: "flex" },
-              flexDirection: "column",
-              minHeight: "calc(100vh - 64px - 140px)",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: 11,
-                fontWeight: 900,
-                color: "text.secondary",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                mb: 1,
-              }}
+        <div className="dn-filters">
+          {filterCategories.map((f) => (
+            <button
+              key={f.key}
+              className={`dn-filter ${activeFilter === f.key ? "on" : ""}`}
+              onClick={() => setActiveFilter(f.key)}
             >
-              Models
-            </Typography>
+              {f.label}
+            </button>
+          ))}
+        </div>
 
-            <TextField
-              size="small"
-              value={modelQuery}
-              onChange={(e) => setModelQuery(e.target.value)}
-              placeholder="Search models…"
-              sx={{
-                mb: 1.25,
-                "& .MuiOutlinedInput-root": { borderRadius: 999, bgcolor: "background.default" },
-              }}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchRounded fontSize="small" />
-                  </InputAdornment>
-                ),
-              }}
-            />
-
-            <Box sx={{ flex: 1, overflowY: "auto", pr: 0.5 }}>
-              <Stack spacing={0.75}>
-                {filteredModels.map((m) => {
-                  const selected = m.id === activeModelId;
-                  return (
-                    <Paper
-                      key={m.id}
-                      variant="outlined"
-                      onClick={() => setActiveModelId(m.id)}
-                      sx={{
-                        borderRadius: 3,
-                        p: 1.1,
-                        cursor: "pointer",
-                        borderColor: selected ? "rgba(200,98,42,0.55)" : "divider",
-                        bgcolor: selected ? "rgba(200,98,42,0.06)" : "transparent",
-                        transition: "180ms",
-                        "&:hover": { borderColor: "rgba(200,98,42,0.55)" },
-                      }}
-                    >
-                      <Stack direction="row" spacing={1.2} alignItems="center">
-                        <Box
-                          sx={{
-                            width: 34,
-                            height: 34,
-                            borderRadius: 2,
-                            bgcolor: m.iconBg,
-                            display: "grid",
-                            placeItems: "center",
-                            fontSize: 18,
-                            flexShrink: 0,
-                          }}
-                          aria-hidden="true"
-                        >
-                          {m.icon}
-                        </Box>
-                        <Box sx={{ minWidth: 0, flex: 1 }}>
-                          <Typography sx={{ fontWeight: 900, fontSize: 13.5, lineHeight: 1.1 }} noWrap>
-                            {m.name}
-                          </Typography>
-                          <Typography sx={{ fontSize: 12, color: "text.secondary", display: "flex", alignItems: "center", gap: 0.75 }} noWrap>
-                            <Box
-                              component="span"
-                              sx={{
-                                width: 7,
-                                height: 7,
-                                borderRadius: 999,
-                                bgcolor: m.live ? "rgba(20,184,166,1)" : "rgba(148,163,184,1)",
-                                boxShadow: m.live ? "0 0 0 3px rgba(20,184,166,0.14)" : "none",
-                                flexShrink: 0,
-                              }}
-                              aria-hidden="true"
-                            />
-                            {m.org}
-                          </Typography>
-                        </Box>
-                      </Stack>
-                    </Paper>
-                  );
-                })}
-              </Stack>
-            </Box>
-
-            <Divider sx={{ my: 1.5 }} />
-
-            <Paper
-              variant="outlined"
-              sx={{
-                borderRadius: 3,
-                bgcolor: "rgba(200,98,42,0.10)",
-                borderColor: "rgba(200,98,42,0.25)",
-                p: 1.25,
-              }}
-            >
-              <Typography sx={{ fontSize: 12, fontWeight: 900, color: "primary.main", mb: 0.25 }}>
-                + Create Agent
-              </Typography>
-              <Typography sx={{ fontSize: 12, color: "text.secondary", lineHeight: 1.45 }}>
-                Build a custom AI agent with any model.
-              </Typography>
-            </Paper>
-          </Paper>
-
-          {/* Center */}
-          <Paper
-            variant="outlined"
-            sx={{
-              flex: 1,
-              minWidth: 0,
-              borderRadius: 3,
-              bgcolor: "background.paper",
-              overflow: "hidden",
-              display: "flex",
-              flexDirection: "column",
-              minHeight: "calc(100vh - 64px - 140px)",
-            }}
-          >
-            <Box sx={{ p: { xs: 2, md: 2.5 }, overflowY: "auto", flex: 1 }}>
-              <Paper
-                variant="outlined"
-                sx={{
-                  borderRadius: 4,
-                  p: { xs: 2, md: 2.5 },
-                  maxWidth: 720,
-                  mx: "auto",
-                  textAlign: "center",
-                  bgcolor: "background.default",
-                }}
+        <div className="dn-labs-bar">
+          <span className="dn-labs-label">🏛 AI Labs</span>
+          <div className="dn-labs-scroll">
+            {labs.map((lab) => (
+              <button
+                key={lab.key}
+                className={`dn-lab-pill ${activeLab === lab.key ? "on" : ""}`}
+                onClick={() => setActiveLab(lab.key)}
               >
-                <Box
-                  sx={{
-                    width: 44,
-                    height: 44,
-                    borderRadius: 999,
-                    bgcolor: "rgba(200,98,42,0.14)",
-                    display: "grid",
-                    placeItems: "center",
-                    mx: "auto",
-                    mb: 1.25,
-                    fontFamily: "var(--font-syne)",
-                    fontWeight: 900,
-                    color: "primary.main",
-                  }}
-                  aria-hidden="true"
-                >
-                  ✦
-                </Box>
-                <Typography sx={{ fontFamily: "var(--font-syne)", fontWeight: 900, fontSize: 22, letterSpacing: "-0.02em", mb: 0.75 }}>
-                  Welcome! I&apos;m here to help you 👋
-                </Typography>
-                <Typography sx={{ fontSize: 13.5, color: "text.secondary", lineHeight: 1.65, mb: 2 }}>
-                  No tech background needed. Tell me what you&apos;d like to <strong>achieve</strong> — I&apos;ll help you discover what&apos;s possible, step by step.
-                </Typography>
+                <span className="dn-lab-icon">{lab.icon}</span>
+                {lab.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
 
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: 1.5, bgcolor: "background.paper", mb: 1.25 }}>
-                  <Typography
-                    sx={{
-                      fontSize: 11,
-                      fontWeight: 900,
-                      letterSpacing: "0.08em",
-                      textTransform: "uppercase",
-                      color: "primary.main",
-                      mb: 1.25,
-                    }}
-                  >
-                    ✨ What would you like to do today?
-                  </Typography>
+      <div className="dn-body">
+        <div className="dn-feed">
+          {filteredFeed.length === 0 && (
+            <div className="dn-empty">
+              <div className="dn-empty-icon">🔍</div>
+              <div className="dn-empty-text">No results found</div>
+              <div className="dn-empty-sub">Try adjusting your filters or search terms</div>
+            </div>
+          )}
+          {filteredFeed.map((item, i) => (
+            <div key={`${item.title}-${i}`} className="dn-card">
+              <div className="dn-card-date">
+                <div className="dn-card-month">{item.month}</div>
+                <div className="dn-card-day">{item.day}</div>
+              </div>
+              <div className="dn-card-content">
+                <div className="dn-card-source">{item.source}</div>
+                <h4 className="dn-card-title">{item.title}</h4>
+                <p className="dn-card-desc">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
 
-                  <Box
-                    sx={{
-                      display: "grid",
-                      gridTemplateColumns: { xs: "repeat(2, 1fr)", sm: "repeat(3, 1fr)" },
-                      gap: 1,
-                    }}
-                  >
-                    {discoveryTiles.map((t) => (
-                      <Paper
-                        key={t.label}
-                        variant="outlined"
-                        onClick={() => setInput(t.sub)}
-                        sx={{
-                          borderRadius: 3,
-                          p: 1.1,
-                          textAlign: "left",
-                          cursor: "pointer",
-                          transition: "180ms",
-                          "&:hover": { borderColor: "rgba(200,98,42,0.45)", boxShadow: "0 10px 20px rgba(0,0,0,0.06)" },
-                        }}
-                      >
-                        <Stack direction="row" spacing={1} alignItems="flex-start">
-                          <Box sx={{ fontSize: 18, lineHeight: 1, mt: 0.1 }} aria-hidden="true">
-                            {t.icon}
-                          </Box>
-                          <Box sx={{ minWidth: 0 }}>
-                            <Typography sx={{ fontSize: 13, fontWeight: 900 }} noWrap>
-                              {t.label}
-                            </Typography>
-                            <Typography sx={{ fontSize: 12, color: "text.secondary" }} noWrap>
-                              {t.sub}
-                            </Typography>
-                          </Box>
-                        </Stack>
-                      </Paper>
-                    ))}
-                  </Box>
-                </Paper>
+        <div className="dn-sidebar">
+          <div className="dn-sidebar-section">
+            <div className="dn-sidebar-label">Trending Models</div>
+            {trendingModels.map((m) => (
+              <div key={m.name} className="dn-model-card">
+                <div className="dn-model-top">
+                  <div className="dn-model-icon">{m.icon}</div>
+                  <div className="dn-model-info">
+                    <div className="dn-model-name">{m.name}</div>
+                    <div className="dn-model-org">{m.org}</div>
+                  </div>
+                  <span className={`dn-model-badge badge-${m.badge.toLowerCase()}`}>{m.badge}</span>
+                </div>
+                <div className="dn-model-desc">{m.desc}</div>
+                <div className="dn-model-footer">
+                  <span className="dn-model-rating">⭐ {m.rating}</span>
+                  <span className="dn-model-price">{m.price}</span>
+                </div>
+              </div>
+            ))}
+          </div>
 
-                <Typography sx={{ fontSize: 12.5, color: "text.secondary" }}>
-                  Or type anything below — there are no wrong answers ↓
-                </Typography>
-              </Paper>
-            </Box>
+          <div className="dn-sidebar-section">
+            <div className="dn-sidebar-label">Quick Guides</div>
+            <div className="dn-guide-list">
+              <button className="dn-guide-btn">
+                <span className="dn-guide-icon">📐</span>
+                Prompt engineering tips
+              </button>
+              <button className="dn-guide-btn">
+                <span className="dn-guide-icon">🤖</span>
+                Agent creation guide
+              </button>
+              <button className="dn-guide-btn">
+                <span className="dn-guide-icon">💰</span>
+                Pricing comparison
+              </button>
+            </div>
+          </div>
 
-            <Divider />
+          <div className="dn-tip-box">
+            <div className="dn-tip-title">✦ Tip</div>
+            <div className="dn-tip-text">
+              Click any article to start a conversation about that topic with our AI guide.
+            </div>
+          </div>
+        </div>
+      </div>
 
-            {/* Input area */}
-            <Box sx={{ p: 1.5 }}>
-              <Stack direction="row" spacing={1} alignItems="flex-end">
-                <TextField
-                  fullWidth
-                  value={input}
-                  onChange={(e) => setInput(e.target.value)}
-                  placeholder="Describe your project, ask a question, or just say hi — I’m here to help…"
-                  multiline
-                  minRows={1}
-                  maxRows={5}
-                  sx={{
-                    "& .MuiOutlinedInput-root": { borderRadius: 3, bgcolor: "background.default" },
-                  }}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton size="small" title="Voice conversation">
-                          <MicRounded fontSize="small" />
-                        </IconButton>
-                        <IconButton size="small" title="Attach file">
-                          <AttachFileRounded fontSize="small" />
-                        </IconButton>
-                        <IconButton size="small" title="Upload image">
-                          <ImageRounded fontSize="small" />
-                        </IconButton>
-                        <Chip
-                          size="small"
-                          label={active ? active.name : "Choose model"}
-                          variant="outlined"
-                          sx={{ ml: 0.75, borderRadius: 999, fontWeight: 800 }}
-                        />
-                      </InputAdornment>
-                    ),
-                  }}
-                />
+      <style jsx>{`
+        .page {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+          background: #f4f2ee;
+          color: #1c1a16;
+          font-family: "Inter", sans-serif;
+        }
+        .app-nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 12px 20px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+          background: #ffffff;
+        }
+        .logo-wrap {
+          display: flex;
+          align-items: center;
+        }
+        .logo-link {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          text-decoration: none;
+          color: inherit;
+        }
+        .logo-box {
+          width: 26px;
+          height: 26px;
+          border-radius: 6px;
+          background: #c8622a;
+          display: grid;
+          place-items: center;
+          color: #fff;
+          font-weight: 900;
+          font-size: 14px;
+        }
+        .logo-text {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 18px;
+          font-weight: 800;
+          letter-spacing: -0.03em;
+        }
+        .tabs {
+          display: flex;
+          gap: 6px;
+        }
+        .tab {
+          border: 0;
+          background: transparent;
+          padding: 8px 12px;
+          border-radius: 999px;
+          color: #5a5750;
+          cursor: pointer;
+          font-size: 13px;
+          text-decoration: none;
+        }
+        .tab.active {
+          background: #e6f0ff;
+          color: #1e4da8;
+          font-weight: 600;
+        }
+        .tab:hover:not(.active) {
+          background: rgba(0, 0, 0, 0.04);
+        }
+        .actions {
+          display: flex;
+          gap: 8px;
+        }
+        .btn {
+          border-radius: 999px;
+          border: 1px solid rgba(0, 0, 0, 0.14);
+          padding: 8px 14px;
+          background: #fff;
+          cursor: pointer;
+          font-size: 13px;
+        }
+        .btn.primary {
+          background: #c8622a;
+          border-color: #c8622a;
+          color: #fff;
+        }
+        .btn.ghost {
+          background: transparent;
+          border-color: rgba(0, 0, 0, 0.14);
+          color: #5a5750;
+        }
 
-                <Button
-                  variant="contained"
-                  onClick={() => setInput("")}
-                  sx={{ borderRadius: 3, minWidth: 44, height: 44, px: 0 }}
-                  title="Send"
-                >
-                  <SendRounded fontSize="small" />
-                </Button>
-              </Stack>
-            </Box>
-          </Paper>
+        .dn-header {
+          background: #fff;
+          padding: 20px 24px 16px;
+          border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .dn-header-top {
+          display: flex;
+          align-items: flex-start;
+          justify-content: space-between;
+          gap: 20px;
+          margin-bottom: 16px;
+        }
+        .dn-title {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 1.5rem;
+          font-weight: 700;
+          letter-spacing: -0.03em;
+          margin: 0 0 4px;
+        }
+        .dn-subtitle {
+          font-size: 0.88rem;
+          color: #5a5750;
+          margin: 0;
+          line-height: 1.5;
+        }
+        .dn-search-wrap {
+          position: relative;
+          flex-shrink: 0;
+          width: 320px;
+        }
+        .dn-search-icon {
+          position: absolute;
+          left: 14px;
+          top: 50%;
+          transform: translateY(-50%);
+          width: 16px;
+          height: 16px;
+          color: #9e9b93;
+        }
+        .dn-search {
+          width: 100%;
+          padding: 10px 14px 10px 38px;
+          border: 1px solid rgba(0, 0, 0, 0.14);
+          border-radius: 999px;
+          font-size: 0.85rem;
+          font-family: inherit;
+          background: #f4f2ee;
+          outline: none;
+          transition: border-color 0.15s;
+        }
+        .dn-search:focus {
+          border-color: #c8622a;
+        }
+        .dn-filters {
+          display: flex;
+          gap: 6px;
+          margin-bottom: 12px;
+          flex-wrap: wrap;
+        }
+        .dn-filter {
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          background: transparent;
+          padding: 6px 14px;
+          border-radius: 999px;
+          font-size: 0.8rem;
+          color: #5a5750;
+          cursor: pointer;
+          font-family: inherit;
+          transition: all 0.15s;
+        }
+        .dn-filter.on {
+          background: #c8622a;
+          border-color: #c8622a;
+          color: #fff;
+        }
+        .dn-filter:hover:not(.on) {
+          border-color: #c8622a;
+          color: #c8622a;
+        }
+        .dn-labs-bar {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          overflow-x: auto;
+          padding-bottom: 4px;
+        }
+        .dn-labs-label {
+          font-size: 0.75rem;
+          font-weight: 700;
+          color: #9e9b93;
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+        .dn-labs-scroll {
+          display: flex;
+          gap: 6px;
+          overflow-x: auto;
+          flex-wrap: nowrap;
+        }
+        .dn-lab-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          border: 1px solid rgba(0, 0, 0, 0.12);
+          background: transparent;
+          padding: 5px 12px;
+          border-radius: 999px;
+          font-size: 0.75rem;
+          color: #5a5750;
+          cursor: pointer;
+          white-space: nowrap;
+          font-family: inherit;
+          transition: all 0.15s;
+        }
+        .dn-lab-pill.on {
+          background: #fff0e6;
+          border-color: rgba(200, 98, 42, 0.35);
+          color: #c8622a;
+          font-weight: 600;
+        }
+        .dn-lab-pill:hover:not(.on) {
+          border-color: rgba(200, 98, 42, 0.35);
+        }
+        .dn-lab-icon {
+          font-size: 0.85rem;
+        }
 
-          {/* Right panel */}
-          <Paper
-            variant="outlined"
-            sx={{
-              width: 320,
-              flexShrink: 0,
-              borderRadius: 3,
-              bgcolor: "background.paper",
-              p: 2,
-              display: { xs: "none", lg: "flex" },
-              flexDirection: "column",
-              minHeight: "calc(100vh - 64px - 140px)",
-            }}
-          >
-            <Typography
-              sx={{
-                fontSize: 11,
-                fontWeight: 900,
-                color: "text.secondary",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                mb: 1,
-              }}
-            >
-              Active model
-            </Typography>
+        .dn-body {
+          flex: 1;
+          display: grid;
+          grid-template-columns: 1fr 320px;
+          gap: 0;
+          overflow: hidden;
+        }
+        .dn-feed {
+          padding: 20px 24px;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          gap: 12px;
+        }
+        .dn-card {
+          background: #fff;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 12px;
+          padding: 18px;
+          display: flex;
+          gap: 18px;
+          cursor: pointer;
+          transition: all 0.2s;
+        }
+        .dn-card:hover {
+          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+          border-color: rgba(200, 98, 42, 0.25);
+        }
+        .dn-card-date {
+          flex-shrink: 0;
+          width: 52px;
+          text-align: center;
+        }
+        .dn-card-month {
+          font-size: 0.68rem;
+          color: #9e9b93;
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+        .dn-card-day {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 1.6rem;
+          font-weight: 700;
+          line-height: 1;
+          color: #1c1a16;
+        }
+        .dn-card-content {
+          flex: 1;
+          min-width: 0;
+        }
+        .dn-card-source {
+          font-size: 0.7rem;
+          color: #9e9b93;
+          margin-bottom: 4px;
+        }
+        .dn-card-title {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 0.95rem;
+          font-weight: 600;
+          margin: 0 0 6px;
+          letter-spacing: -0.01em;
+          color: #1c1a16;
+          line-height: 1.35;
+        }
+        .dn-card-desc {
+          font-size: 0.82rem;
+          color: #5a5750;
+          line-height: 1.5;
+          margin: 0;
+        }
 
-            <Paper variant="outlined" sx={{ borderRadius: 3, p: 1.5, bgcolor: "background.default", mb: 2 }}>
-              <Stack direction="row" spacing={1.2} alignItems="center" sx={{ mb: 1 }}>
-                <Box
-                  sx={{
-                    width: 38,
-                    height: 38,
-                    borderRadius: 2,
-                    bgcolor: active?.iconBg ?? "rgba(200,98,42,0.10)",
-                    display: "grid",
-                    placeItems: "center",
-                    fontSize: 19,
-                    flexShrink: 0,
-                  }}
-                  aria-hidden="true"
-                >
-                  {active?.icon ?? "🧠"}
-                </Box>
-                <Box sx={{ flex: 1, minWidth: 0 }}>
-                  <Typography sx={{ fontFamily: "var(--font-syne)", fontWeight: 900, fontSize: 14 }} noWrap>
-                    {active?.name ?? "Select a model"}
-                  </Typography>
-                  <Typography sx={{ fontSize: 12.5, color: "text.secondary" }} noWrap>
-                    by {active?.org ?? "—"}
-                  </Typography>
-                </Box>
-                <Chip
-                  size="small"
-                  label={active?.live ? "Live" : "—"}
-                  sx={{
-                    borderRadius: 999,
-                    fontWeight: 900,
-                    bgcolor: active?.live ? "rgba(20,184,166,0.12)" : "rgba(148,163,184,0.16)",
-                  }}
-                />
-              </Stack>
+        .dn-empty {
+          text-align: center;
+          padding: 60px 20px;
+        }
+        .dn-empty-icon {
+          font-size: 2.5rem;
+          margin-bottom: 12px;
+        }
+        .dn-empty-text {
+          font-family: var(--font-syne), sans-serif;
+          font-size: 1.1rem;
+          font-weight: 700;
+          color: #1c1a16;
+          margin-bottom: 4px;
+        }
+        .dn-empty-sub {
+          font-size: 0.85rem;
+          color: #9e9b93;
+        }
 
-              <Typography sx={{ fontSize: 12.5, color: "text.secondary", lineHeight: 1.55, mb: 1.25 }}>
-                {active?.desc ?? "Pick a model to see details."}
-              </Typography>
+        .dn-sidebar {
+          background: #fff;
+          border-left: 1px solid rgba(0, 0, 0, 0.08);
+          padding: 20px;
+          overflow-y: auto;
+        }
+        .dn-sidebar-section {
+          margin-bottom: 20px;
+        }
+        .dn-sidebar-label {
+          font-size: 0.7rem;
+          font-weight: 700;
+          color: #9e9b93;
+          text-transform: uppercase;
+          letter-spacing: 0.08em;
+          margin-bottom: 10px;
+        }
+        .dn-model-card {
+          background: #f4f2ee;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 10px;
+          padding: 12px;
+          margin-bottom: 8px;
+          transition: border-color 0.15s;
+          cursor: pointer;
+        }
+        .dn-model-card:hover {
+          border-color: rgba(200, 98, 42, 0.3);
+        }
+        .dn-model-top {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          margin-bottom: 6px;
+        }
+        .dn-model-icon {
+          width: 32px;
+          height: 32px;
+          border-radius: 8px;
+          background: #eef2fd;
+          display: grid;
+          place-items: center;
+          font-size: 16px;
+          flex-shrink: 0;
+        }
+        .dn-model-info {
+          flex: 1;
+          min-width: 0;
+        }
+        .dn-model-name {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #1c1a16;
+        }
+        .dn-model-org {
+          font-size: 0.7rem;
+          color: #9e9b93;
+        }
+        .dn-model-badge {
+          font-size: 0.65rem;
+          padding: 2px 8px;
+          border-radius: 999px;
+          font-weight: 600;
+          flex-shrink: 0;
+        }
+        .badge-hot {
+          background: #fff0e6;
+          color: #c8622a;
+        }
+        .badge-new {
+          background: #e6f5f0;
+          color: #0a5e49;
+        }
+        .badge-rising {
+          background: #eef2fd;
+          color: #1e4da8;
+        }
+        .badge-open {
+          background: #fef7e6;
+          color: #8a5a00;
+        }
+        .dn-model-desc {
+          font-size: 0.75rem;
+          color: #5a5750;
+          line-height: 1.45;
+          margin-bottom: 6px;
+        }
+        .dn-model-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+        .dn-model-rating {
+          font-size: 0.72rem;
+          color: #5a5750;
+        }
+        .dn-model-price {
+          font-size: 0.72rem;
+          font-weight: 600;
+          color: #1c1a16;
+        }
 
-              <Box sx={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 1 }}>
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: 1, textAlign: "center" }}>
-                  <Typography sx={{ fontWeight: 900, fontSize: 12.5 }}>{active?.ctx ?? "—"}</Typography>
-                  <Typography sx={{ fontSize: 11, color: "text.secondary" }}>Context</Typography>
-                </Paper>
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: 1, textAlign: "center" }}>
-                  <Typography sx={{ fontWeight: 900, fontSize: 12.5 }}>{active?.price ?? "—"}</Typography>
-                  <Typography sx={{ fontSize: 11, color: "text.secondary" }}>/1M tk</Typography>
-                </Paper>
-                <Paper variant="outlined" sx={{ borderRadius: 3, p: 1, textAlign: "center" }}>
-                  <Typography sx={{ fontWeight: 900, fontSize: 12.5 }}>{active?.rating ?? "—"}</Typography>
-                  <Typography sx={{ fontSize: 11, color: "text.secondary" }}>Rating</Typography>
-                </Paper>
-              </Box>
+        .dn-guide-list {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+        }
+        .dn-guide-btn {
+          text-align: left;
+          padding: 8px 10px;
+          border: 1px solid rgba(0, 0, 0, 0.08);
+          border-radius: 8px;
+          background: transparent;
+          cursor: pointer;
+          font-size: 0.78rem;
+          font-family: inherit;
+          color: #5a5750;
+          display: flex;
+          align-items: center;
+          gap: 6px;
+          transition: all 0.15s;
+        }
+        .dn-guide-btn:hover {
+          color: #c8622a;
+          border-color: rgba(200, 98, 42, 0.3);
+        }
+        .dn-guide-icon {
+          font-size: 0.9rem;
+        }
 
-              <Stack direction="row" spacing={1} sx={{ mt: 1.25 }}>
-                <Button variant="outlined" fullWidth sx={{ borderRadius: 999, textTransform: "none", fontWeight: 800 }}>
-                  Details
-                </Button>
-                <Button variant="contained" fullWidth sx={{ borderRadius: 999, textTransform: "none", fontWeight: 800 }}>
-                  Pricing
-                </Button>
-              </Stack>
-            </Paper>
+        .dn-tip-box {
+          background: rgba(200, 98, 42, 0.08);
+          border: 1px solid rgba(200, 98, 42, 0.2);
+          border-radius: 12px;
+          padding: 14px;
+        }
+        .dn-tip-title {
+          font-size: 0.82rem;
+          font-weight: 700;
+          color: #1c1a16;
+          margin-bottom: 4px;
+        }
+        .dn-tip-text {
+          font-size: 0.78rem;
+          color: #5a5750;
+          line-height: 1.5;
+        }
 
-            <Typography
-              sx={{
-                fontSize: 11,
-                fontWeight: 900,
-                color: "text.secondary",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                mb: 1,
-              }}
-            >
-              Quick actions
-            </Typography>
-
-            <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 1 }}>
-              {[
-                { icon: "🛍", label: "Browse Marketplace", href: "/marketplace" },
-                { icon: "🤖", label: "Build an Agent", href: "/agents" },
-                { icon: "📐", label: "Prompt tips", href: "/discover-new" },
-                { icon: "📊", label: "Model analysis", href: "/marketplace" },
-              ].map((a) => (
-                <Button
-                  key={a.label}
-                  component={Link}
-                  href={a.href}
-                  variant="outlined"
-                  sx={{
-                    borderRadius: 3,
-                    textTransform: "none",
-                    justifyContent: "flex-start",
-                    gap: 1,
-                    fontSize: 12.5,
-                    fontWeight: 800,
-                    py: 1,
-                  }}
-                >
-                  <Box component="span" aria-hidden="true">
-                    {a.icon}
-                  </Box>
-                  {a.label}
-                </Button>
-              ))}
-            </Box>
-
-            <Divider sx={{ my: 2 }} />
-
-            <Paper
-              variant="outlined"
-              sx={{
-                borderRadius: 3,
-                bgcolor: "rgba(200,98,42,0.08)",
-                borderColor: "rgba(200,98,42,0.25)",
-                p: 1.5,
-              }}
-            >
-              <Typography sx={{ fontSize: 12.5, fontWeight: 900, mb: 0.25 }}>
-                ✦ Tip
-              </Typography>
-              <Typography sx={{ fontSize: 12.5, color: "text.secondary", lineHeight: 1.55 }}>
-                Start with what you want to <strong>do</strong>, not which model to pick. We&apos;ll handle the matching.
-              </Typography>
-            </Paper>
-          </Paper>
-        </Box>
-      </Container>
-    </Box>
+        @media (max-width: 1024px) {
+          .dn-body {
+            grid-template-columns: 1fr;
+          }
+          .dn-sidebar {
+            display: none;
+          }
+        }
+        @media (max-width: 768px) {
+          .tabs {
+            display: none;
+          }
+          .dn-header-top {
+            flex-direction: column;
+          }
+          .dn-search-wrap {
+            width: 100%;
+          }
+          .dn-labs-bar {
+            display: none;
+          }
+        }
+      `}</style>
+    </div>
   );
 }
-

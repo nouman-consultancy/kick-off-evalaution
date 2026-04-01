@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { getTheme } from "@/theme/theme";
 import Navbar from "@/components/Navbar";
 
@@ -14,10 +15,12 @@ export default function ThemeRegistry({
   const theme = useMemo(() => getTheme(mode), [mode]);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <Navbar mode={mode} onToggleMode={() => setMode(mode === "light" ? "dark" : "light")} />
-      {children}
-    </ThemeProvider>
+    <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Navbar mode={mode} onToggleMode={() => setMode(mode === "light" ? "dark" : "light")} />
+        {children}
+      </ThemeProvider>
+    </AppRouterCacheProvider>
   );
 }

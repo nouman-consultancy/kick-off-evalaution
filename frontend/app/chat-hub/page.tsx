@@ -37,7 +37,9 @@ export default function ChatHubPage() {
         </div>
         <div className="actions">
           <button className="btn ghost">Sign in</button>
-          <button className="btn primary" onClick={() => setModalOpen(true)}>Try free →</button>
+          <button className="btn primary" onClick={() => setModalOpen(true)}>
+            Try free →
+          </button>
         </div>
       </div>
 
