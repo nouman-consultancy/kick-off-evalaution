@@ -1,5 +1,8 @@
 "use client";
 
+import { useState } from "react";
+import ModelDetailModal from "@/components/ModelDetailModal";
+
 const models = [
   { icon: "🧠", name: "GPT-5", org: "OpenAI", active: true },
   { icon: "⚡", name: "GPT-5 Turbo", org: "OpenAI" },
@@ -19,8 +22,11 @@ const goalTiles = [
 ];
 
 export default function ChatHubPage() {
+  const [modalOpen, setModalOpen] = useState(false);
+
   return (
     <div className="page">
+      <ModelDetailModal open={modalOpen} onClose={() => setModalOpen(false)} />
       <div className="app-nav">
         <div className="logo">NexusAI</div>
         <div className="tabs">
@@ -31,7 +37,7 @@ export default function ChatHubPage() {
         </div>
         <div className="actions">
           <button className="btn ghost">Sign in</button>
-          <button className="btn primary">Try free →</button>
+          <button className="btn primary" onClick={() => setModalOpen(true)}>Try free →</button>
         </div>
       </div>
 

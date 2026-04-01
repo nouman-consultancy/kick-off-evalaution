@@ -48,7 +48,7 @@ export default function Navbar({ mode = "light", onToggleMode }: Props) {
     >
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ justifyContent: "space-between", py: 1 }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+          <Box component={Link} href="/" sx={{ display: "flex", alignItems: "center", gap: 1, textDecoration: "none", color: "inherit" }}>
             <Box
               sx={{
                 width: 26,
@@ -74,7 +74,7 @@ export default function Navbar({ mode = "light", onToggleMode }: Props) {
           <Box sx={{ display: { xs: "none", md: "flex" }, alignItems: "center", gap: 3 }}>
             <Button
               component={Link}
-              href="/"
+              href="/chat-hub"
               variant="text"
               color="inherit"
               sx={{ color: "text.secondary", fontSize: 13, textTransform: "none" }}
