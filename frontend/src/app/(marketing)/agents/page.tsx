@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Box, Typography, Button, Chip, Card, CardContent, Grid,
   IconButton, Skeleton, useMediaQuery, useTheme, Drawer,
@@ -88,6 +89,7 @@ function BuildFromScratchCard() {
 // ─── left sidebar ─────────────────────────────────────────────────────────────
 
 function LeftSidebar() {
+  const router = useRouter();
   const { data: tasksData, isLoading } = useGetAgentTasksQuery();
   const tasks = tasksData?.data ?? [];
 
@@ -108,6 +110,7 @@ function LeftSidebar() {
           Create powerful AI agents using any model. Pick a template or start from scratch.
         </Typography>
         <Button fullWidth variant="contained" size="small" startIcon={<AddIcon />}
+          onClick={() => router.push('/agent-library')}
           sx={{ bgcolor: '#6366f1', borderRadius: 2, fontWeight: 700, '&:hover': { bgcolor: '#4f46e5' } }}>
           + New Agent
         </Button>
@@ -123,6 +126,7 @@ function LeftSidebar() {
           Chat with our AI guide — describe what you want your agent to do and get a personalised setup plan.
         </Typography>
         <Button fullWidth variant="outlined" size="small"
+          onClick={() => router.push('/chat-hub')}
           sx={{ borderRadius: 2, fontSize: 12, borderColor: '#e2e8f0', color: 'text.secondary' }}>
           Ask the Hub →
         </Button>
