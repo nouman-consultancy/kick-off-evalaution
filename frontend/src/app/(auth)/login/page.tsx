@@ -23,7 +23,7 @@ export default function LoginPage() {
   const router = useRouter();
   const [login, { isLoading }] = useLoginMutation();
 
-  const [email, setEmail]   = useState('demo@nexusai.com');
+  const [email, setEmail] = useState('demo@nexusai.com');
   const [password, setPassword] = useState('demo1234');
   const [showPw, setShowPw] = useState(false);
 
@@ -39,9 +39,9 @@ export default function LoginPage() {
     }
     try {
       const result = await login({ email, password }).unwrap();
-      if (typeof window !== 'undefined') localStorage.setItem('token', result.token);
-      setSnack({ open: true, message: `Welcome back, ${result.user.firstName ?? result.user.email}!`, severity: 'success' });
-      router.push('/home');
+      // if (typeof window !== 'undefined') localStorage.setItem('token', result.token);
+      setSnack({ open: true, message: `Welcome!`, severity: 'success' });
+      router.push('/');
     } catch {
       setSnack({ open: true, message: 'Invalid credentials. Try demo@nexusai.com / demo1234', severity: 'error' });
     }
@@ -76,8 +76,10 @@ export default function LoginPage() {
 
           {/* logo */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 5, position: 'relative', zIndex: 1 }}>
-            <Box sx={{ width: 36, height: 36, borderRadius: 2, bgcolor: '#6366f1',
-              display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{
+              width: 36, height: 36, borderRadius: 2, bgcolor: '#6366f1',
+              display: 'flex', alignItems: 'center', justifyContent: 'center'
+            }}>
               <Box component="span" sx={{ color: '#fff', fontSize: 18, fontWeight: 900 }}>◆</Box>
             </Box>
             <Typography variant="h6" sx={{ color: '#fff', fontWeight: 800, letterSpacing: '-0.3px' }}>
@@ -97,12 +99,16 @@ export default function LoginPage() {
           </Box>
 
           {/* headline */}
-          <Typography variant="h4" sx={{ color: '#fff', fontWeight: 800, lineHeight: 1.25,
-            mb: 1.5, textAlign: 'center', position: 'relative', zIndex: 1 }}>
+          <Typography variant="h4" sx={{
+            color: '#fff', fontWeight: 800, lineHeight: 1.25,
+            mb: 1.5, textAlign: 'center', position: 'relative', zIndex: 1
+          }}>
             Build Smarter<br />with AI Agents
           </Typography>
-          <Typography variant="body2" sx={{ color: 'rgba(255,255,255,0.6)', textAlign: 'center',
-            mb: 4, lineHeight: 1.7, position: 'relative', zIndex: 1 }}>
+          <Typography variant="body2" sx={{
+            color: 'rgba(255,255,255,0.6)', textAlign: 'center',
+            mb: 4, lineHeight: 1.7, position: 'relative', zIndex: 1
+          }}>
             Access 525+ models, create custom agents, and automate your workflow — all in one platform.
           </Typography>
 
@@ -110,8 +116,10 @@ export default function LoginPage() {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5, position: 'relative', zIndex: 1 }}>
             {FEATURES.map((f) => (
               <Box key={f.text} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                <Box sx={{ width: 28, height: 28, borderRadius: '50%', bgcolor: 'rgba(99,102,241,0.3)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, flexShrink: 0 }}>
+                <Box sx={{
+                  width: 28, height: 28, borderRadius: '50%', bgcolor: 'rgba(99,102,241,0.3)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, flexShrink: 0
+                }}>
                   {f.emoji}
                 </Box>
                 <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.75)', fontSize: 13 }}>
@@ -188,8 +196,10 @@ export default function LoginPage() {
           <Typography variant="body2" sx={{ textAlign: 'center', color: 'text.secondary', mt: 3 }}>
             Don't have an account?{' '}
             <Box component={Link} href="/register"
-              sx={{ color: 'primary.main', fontWeight: 700, textDecoration: 'none',
-                '&:hover': { textDecoration: 'underline' } }}>
+              sx={{
+                color: 'primary.main', fontWeight: 700, textDecoration: 'none',
+                '&:hover': { textDecoration: 'underline' }
+              }}>
               Create one →
             </Box>
           </Typography>

@@ -38,8 +38,9 @@ export function LoginForm() {
     setError('');
     try {
       const response = await login(data).unwrap();
-      dispatch(setCredentials({ user: response.user, token: response.token }));
-      router.push('/dashboard/home');
+      console.log({response})
+      // dispatch(setCredentials({ user: response.user, token: response.token }));
+      router.push('/');
     } catch (err: any) {
       setError(err.data?.message || 'Invalid email or password');
     }
