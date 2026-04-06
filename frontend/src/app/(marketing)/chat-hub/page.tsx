@@ -629,7 +629,7 @@ export default function ChatHubPage() {
 
       {/* ── right: quick actions (desktop) ── */}
       {!isTablet && (
-        <Box sx={{ borderLeft: '1px solid #e2e8f0', bgcolor: '#fff' }}>
+        <Box sx={{ borderLeft: '1px solid #e2e8f0', bgcolor: '#fff', overflowY: 'auto', height: '100%' }}>
           {rightPanel}
         </Box>
       )}
