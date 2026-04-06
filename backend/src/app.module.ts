@@ -12,22 +12,13 @@ import { LoggingModule } from './logging/logging.module';
 
 import { ResearchFeedModule } from './modules/research-feed/research-feed.module';
 import { AgentsModule } from './modules/agents/agents.module';
+import { ChatModule } from './modules/chat/chat.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    LoggingModule,
-    AuthModule,
-    UsersModule,
-    ModelsModule,
-    LabsModule,
-    ModelComparisonsModule,
-    HealthModule,
-    ResearchFeedModule,
-    AgentsModule,
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: '.env' }),
+    LoggingModule, AuthModule, UsersModule, ModelsModule, LabsModule,
+    ModelComparisonsModule, HealthModule, ResearchFeedModule, AgentsModule, ChatModule,
   ],
   controllers: [AppController],
   providers: [AppService],
