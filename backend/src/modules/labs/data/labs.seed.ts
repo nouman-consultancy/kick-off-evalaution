@@ -1,0 +1,81 @@
+import { Lab } from '../entities/lab.entity';
+
+export const LABS_SEED_DATA: Omit<Lab, 'id' | 'createdAt' | 'updatedAt'>[] = [
+  {
+    name: 'OpenAI',
+    description: '3 models: GPT-4, Eora 2',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Anthropic',
+    description: '3 models: Opus, Sonnet, Haiku',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/78/Anthropic_logo.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Google DeepMind',
+    description: '5 models: Gemini 3.1, Veo 3',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg',
+    isActive: true,
+    category: 'multimodal',
+  },
+  {
+    name: 'xAI (Grok)',
+    description: '2 models: Grok-4.1, Grok-Imagine',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/93/X_logo_2023.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'DeepSeek',
+    description: '3 models: V3, V3.2, R1',
+    iconUrl: 'https://avatars.githubusercontent.com/u/148330874?s=200&v=4',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Meta (Llama)',
+    description: '2 models: Maverick, Scout',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7b/Meta_Platforms_Inc._logo.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Alibaba (Qwen)',
+    description: '2 models: Qwen3-Max, Coder',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/9e/Alibaba_Group_Logo.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Mistral',
+    description: '2 models: Devstral 2, Medium 2.1',
+    iconUrl: 'https://avatars.githubusercontent.com/u/132372032?s=200&v=4',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'NVIDIA NIM',
+    description: '4 models: Nemotron Ultra, Nano',
+    iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Nvidia_logo.svg',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'GLM (Zhipu)',
+    description: '3 models: GLM-b, 4.1, 4.6V',
+    iconUrl: 'https://avatars.githubusercontent.com/u/138196217?s=200&v=4',
+    isActive: true,
+    category: 'language',
+  },
+  {
+    name: 'Moonshot (Kimi)',
+    description: '2 models: k2.5, k2-Thinking',
+    iconUrl: 'https://avatars.githubusercontent.com/u/130722662?s=200&v=4',
+    isActive: true,
+    category: 'language',
+  },
+];
