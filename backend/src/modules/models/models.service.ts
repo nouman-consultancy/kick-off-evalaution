@@ -29,10 +29,73 @@ export class ModelsService implements OnModuleInit {
     return model;
   }
 
-  async findAll(page: number = 1, limit: number = 10): Promise<{ data: Model[]; total: number }> {
+  async findAll(
+    page: number = 1,
+    limit: number = 10,
+    filters?: {
+      search?: string;
+      providers?: string[];
+      tags?: string[];
+      minRating?: number;
+      maxPrice?: number;
+      pricingModel?: string[];
+      category?: string;
+      labId?: string;
+    },
+  ): Promise<{ data: Model[]; total: number }> {
+    let filtered = [...this.models];
+
+    if (filters?.search) {
+      const q = filters.search.toLowerCase();
+      filtered = filtered.filter(
+        (m) =>
+          m.name.toLowerCase().includes(q) ||
+          m.provider.toLowerCase().includes(q) ||
+          m.description?.toLowerCase().includes(q),
+      );
+    }
+
+    if (filters?.providers?.length) {
+      filtered = filtered.filter((m) =>
+        filters.providers!.some((p) => m.provider.toLowerCase() === p.toLowerCase()),
+      );
+    }
+
+    if (filters?.tags?.length) {
+      filtered = filtered.filter((m) =>
+        filters.tags!.some((t) =>
+          m.tags?.some((mt) => mt.toLowerCase() === t.toLowerCase()),
+        ),
+      );
+    }
+
+    if (filters?.category && filters.category !== 'All') {
+      const cat = filters.category.toLowerCase();
+      filtered = filtered.filter((m) => {
+        if (cat === 'language') return !m.multimodal;
+        if (cat === 'vision' || cat === 'image gen') return m.multimodal;
+        if (cat === 'code') return m.tags?.some((t) => t.toLowerCase().includes('code'));
+        if (cat === 'audio') return m.tags?.some((t) => t.toLowerCase().includes('audio'));
+        if (cat === 'open source') return m.tags?.some((t) => t.toLowerCase().includes('open-source'));
+        return true;
+      });
+    }
+
+    if (filters?.minRating) {
+      filtered = filtered.filter((m) => (m.rating ?? 0) >= filters.minRating!);
+    }
+
+    if (filters?.maxPrice) {
+      filtered = filtered.filter((m) => {
+        if (!m.pricePerMToken) return true;
+        const price = parseFloat(m.pricePerMToken.replace(/[^0-9.]/g, ''));
+        return price <= filters.maxPrice!;
+      });
+    }
+
     const start = (page - 1) * limit;
-    const data = this.models.slice(start, start + limit);
-    return { data, total: this.models.length };
+    const data = filtered.slice(start, start + limit);
+    return { data, total: filtered.length };
   }
 
   async findById(id: number): Promise<Model> {

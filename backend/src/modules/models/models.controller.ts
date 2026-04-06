@@ -16,11 +16,36 @@ export class ModelsController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all models with pagination' })
+  @ApiOperation({ summary: 'Get all models with filters and pagination' })
   @ApiQuery({ name: 'page', required: false, type: Number })
   @ApiQuery({ name: 'limit', required: false, type: Number })
-  async findAll(@Query('page') page?: number, @Query('limit') limit?: number) {
-    return this.modelsService.findAll(page || 1, limit || 10);
+  @ApiQuery({ name: 'search', required: false, type: String })
+  @ApiQuery({ name: 'providers', required: false, type: String })
+  @ApiQuery({ name: 'tags', required: false, type: String })
+  @ApiQuery({ name: 'category', required: false, type: String })
+  @ApiQuery({ name: 'minRating', required: false, type: Number })
+  @ApiQuery({ name: 'maxPrice', required: false, type: Number })
+  @ApiQuery({ name: 'pricingModel', required: false, type: String })
+  async findAll(
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('search') search?: string,
+    @Query('providers') providers?: string,
+    @Query('tags') tags?: string,
+    @Query('category') category?: string,
+    @Query('minRating') minRating?: number,
+    @Query('maxPrice') maxPrice?: number,
+    @Query('pricingModel') pricingModel?: string,
+  ) {
+    return this.modelsService.findAll(page || 1, limit || 12, {
+      search,
+      providers: providers ? providers.split(',') : undefined,
+      tags: tags ? tags.split(',') : undefined,
+      category,
+      minRating: minRating ? Number(minRating) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      pricingModel: pricingModel ? pricingModel.split(',') : undefined,
+    });
   }
 
   @Get('provider/:provider')
