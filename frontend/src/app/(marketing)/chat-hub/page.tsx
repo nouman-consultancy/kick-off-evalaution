@@ -222,7 +222,7 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
 
 // ─── right sidebar ────────────────────────────────────────────────────────────
 
-function RightSidebar() {
+function RightSidebar({ selectedModel }: { selectedModel: ModelCard | null }) {
   const { data: actions = [], isLoading } = useGetQuickActionsQuery();
   const groups = actions.reduce<Record<string, typeof actions>>((acc, a) => {
     if (!acc[a.group]) acc[a.group] = [];
@@ -230,33 +230,193 @@ function RightSidebar() {
     return acc;
   }, {});
 
+  // ── mock usage stats (deterministic from model id) ────────────────────────
+  const usage = selectedModel ? {
+    requests: ((selectedModel.id * 317) % 3000 + 800).toLocaleString(),
+    latency:  `${((selectedModel.id * 7) % 18 + 8) / 10}s`,
+    cost:     `$${(((selectedModel.id * 43) % 500 + 50) / 100).toFixed(2)}`,
+  } : null;
+
+  const formatCtx = (n?: number) => {
+    if (!n) return '—';
+    if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(0)}M`;
+    if (n >= 1_000) return `${Math.round(n / 1_000)}K`;
+    return String(n);
+  };
+
   return (
-    <Box sx={{ width: 220, flexShrink: 0, overflowY: 'auto', p: 2 }}>
-      <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary',
-        letterSpacing: 0.8, display: 'block', mb: 1.5 }}>
-        QUICK ACTIONS
-      </Typography>
-      {isLoading
-        ? Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} height={28} sx={{ mb: 0.5 }} />)
-        : Object.entries(groups).map(([group, items]) => (
-            <Box key={group} sx={{ mb: 2 }}>
-              <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.disabled',
-                letterSpacing: 0.5, display: 'block', mb: 0.8, fontSize: 10 }}>
-                {group.toUpperCase()}
+    <Box sx={{ width: 230, flexShrink: 0, overflowY: 'auto', p: 2 }}>
+      {selectedModel ? (
+        <>
+          {/* ── active model section ── */}
+          <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary',
+            letterSpacing: 0.8, display: 'block', mb: 1.5 }}>
+            ACTIVE MODEL
+          </Typography>
+
+          {/* model card */}
+          <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2.5, p: 1.5, mb: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+              {selectedModel.iconUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={selectedModel.iconUrl} alt={selectedModel.name} width={28} height={28}
+                  style={{ borderRadius: 6, objectFit: 'contain', flexShrink: 0 }} />
+              ) : (
+                <Box sx={{ width: 28, height: 28, borderRadius: 1.5, bgcolor: '#eef2ff',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <SmartToyIcon sx={{ fontSize: 16, color: '#6366f1' }} />
+                </Box>
+              )}
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', lineHeight: 1.2 }}>
+                  {selectedModel.name}
+                </Typography>
+                <Typography variant="caption" color="text.disabled" sx={{ fontSize: 10 }}>
+                  by {selectedModel.provider}
+                </Typography>
+              </Box>
+              <Chip label="Live" size="small"
+                sx={{ height: 18, fontSize: 10, fontWeight: 700, bgcolor: '#f0fdf4', color: '#15803d', border: 'none' }} />
+            </Box>
+
+            {selectedModel.description && (
+              <Typography variant="caption" color="text.secondary" sx={{ fontSize: 11, lineHeight: 1.5, display: 'block', mb: 1.5 }}>
+                {selectedModel.description}
               </Typography>
-              {items.map(item => (
-                <Box key={item.id} sx={{
-                  display: 'flex', alignItems: 'center', gap: 1, py: 0.6, px: 1,
-                  borderRadius: 1.5, cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f0f4ff' }, transition: 'background 0.15s',
-                }}>
-                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#6366f1', flexShrink: 0 }} />
-                  <Typography variant="caption" sx={{ fontSize: 12 }}>{item.label}</Typography>
+            )}
+
+            {/* stats row */}
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0.5 }}>
+              {[
+                { label: 'CONTEXT', value: formatCtx(selectedModel.contextLimit) },
+                { label: '/M TK', value: selectedModel.pricePerMToken?.replace('/1M tk', '') ?? '—' },
+                { label: 'RATING', value: selectedModel.rating ? `${selectedModel.rating}★` : '—' },
+              ].map(({ label, value }) => (
+                <Box key={label} sx={{ bgcolor: '#f8fafc', borderRadius: 1.5, p: 0.8, textAlign: 'center' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 700, fontSize: 12, display: 'block', color: '#6366f1' }}>
+                    {value}
+                  </Typography>
+                  <Typography variant="caption" sx={{ fontSize: 9, color: 'text.disabled', letterSpacing: 0.3 }}>
+                    {label}
+                  </Typography>
                 </Box>
               ))}
             </Box>
-          ))
-      }
+
+            {/* tags */}
+            {selectedModel.tags && selectedModel.tags.length > 0 && (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.4, mt: 1 }}>
+                {selectedModel.tags.slice(0, 4).map(t => (
+                  <Chip key={t} label={t} size="small"
+                    sx={{ height: 18, fontSize: 10, bgcolor: '#eef2ff', color: '#6366f1', border: 'none' }} />
+                ))}
+              </Box>
+            )}
+
+            {/* action buttons */}
+            <Box sx={{ display: 'flex', gap: 0.8, mt: 1.5 }}>
+              <Box sx={{ flex: 1, py: 0.6, borderRadius: 1.5, border: '1px solid #e2e8f0',
+                textAlign: 'center', cursor: 'pointer', '&:hover': { bgcolor: '#f8fafc' } }}>
+                <Typography variant="caption" sx={{ fontWeight: 600, fontSize: 11 }}>Details</Typography>
+              </Box>
+              <Box sx={{ flex: 1, py: 0.6, borderRadius: 1.5, bgcolor: '#6366f1',
+                textAlign: 'center', cursor: 'pointer', '&:hover': { bgcolor: '#4f46e5' } }}>
+                <Typography variant="caption" sx={{ fontWeight: 600, fontSize: 11, color: '#fff' }}>Pricing</Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* ── usage overview ── */}
+          <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary',
+            letterSpacing: 0.8, display: 'block', mb: 1 }}>
+            USAGE OVERVIEW
+          </Typography>
+          <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 2.5, p: 1.5, mb: 2 }}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: 0.5, mb: 1.5 }}>
+              {[
+                { label: 'REQUESTS', value: usage!.requests },
+                { label: 'AVG LATENCY', value: usage!.latency },
+                { label: 'COST TODAY', value: usage!.cost },
+              ].map(({ label, value }) => (
+                <Box key={label} sx={{ textAlign: 'center' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 700, fontSize: 13, display: 'block', color: '#0f172a' }}>
+                    {value}
+                  </Typography>
+                  <Typography variant="caption" sx={{ fontSize: 9, color: 'text.disabled', letterSpacing: 0.3 }}>
+                    {label}
+                  </Typography>
+                </Box>
+              ))}
+            </Box>
+
+            {/* mini bar chart */}
+            <Box sx={{ display: 'flex', alignItems: 'flex-end', gap: 0.4, height: 36 }}>
+              {Array.from({ length: 14 }).map((_, i) => {
+                const h = ((selectedModel.id * (i + 3) * 17) % 28) + 8;
+                const isToday = i === 13;
+                return (
+                  <Box key={i} sx={{
+                    flex: 1, borderRadius: '2px 2px 0 0',
+                    bgcolor: isToday ? '#6366f1' : '#c7d2fe',
+                    height: `${h}px`,
+                    transition: 'height 0.3s',
+                  }} />
+                );
+              })}
+            </Box>
+          </Box>
+
+          <Divider sx={{ mb: 2 }} />
+        </>
+      ) : (
+        <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary',
+          letterSpacing: 0.8, display: 'block', mb: 1.5 }}>
+          QUICK ACTIONS
+        </Typography>
+      )}
+
+      {/* ── quick actions (always shown below model info) ── */}
+      {!selectedModel && (
+        isLoading
+          ? Array.from({ length: 8 }).map((_, i) => <Skeleton key={i} height={28} sx={{ mb: 0.5 }} />)
+          : Object.entries(groups).map(([group, items]) => (
+              <Box key={group} sx={{ mb: 2 }}>
+                <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.disabled',
+                  letterSpacing: 0.5, display: 'block', mb: 0.8, fontSize: 10 }}>
+                  {group.toUpperCase()}
+                </Typography>
+                {items.map(item => (
+                  <Box key={item.id} sx={{
+                    display: 'flex', alignItems: 'center', gap: 1, py: 0.6, px: 1,
+                    borderRadius: 1.5, cursor: 'pointer',
+                    '&:hover': { bgcolor: '#f0f4ff' }, transition: 'background 0.15s',
+                  }}>
+                    <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#6366f1', flexShrink: 0 }} />
+                    <Typography variant="caption" sx={{ fontSize: 12 }}>{item.label}</Typography>
+                  </Box>
+                ))}
+              </Box>
+            ))
+      )}
+
+      {selectedModel && Object.entries(groups).map(([group, items]) => (
+        <Box key={group} sx={{ mb: 2 }}>
+          <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.disabled',
+            letterSpacing: 0.5, display: 'block', mb: 0.8, fontSize: 10 }}>
+            {group.toUpperCase()}
+          </Typography>
+          {items.map(item => (
+            <Box key={item.id} sx={{
+              display: 'flex', alignItems: 'center', gap: 1, py: 0.6, px: 1,
+              borderRadius: 1.5, cursor: 'pointer',
+              '&:hover': { bgcolor: '#f0f4ff' }, transition: 'background 0.15s',
+            }}>
+              <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#6366f1', flexShrink: 0 }} />
+              <Typography variant="caption" sx={{ fontSize: 12 }}>{item.label}</Typography>
+            </Box>
+          ))}
+        </Box>
+      ))}
     </Box>
   );
 }
@@ -393,7 +553,7 @@ export default function ChatHubPage() {
     </Box>
   );
 
-  const rightPanel = <RightSidebar />;
+  const rightPanel = <RightSidebar selectedModel={selectedModel} />;
 
   return (
     <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)', overflow: 'hidden', bgcolor: '#f1f5f9' }}>
