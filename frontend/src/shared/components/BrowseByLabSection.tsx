@@ -43,7 +43,7 @@ export default function BrowseByLabSection() {
             Browse by AI Lab
           </Typography>
           <Link
-            href="/labs"
+            href="/marketplace"
             underline="hover"
             sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'error.main', fontWeight: 500, fontSize: 14 }}
           >

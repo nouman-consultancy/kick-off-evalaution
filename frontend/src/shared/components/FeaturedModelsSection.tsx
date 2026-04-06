@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Box, Card, CardContent, Chip, Container, Grid, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import BoltIcon from '@mui/icons-material/Bolt';
@@ -49,9 +50,12 @@ export default function FeaturedModelsSection() {
             Browse top AI models from your backend catalog
           </Typography>
         </Box>
-        <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 600 }}>
-          Browse all {totalModels}+ →
-        </Typography>
+        <Link href="/marketplace" style={{ textDecoration: 'none' }}>
+          <Typography variant="body2" sx={{ color: 'primary.main', fontWeight: 600,
+            '&:hover': { textDecoration: 'underline' } }}>
+            Browse all {totalModels}+ →
+          </Typography>
+        </Link>
       </Box>
 
       {(isLoading || isFetching) && <CommonLoadingState count={8} itemXs={12} itemSm={6} itemMd={4} itemLg={3} />}
