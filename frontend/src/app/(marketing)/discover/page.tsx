@@ -1,186 +1,334 @@
 'use client';
 
+import { useState } from 'react';
 import {
-  Box,
-  Container,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  CardMedia,
-  Button,
-  Chip,
-  TextField,
-  InputAdornment,
+  Box, Chip, Typography, Divider, Skeleton, useMediaQuery, useTheme,
+  IconButton, Drawer, Button,
 } from '@mui/material';
-import SearchIcon from '@mui/icons-material/Search';
-import ExploreIcon from '@mui/icons-material/Explore';
-import TrendingUpIcon from '@mui/icons-material/TrendingUp';
-import NewReleasesIcon from '@mui/icons-material/NewReleases';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import ShareIcon from '@mui/icons-material/Share';
+import { useGetResearchFeedQuery, ResearchPaper } from '@/appstore/api/researchFeedApi';
+import CommonErrorState from '@/shared/components/CommonErrorState';
+import CommonNoDataState from '@/shared/components/CommonNoDataState';
 
-const trendingTopics = [
-  { name: 'GPT-4 Integration', category: 'AI Models', users: '12.5k' },
-  { name: 'WhatsApp Bots', category: 'Channels', users: '8.2k' },
-  { name: 'Voice Agents', category: 'Voice', users: '6.8k' },
-  { name: 'Analytics Pro', category: 'Tools', users: '5.4k' },
-];
+const TAGS = ['All', 'Reasoning', 'Multimodal', 'Alignment', 'Efficiency', 'Open Weights'];
 
-const featuredDiscoveries = [
-  {
-    title: 'Enterprise AI Suite',
-    description: 'Complete AI solution for large organizations with compliance features',
-    image: '/api/placeholder/400/200',
-    category: 'Enterprise',
-    badge: 'Popular',
-  },
-  {
-    title: 'Multi-Channel Bot',
-    description: 'Deploy across WhatsApp, Slack, Discord, and more from one dashboard',
-    image: '/api/placeholder/400/200',
-    category: 'Integration',
-    badge: 'New',
-  },
-  {
-    title: 'AI Analytics Dashboard',
-    description: 'Real-time insights into your conversations and agent performance',
-    image: '/api/placeholder/400/200',
-    category: 'Analytics',
-    badge: 'Trending',
-  },
-];
+const TAG_COLORS: Record<string, { bg: string; color: string }> = {
+  Reasoning:     { bg: '#e8f4fd', color: '#1565c0' },
+  Multimodal:    { bg: '#f3e8fd', color: '#6a1b9a' },
+  Alignment:     { bg: '#fff3e0', color: '#e65100' },
+  Efficiency:    { bg: '#e8f5e9', color: '#2e7d32' },
+  'Open Weights':{ bg: '#e8f5e9', color: '#2e7d32' },
+};
 
-export default function DiscoverPage() {
+// ─── date badge ───────────────────────────────────────────────────────────────
+function DateBadge({ date }: { date: string }) {
+  const d = new Date(date);
+  const month = d.toLocaleString('en', { month: 'short' }).toUpperCase();
+  const day = d.getDate();
   return (
-    <Box>
-      {/* Hero Section */}
-      <Box
-        sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          py: 10,
-          textAlign: 'center',
-        }}
-      >
-        <Container maxWidth="md">
-          <ExploreIcon sx={{ fontSize: 64, mb: 2 }} />
-          <Typography variant="h2" sx={{ fontWeight: 700, mb: 3 }}>
-            Discover Now
+    <Box sx={{ textAlign: 'center', minWidth: 36 }}>
+      <Typography sx={{ fontSize: 10, fontWeight: 700, color: 'text.disabled', lineHeight: 1 }}>{month}</Typography>
+      <Typography sx={{ fontSize: 20, fontWeight: 700, lineHeight: 1.1 }}>{day}</Typography>
+    </Box>
+  );
+}
+
+// ─── tag chip ─────────────────────────────────────────────────────────────────
+function TagChip({ label }: { label: string }) {
+  const style = TAG_COLORS[label] ?? { bg: '#f0f2ff', color: '#3d52d5' };
+  return (
+    <Chip label={label} size="small"
+      sx={{ height: 20, fontSize: 10, fontWeight: 700, bgcolor: style.bg, color: style.color, border: 'none' }} />
+  );
+}
+
+// ─── list item ────────────────────────────────────────────────────────────────
+function PaperListItem({ paper, selected, onClick }: {
+  paper: ResearchPaper; selected: boolean; onClick: () => void;
+}) {
+  return (
+    <Box
+      onClick={onClick}
+      sx={{
+        display: 'flex', gap: 2, p: 2, cursor: 'pointer',
+        bgcolor: selected ? '#f5f7ff' : 'transparent',
+        borderLeft: selected ? '3px solid #3d52d5' : '3px solid transparent',
+        '&:hover': { bgcolor: '#f9faff' },
+        transition: 'background 0.15s',
+      }}
+    >
+      <DateBadge date={paper.date} />
+      <Box sx={{ flex: 1, minWidth: 0 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5, flexWrap: 'wrap' }}>
+          <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
+            {paper.source}
           </Typography>
-          <Typography variant="h5" sx={{ opacity: 0.9, mb: 4 }}>
-            Explore the latest AI innovations and trending solutions
-          </Typography>
-          <TextField
-            placeholder="Search agents, templates, integrations..."
-            variant="outlined"
-            sx={{
-              backgroundColor: 'white',
-              borderRadius: 2,
-              width: { xs: '100%', sm: '500px' },
-              '& .MuiOutlinedInput-root': {
-                borderRadius: 2,
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon color="action" />
-                </InputAdornment>
-              ),
-            }}
-          />
-        </Container>
+          {paper.sourceLabel && <TagChip label={paper.sourceLabel} />}
+        </Box>
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, lineHeight: 1.3, mb: 0.5 }}>
+          {paper.title}
+        </Typography>
+        <Typography variant="caption" color="text.secondary"
+          sx={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {paper.overview}
+        </Typography>
+      </Box>
+    </Box>
+  );
+}
+
+// ─── detail panel ─────────────────────────────────────────────────────────────
+function PaperDetail({ paper, onBack }: { paper: ResearchPaper; onBack?: () => void }) {
+  return (
+    <Box sx={{ flex: 1, overflowY: 'auto', p: { xs: 2, md: 4 } }}>
+      {onBack && (
+        <IconButton onClick={onBack} size="small" sx={{ mb: 2 }}>
+          <ArrowBackIcon fontSize="small" />
+        </IconButton>
+      )}
+
+      {/* source + date */}
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1.5, flexWrap: 'wrap' }}>
+        <Typography variant="body2" sx={{ fontWeight: 700 }}>{paper.source}</Typography>
+        <Typography variant="caption" color="text.secondary">
+          · {new Date(paper.date).toLocaleDateString('en', { month: 'long', day: 'numeric', year: 'numeric' })}
+        </Typography>
+        {paper.sourceLabel && <TagChip label={paper.sourceLabel} />}
       </Box>
 
-      {/* Trending Section */}
-      <Container maxWidth="xl" sx={{ py: 6 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
-          <TrendingUpIcon color="primary" />
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            Trending Now
-          </Typography>
-        </Box>
-        <Grid container spacing={2}>
-          {trendingTopics.map((topic) => (
-            <Grid item xs={12} sm={6} md={3} key={topic.name}>
-              <Card
-                sx={{
-                  cursor: 'pointer',
-                  '&:hover': { boxShadow: 4 },
-                }}
-              >
-                <CardContent>
-                  <Typography variant="h6" sx={{ mb: 1 }}>
-                    {topic.name}
-                  </Typography>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Chip label={topic.category} size="small" />
-                    <Typography variant="caption" color="text.secondary">
-                      {topic.users} users
-                    </Typography>
-                  </Box>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      {/* title */}
+      <Typography variant="h5" sx={{ fontWeight: 800, lineHeight: 1.3, mb: 1 }}>
+        {paper.title}
+      </Typography>
 
-      {/* Featured Discoveries */}
-      <Container maxWidth="xl" sx={{ pb: 8 }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 3 }}>
-          <NewReleasesIcon color="primary" />
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            Featured
-          </Typography>
-        </Box>
-        <Grid container spacing={4}>
-          {featuredDiscoveries.map((item) => (
-            <Grid item xs={12} md={4} key={item.title}>
-              <Card
-                sx={{
-                  height: '100%',
-                  '&:hover': {
-                    boxShadow: 6,
-                    transform: 'translateY(-4px)',
-                    transition: 'all 0.3s ease',
-                  },
-                }}
-              >
-                <CardMedia
-                  component="div"
-                  sx={{
-                    height: 160,
-                    background: `linear-gradient(135deg, #${Math.floor(Math.random()*16777215).toString(16)} 0%, #${Math.floor(Math.random()*16777215).toString(16)} 100%)`,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <ExploreIcon sx={{ fontSize: 64, color: 'white', opacity: 0.8 }} />
-                </CardMedia>
-                <CardContent>
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Chip
-                      label={item.badge}
-                      size="small"
-                      color={item.badge === 'New' ? 'success' : item.badge === 'Popular' ? 'error' : 'primary'}
-                    />
-                    <Typography variant="caption" color="text.secondary">
-                      {item.category}
-                    </Typography>
-                  </Box>
-                  <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
+      {/* arxiv + authors */}
+      {(paper.arxivId || paper.authors) && (
+        <Typography variant="caption" color="text.disabled" sx={{ display: 'block', mb: 2.5 }}>
+          {paper.arxivId}{paper.arxivId && paper.authors ? '  ·  ' : ''}{paper.authors}
+        </Typography>
+      )}
+
+      {/* overview */}
+      <Typography variant="overline" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: 1 }}>
+        OVERVIEW
+      </Typography>
+      <Typography variant="body2" sx={{ mt: 1, mb: 3, lineHeight: 1.8, color: 'text.secondary' }}>
+        {paper.overview}
+      </Typography>
+
+      {/* stats */}
+      {paper.stats && paper.stats.length > 0 && (
+        <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+          {paper.stats.map((s) => (
+            <Box key={s.label} sx={{ flex: 1, minWidth: 120, border: '1px solid #eceef3',
+              borderRadius: 2, p: 2, textAlign: 'center' }}>
+              <Typography variant="h5" sx={{ fontWeight: 800 }}>{s.value}</Typography>
+              <Typography variant="caption" color="text.secondary">{s.label}</Typography>
+            </Box>
           ))}
-        </Grid>
-      </Container>
+        </Box>
+      )}
+
+      {/* key findings */}
+      {paper.keyFindings?.length > 0 && (
+        <>
+          <Typography variant="overline" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: 1 }}>
+            KEY FINDINGS
+          </Typography>
+          <Box component="ol" sx={{ mt: 1, mb: 3, pl: 0, listStyle: 'none' }}>
+            {paper.keyFindings.map((f, i) => (
+              <Box key={i} component="li" sx={{ display: 'flex', gap: 1.5, mb: 1.5,
+                bgcolor: '#fafbff', border: '1px solid #eceef3', borderRadius: 2, p: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#3d52d5', minWidth: 20 }}>
+                  {i + 1}.
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>{f}</Typography>
+              </Box>
+            ))}
+          </Box>
+        </>
+      )}
+
+      {/* models referenced */}
+      {paper.modelsReferenced?.length > 0 && (
+        <>
+          <Typography variant="overline" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: 1 }}>
+            MODELS REFERENCED
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1, mb: 3 }}>
+            {paper.modelsReferenced.map((m) => (
+              <Chip key={m} label={m} size="small"
+                sx={{ bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none', fontWeight: 600 }} />
+            ))}
+          </Box>
+        </>
+      )}
+
+      <Divider sx={{ mb: 2 }} />
+
+      {/* actions */}
+      <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
+        <Button variant="contained" startIcon={<ChatBubbleOutlineIcon />}
+          sx={{ flex: 1, minWidth: 160, bgcolor: '#c0392b', '&:hover': { bgcolor: '#a93226' }, borderRadius: 2 }}>
+          Discuss in Chat Hub
+        </Button>
+        <Button variant="outlined" startIcon={<BookmarkBorderIcon />}
+          sx={{ borderRadius: 2 }}>
+          Save
+        </Button>
+        <Button variant="outlined" startIcon={<ShareIcon />}
+          sx={{ borderRadius: 2 }}>
+          Share
+        </Button>
+      </Box>
+    </Box>
+  );
+}
+
+// ─── list skeleton ────────────────────────────────────────────────────────────
+function ListSkeleton() {
+  return (
+    <>
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Box key={i} sx={{ display: 'flex', gap: 2, p: 2 }}>
+          <Box sx={{ minWidth: 36 }}>
+            <Skeleton width={30} height={12} />
+            <Skeleton width={30} height={28} />
+          </Box>
+          <Box sx={{ flex: 1 }}>
+            <Skeleton width="40%" height={14} sx={{ mb: 0.5 }} />
+            <Skeleton width="90%" height={16} />
+            <Skeleton width="70%" height={14} />
+          </Box>
+        </Box>
+      ))}
+    </>
+  );
+}
+
+// ─── main page ────────────────────────────────────────────────────────────────
+export default function DiscoverPage() {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+
+  const [activeTag, setActiveTag] = useState('All');
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
+
+  const { data, isLoading, isError } = useGetResearchFeedQuery({ tag: activeTag });
+  const papers = data?.data ?? [];
+  const weekCount = data?.weekCount ?? 0;
+
+  const selectedPaper = papers.find((p) => p.id === selectedId) ?? papers[0] ?? null;
+
+  const handleSelect = (paper: ResearchPaper) => {
+    setSelectedId(paper.id);
+    if (isMobile) setMobileDetailOpen(true);
+  };
+
+  return (
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
+      {/* ── top bar ── */}
+      <Box sx={{ borderBottom: '1px solid #eceef3', px: { xs: 2, md: 3 }, py: 1.5,
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, bgcolor: '#fff' }}>
+        <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5 }}>
+          <Typography variant="h6" sx={{ fontWeight: 800 }}>AI Research Feed</Typography>
+          <Typography variant="caption" color="text.disabled">Curated breakthroughs · Updated daily</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {weekCount > 0 && (
+            <Chip label={`+ ${weekCount} papers this week`} size="small"
+              sx={{ bgcolor: '#e8f5e9', color: '#2e7d32', fontWeight: 600, fontSize: 12 }} />
+          )}
+          <Button size="small" startIcon={<NotificationsNoneIcon />}
+            variant="outlined" sx={{ borderRadius: 3, fontSize: 12 }}>
+            Subscribe
+          </Button>
+        </Box>
+      </Box>
+
+      {/* ── tag filter row ── */}
+      <Box sx={{ borderBottom: '1px solid #eceef3', px: { xs: 2, md: 3 }, py: 1,
+        display: 'flex', gap: 1, overflowX: 'auto', bgcolor: '#fff',
+        '&::-webkit-scrollbar': { height: 4 }, '&::-webkit-scrollbar-thumb': { borderRadius: 2, bgcolor: '#ddd' } }}>
+        {TAGS.map((tag) => (
+          <Chip
+            key={tag}
+            label={tag}
+            size="small"
+            onClick={() => { setActiveTag(tag); setSelectedId(null); }}
+            sx={{
+              cursor: 'pointer', fontWeight: 600, whiteSpace: 'nowrap',
+              bgcolor: activeTag === tag ? '#1a1a2e' : 'transparent',
+              color: activeTag === tag ? '#fff' : 'text.secondary',
+              border: activeTag === tag ? 'none' : '1px solid #eceef3',
+              '&:hover': { bgcolor: activeTag === tag ? '#1a1a2e' : '#f0f2ff' },
+            }}
+          />
+        ))}
+      </Box>
+
+      {/* ── body ── */}
+      <Box sx={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+        {/* list panel */}
+        <Box sx={{
+          width: { xs: '100%', md: 320 }, flexShrink: 0,
+          borderRight: '1px solid #eceef3', overflowY: 'auto', bgcolor: '#fff',
+          display: isMobile && mobileDetailOpen ? 'none' : 'block',
+        }}>
+          {isError ? (
+            <Box sx={{ p: 2 }}>
+              <CommonErrorState title="Failed to load feed" description="Could not fetch research papers." />
+            </Box>
+          ) : isLoading ? (
+            <ListSkeleton />
+          ) : papers.length === 0 ? (
+            <Box sx={{ p: 2 }}>
+              <CommonNoDataState title="No papers found" description="Try a different tag or check back later." />
+            </Box>
+          ) : (
+            papers.map((paper, idx) => (
+              <Box key={paper.id}>
+                <PaperListItem
+                  paper={paper}
+                  selected={selectedId ? paper.id === selectedId : idx === 0}
+                  onClick={() => handleSelect(paper)}
+                />
+                {idx < papers.length - 1 && <Divider />}
+              </Box>
+            ))
+          )}
+        </Box>
+
+        {/* detail panel — desktop */}
+        {!isMobile && (
+          <Box sx={{ flex: 1, overflowY: 'auto', bgcolor: '#fafafa' }}>
+            {isLoading ? (
+              <Box sx={{ p: 4 }}>
+                <Skeleton width="60%" height={32} sx={{ mb: 1 }} />
+                <Skeleton width="40%" height={20} sx={{ mb: 3 }} />
+                <Skeleton width="100%" height={120} />
+              </Box>
+            ) : selectedPaper ? (
+              <PaperDetail paper={selectedPaper} />
+            ) : null}
+          </Box>
+        )}
+
+        {/* detail panel — mobile drawer */}
+        {isMobile && (
+          <Drawer anchor="right" open={mobileDetailOpen} onClose={() => setMobileDetailOpen(false)}
+            PaperProps={{ sx: { width: '100%' } }}>
+            {selectedPaper && (
+              <PaperDetail paper={selectedPaper} onBack={() => setMobileDetailOpen(false)} />
+            )}
+          </Drawer>
+        )}
+      </Box>
     </Box>
   );
 }

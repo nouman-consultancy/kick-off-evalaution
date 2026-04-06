@@ -88,6 +88,9 @@ export default function SearchBar() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
   const [recordingDuration, setRecordingDuration] = useState(0);
+  // snapshot of text before voice session starts, to avoid duplicate appends
+  const voiceBaseRef = useRef('');
+  const voiceCommittedRef = useRef('');
 
   // Initialize audio element for playback
   useEffect(() => {
@@ -115,33 +118,48 @@ export default function SearchBar() {
     };
   }, []);
 
-  // Initialize speech recognition
-  const initSpeechRecognition = useCallback(() => {
-    if (typeof window !== 'undefined' && 'webkitSpeechRecognition' in window) {
-      const SpeechRecognition = (window as any).webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = true;
-      recognitionRef.current.interimResults = true;
+  // Initialize speech recognition — always creates a fresh instance
+  const initSpeechRecognition = useCallback((baseText: string) => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) return null;
 
-      recognitionRef.current.onresult = (event: any) => {
-        let transcript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    voiceBaseRef.current = baseText;
+    voiceCommittedRef.current = '';
+
+    recognition.onresult = (event: any) => {
+      let interim = '';
+      let committed = '';
+      for (let i = 0; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          committed += event.results[i][0].transcript;
+        } else {
+          interim += event.results[i][0].transcript;
         }
-        setSearchQuery((prev) => prev + transcript);
-      };
+      }
+      voiceCommittedRef.current = committed;
+      setSearchQuery(voiceBaseRef.current + committed + interim);
+    };
 
-      recognitionRef.current.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
-        setIsVoiceTyping(false);
-        setShowWaveform(false);
-      };
+    recognition.onerror = (event: any) => {
+      console.error('Speech recognition error:', event.error);
+      setIsVoiceTyping(false);
+      setShowWaveform(false);
+    };
 
-      recognitionRef.current.onend = () => {
-        setIsVoiceTyping(false);
-        setShowWaveform(false);
-      };
-    }
+    recognition.onend = () => {
+      // keep only committed, drop interim
+      setSearchQuery(voiceBaseRef.current + voiceCommittedRef.current);
+      setIsVoiceTyping(false);
+      setShowWaveform(false);
+    };
+
+    return recognition;
   }, []);
 
   // Format time for display
@@ -216,19 +234,28 @@ export default function SearchBar() {
 
   // Voice typing (speech to text)
   const handleVoiceTypingClick = () => {
-    if (!recognitionRef.current) {
-      initSpeechRecognition();
-    }
-
     if (isVoiceTyping) {
       recognitionRef.current?.stop();
       setIsVoiceTyping(false);
       setShowWaveform(false);
-    } else {
-      setIsVoiceTyping(true);
-      setShowWaveform(true);
-      recognitionRef.current?.start();
+      return;
     }
+
+    const SpeechRecognition =
+      typeof window !== 'undefined' &&
+      ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+
+    if (!SpeechRecognition) {
+      alert('Speech recognition is not supported in this browser. Try Chrome or Edge.');
+      return;
+    }
+
+    const recognition = initSpeechRecognition(searchQuery);
+    if (!recognition) return;
+    recognitionRef.current = recognition;
+    recognition.start();
+    setIsVoiceTyping(true);
+    setShowWaveform(true);
   };
 
   // Audio playback controls

@@ -10,6 +10,9 @@ import { ModelComparisonsModule } from './modules/model-comparisons/model-compar
 import { HealthModule } from './health/health.module';
 import { LoggingModule } from './logging/logging.module';
 
+import { ResearchFeedModule } from './modules/research-feed/research-feed.module';
+import { AgentsModule } from './modules/agents/agents.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,6 +26,8 @@ import { LoggingModule } from './logging/logging.module';
     LabsModule,
     ModelComparisonsModule,
     HealthModule,
+    ResearchFeedModule,
+    AgentsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
