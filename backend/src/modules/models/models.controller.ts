@@ -48,6 +48,12 @@ export class ModelsController {
     });
   }
 
+  @Get('comparison')
+  @ApiOperation({ summary: 'Get top 10 flagship models for comparison table' })
+  getComparison() {
+    return this.modelsService.getComparison();
+  }
+
   @Get('provider/:provider')
   @ApiOperation({ summary: 'Get models by provider' })
   async findByProvider(@Param('provider') provider: string) {

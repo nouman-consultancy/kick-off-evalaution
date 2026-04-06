@@ -15,6 +15,8 @@ export interface Model {
   rating?: number;
   reviewCount?: number;
   pricePerMToken?: string;
+  inputPrice?: string;   // e.g. "$2.50"
+  outputPrice?: string;  // e.g. "$15"
   badge?: 'Hot' | 'New';
   createdAt: Date;
   updatedAt: Date;

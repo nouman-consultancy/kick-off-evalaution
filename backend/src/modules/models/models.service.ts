@@ -3,6 +3,7 @@ import { CreateModelDto } from './dto/create-model.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 import { Model } from './entities/model.entity';
 import { MODELS_SEED_DATA } from './data/models.seed';
+import { COMPARISON_MODELS } from './data/comparison.seed';
 
 @Injectable()
 export class ModelsService implements OnModuleInit {
@@ -119,5 +120,9 @@ export class ModelsService implements OnModuleInit {
   async remove(id: number): Promise<void> {
     await this.findById(id);
     this.models = this.models.filter((m) => m.id !== id);
+  }
+
+  getComparison() {
+    return COMPARISON_MODELS.slice(0, 10);
   }
 }

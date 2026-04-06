@@ -8,6 +8,9 @@ import LandingStatsWidget from '@/shared/components/LandingStatsWidget';
 import FeaturedModelsSection from '@/shared/components/FeaturedModelsSection';
 import BuiltForEveryBuilderSection from '@/shared/components/BuiltForEveryBuilderSection';
 import BrowseByLabSection from '@/shared/components/BrowseByLabSection';
+import TrendingThisWeekSection from '@/shared/components/TrendingThisWeekSection';
+import FindModelsByBudgetSection from '@/shared/components/FindModelsByBudgetSection';
+import FlagshipModelComparisonSection from '@/shared/components/FlagshipModelComparisonSection';
 
 export default function LandingPage() {
   return (
@@ -103,6 +106,12 @@ export default function LandingPage() {
       <BuiltForEveryBuilderSection />
 
       <BrowseByLabSection />
+
+      <TrendingThisWeekSection />
+
+      <FindModelsByBudgetSection />
+
+      <FlagshipModelComparisonSection />
 
       {/* CTA Section */}
       <Box sx={{ backgroundColor: '#f8fafc', py: 8 }}>

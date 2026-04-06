@@ -37,6 +37,18 @@ export interface MarketplaceFilters {
   pricingModel?: string[];
 }
 
+export interface ComparisonModel {
+  name: string;
+  provider: string;
+  contextInput?: string;
+  inputPrice?: string;
+  outputPrice?: string;
+  multimodal?: boolean;
+  speed?: string;
+  bestFor?: string;
+  iconUrl?: string;
+}
+
 interface TransformedResponse<T> {
   data: T;
   timestamp: string;
@@ -71,8 +83,13 @@ export const modelsApi = baseApi.injectEndpoints({
       transformResponse: (response: TransformedResponse<PaginatedModelsResponse>) => response.data,
       providesTags: ['Models'],
     }),
+    getComparisonModels: builder.query<ComparisonModel[], void>({
+      query: () => '/models/comparison',
+      transformResponse: (response: TransformedResponse<ComparisonModel[]>) => response.data,
+      providesTags: ['Models'],
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useGetModelsQuery, useGetAllModelsQuery, useGetMarketplaceModelsQuery } = modelsApi;
+export const { useGetModelsQuery, useGetAllModelsQuery, useGetMarketplaceModelsQuery, useGetComparisonModelsQuery } = modelsApi;
