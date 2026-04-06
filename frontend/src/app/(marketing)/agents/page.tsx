@@ -1,23 +1,14 @@
 'use client';
 
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Box, Typography, Button, Chip, Card, CardContent, Grid,
-  IconButton, Tooltip, Paper, TextField, Skeleton,
-  useMediaQuery, useTheme, Drawer,
-} from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+  IconButton, Skeleton, useMediaQuery, useTheme, Drawer,
+} from '@mui/material';import AddIcon from '@mui/icons-material/Add';
 import ShuffleIcon from '@mui/icons-material/Shuffle';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import MenuIcon from '@mui/icons-material/Menu';
-import MicNoneIcon from '@mui/icons-material/MicNone';
-import AttachFileIcon from '@mui/icons-material/AttachFile';
-import ImageIcon from '@mui/icons-material/Image';
-import VideocamIcon from '@mui/icons-material/Videocam';
-import ScreenShareIcon from '@mui/icons-material/ScreenShare';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
-import SendIcon from '@mui/icons-material/Send';
-import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import {
   useGetAgentTemplatesQuery,
@@ -27,6 +18,7 @@ import {
 } from '@/appstore/api/agentsApi';
 import CommonErrorState from '@/shared/components/CommonErrorState';
 import CommonNoDataState from '@/shared/components/CommonNoDataState';
+import ChatInputBar from '@/shared/components/ChatInputBar';
 
 // ─── constants ────────────────────────────────────────────────────────────────
 
@@ -90,254 +82,6 @@ function BuildFromScratchCard() {
         </Typography>
       </CardContent>
     </Card>
-  );
-}
-
-// ─── chat input (reuses SearchBar icon pattern) ───────────────────────────────
-
-function AgentChatInput({ onSend }: { onSend: (text: string) => void }) {
-  const [value, setValue] = useState('');
-  const [isListening, setIsListening] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
-  const [recordingDuration, setRecordingDuration] = useState(0);
-  const fileRef = useRef<HTMLInputElement>(null);
-  const imageRef = useRef<HTMLInputElement>(null);
-  const videoRef = useRef<HTMLInputElement>(null);
-  const recognitionRef = useRef<any>(null);
-  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
-  const audioChunksRef = useRef<Blob[]>([]);
-  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  // track the transcript already committed so we don't double-append
-  const committedRef = useRef('');
-
-  // cleanup on unmount
-  useEffect(() => {
-    return () => {
-      recognitionRef.current?.stop();
-      if (timerRef.current) clearInterval(timerRef.current);
-    };
-  }, []);
-
-  const formatTime = (s: number) =>
-    `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-
-  // ── voice-to-text (speech recognition) ──────────────────────────────────────
-  const handleVoiceMic = () => {
-    const SpeechRecognition =
-      typeof window !== 'undefined' &&
-      ((window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
-
-    if (!SpeechRecognition) {
-      alert('Speech recognition is not supported in this browser. Try Chrome or Edge.');
-      return;
-    }
-
-    if (isListening) {
-      recognitionRef.current?.stop();
-      setIsListening(false);
-      return;
-    }
-
-    // always create a fresh instance so restart works reliably
-    const recognition = new SpeechRecognition();
-    recognition.continuous = true;
-    recognition.interimResults = true;
-    recognition.lang = 'en-US';
-
-    // snapshot of value at the moment recording starts
-    const baseText = value;
-    committedRef.current = '';
-
-    recognition.onresult = (event: any) => {
-      let interim = '';
-      let committed = '';
-      for (let i = 0; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-          committed += event.results[i][0].transcript;
-        } else {
-          interim += event.results[i][0].transcript;
-        }
-      }
-      committedRef.current = committed;
-      // show committed + interim in the field
-      setValue(baseText + committed + interim);
-    };
-
-    recognition.onerror = (event: any) => {
-      console.error('Speech recognition error:', event.error);
-      setIsListening(false);
-    };
-
-    recognition.onend = () => {
-      // keep only the committed text (drop interim)
-      setValue(baseText + committedRef.current);
-      setIsListening(false);
-    };
-
-    recognitionRef.current = recognition;
-    recognition.start();
-    setIsListening(true);
-  };
-
-  const handleSend = () => {
-    if (!value.trim()) return;
-    onSend(value.trim());
-    setValue('');
-    committedRef.current = '';
-  };
-
-  const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
-  };
-
-  const appendText = (extra: string) => setValue((v) => v + extra);
-
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>, label: string) => {
-    const files = e.target.files;
-    if (files?.length) appendText(` [${label}: ${Array.from(files).map(f => f.name).join(', ')}]`);
-    e.target.value = '';
-  };
-
-  const handleScreen = async () => {
-    try {
-      if (navigator.mediaDevices?.getDisplayMedia) {
-        const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
-        appendText(' [Screen shared]');
-        stream.getTracks().forEach(t => t.stop());
-      }
-    } catch { /* user cancelled */ }
-  };
-
-  return (
-    <Paper elevation={0} sx={{
-      border: '1px solid #e0e0e0', borderRadius: 3, overflow: 'hidden',
-      bgcolor: '#fafafa', width: '100%',
-    }}>
-      {/* label */}
-      <Box sx={{ px: 2, pt: 1.5 }}>
-        <Typography variant="caption" color="text.disabled">What should we work on next?</Typography>
-      </Box>
-
-      {/* video badge */}
-      <Box sx={{ px: 2, pt: 0.5 }}>
-        <Chip label="Video" size="small"
-          sx={{ height: 20, fontSize: 11, bgcolor: '#1a1a2e', color: '#fff', fontWeight: 600 }} />
-      </Box>
-
-      {/* text input */}
-      <Box sx={{ px: 2, py: 1 }}>
-        <TextField
-          fullWidth multiline maxRows={4}
-          placeholder="Describe what you want your agent to do..."
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          onKeyDown={handleKey}
-          variant="standard"
-          InputProps={{ disableUnderline: true, sx: { fontSize: 15 } }}
-        />
-      </Box>
-
-      {/* listening indicator */}
-      {isListening && (
-        <Box sx={{
-          px: 2, py: 0.8, bgcolor: '#fff4e6',
-          display: 'flex', alignItems: 'center', gap: 1,
-        }}>
-          <Box sx={{ display: 'flex', gap: 0.4, alignItems: 'center' }}>
-            {[...Array(5)].map((_, i) => (
-              <Box key={i} sx={{
-                width: 3, borderRadius: 2, bgcolor: '#e65100',
-                animation: 'voiceBar 0.6s ease-in-out infinite',
-                animationDelay: `${i * 0.1}s`,
-                '@keyframes voiceBar': {
-                  '0%,100%': { height: 6 },
-                  '50%': { height: 18 },
-                },
-              }} />
-            ))}
-          </Box>
-          <Typography variant="caption" sx={{ color: '#e65100', fontWeight: 600 }}>
-            Listening… speak now
-          </Typography>
-          <IconButton size="small" onClick={handleVoiceMic} sx={{ ml: 'auto', p: 0.3 }}>
-            <Box sx={{ width: 10, height: 10, bgcolor: '#e65100', borderRadius: 0.5 }} />
-          </IconButton>
-        </Box>
-      )}
-
-      {/* toolbar */}
-      <Box sx={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        px: 1.5, py: 1, borderTop: '1px solid #ebebeb',
-      }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-          <Tooltip title={isListening ? 'Stop listening' : 'Voice input (speech to text)'}>
-            <IconButton
-              size="small"
-              onClick={handleVoiceMic}
-              sx={{
-                color: isListening ? '#e65100' : 'text.secondary',
-                bgcolor: isListening ? '#fff4e6' : 'transparent',
-                '&:hover': { color: '#e65100' },
-              }}
-            >
-              <MicNoneIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Attach file">
-            <IconButton size="small" sx={{ color: 'text.secondary' }} onClick={() => fileRef.current?.click()}>
-              <AttachFileIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Upload image">
-            <IconButton size="small" sx={{ color: 'text.secondary' }} onClick={() => imageRef.current?.click()}>
-              <ImageIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Upload video">
-            <IconButton size="small" sx={{ color: 'text.secondary' }} onClick={() => videoRef.current?.click()}>
-              <VideocamIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Share screen">
-            <IconButton size="small" sx={{ color: 'text.secondary' }} onClick={handleScreen}>
-              <ScreenShareIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Select agent">
-            <IconButton size="small" sx={{ color: 'text.secondary' }}>
-              <SmartToyIcon fontSize="small" />
-            </IconButton>
-          </Tooltip>
-          <AddIcon sx={{ fontSize: 18, color: 'text.disabled', cursor: 'pointer' }} />
-        </Box>
-
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Typography variant="caption" color="text.disabled">Agent</Typography>
-          <IconButton
-            size="small"
-            onClick={handleSend}
-            disabled={!value.trim()}
-            sx={{
-              bgcolor: value.trim() ? '#e65100' : '#eee',
-              color: value.trim() ? '#fff' : '#aaa',
-              width: 32, height: 32,
-              '&:hover': { bgcolor: value.trim() ? '#bf360c' : '#eee' },
-            }}
-          >
-            <SendIcon sx={{ fontSize: 16 }} />
-          </IconButton>
-        </Box>
-      </Box>
-
-      {/* hidden inputs */}
-      <input ref={fileRef} type="file" multiple style={{ display: 'none' }}
-        onChange={(e) => handleFile(e, 'File')} />
-      <input ref={imageRef} type="file" accept="image/*" multiple style={{ display: 'none' }}
-        onChange={(e) => handleFile(e, 'Image')} />
-      <input ref={videoRef} type="file" accept="video/*" style={{ display: 'none' }}
-        onChange={(e) => handleFile(e, 'Video')} />
-    </Paper>
   );
 }
 
@@ -482,7 +226,16 @@ export default function AgentsPage() {
 
           {/* chat input */}
           <Box sx={{ maxWidth: 760, mx: 'auto', mb: 3 }}>
-            <AgentChatInput onSend={(text) => console.log('Agent prompt:', text)} />
+            <ChatInputBar
+              placeholder="Describe what you want your agent to do..."
+              topLabel="What should we work on next?"
+              topBadge="Video"
+              sendLabel="Agent"
+              accentColor="#e65100"
+              elevation={0}
+              maxWidth={760}
+              onSend={({ text, audio }) => console.log('Agent prompt:', text, audio)}
+            />
           </Box>
 
           {/* category filter chips */}
