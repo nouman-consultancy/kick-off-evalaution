@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import {
   Box, Paper, TextField, IconButton, Tooltip, Typography, Chip,
   Popover, List, ListItem, ListItemButton, ListItemText, ListItemIcon,
@@ -273,7 +274,8 @@ export default function ChatInputBar({
   };
 
   const canSend = text.trim().length > 0 || !!recordedAudio;
-  const sendBg  = accentColor ?? undefined; // undefined = MUI primary
+  const sendBg  = accentColor ?? undefined;
+  const router  = useRouter();
 
   // ── render ────────────────────────────────────────────────────────────────
   return (
@@ -468,7 +470,7 @@ export default function ChatInputBar({
 
             {/* agent picker */}
             <Tooltip title="Select agent">
-              <IconButton onClick={e => setAgentAnchor(e.currentTarget)}
+              <IconButton onClick={() => router.push('/agents')}
                 sx={{ color: selectedAgent ? selectedAgent.color : 'text.secondary',
                   '&:hover': { color: 'primary.main' } }}>
                 <SmartToyIcon />
