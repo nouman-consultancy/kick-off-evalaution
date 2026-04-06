@@ -19,7 +19,7 @@
       "chatHub": "Chat Hub",
       "marketplace": "Marketplace",
       "agents": "Agents",
-      "discover": "Discover Now"
+      "discover": "Discover New"
     },
     "language": "Language"
   },
@@ -231,7 +231,7 @@
   },
   "discover": {
     "hero": {
-      "title": "Discover Now",
+      "title": "Discover New",
       "subtitle": "Explore the latest AI innovations and trending solutions",
       "placeholder": "Search agents, templates, integrations..."
     },

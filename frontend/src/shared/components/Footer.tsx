@@ -19,7 +19,7 @@ const footerLinks = {
     { label: 'Chat Hub', href: '/chat-hub' },
     { label: 'Marketplace', href: '/marketplace' },
     { label: 'Agents', href: '/agents' },
-    { label: 'Discover Now', href: '/discover' },
+    { label: 'Discover New', href: '/discover' },
   ],
   company: [
     { label: 'About Us', href: '#' },
