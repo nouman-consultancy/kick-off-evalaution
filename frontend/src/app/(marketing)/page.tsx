@@ -15,7 +15,7 @@ export default function LandingPage() {
       {/* Hero Section */}
       <Box
         sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
           color: 'white',
           py: { xs: 8, md: 12 },
           textAlign: 'center',
@@ -105,7 +105,7 @@ export default function LandingPage() {
       <BrowseByLabSection />
 
       {/* CTA Section */}
-      <Box sx={{ backgroundColor: '#f5f5f5', py: 8 }}>
+      <Box sx={{ backgroundColor: '#f8fafc', py: 8 }}>
         <Container maxWidth="md" sx={{ textAlign: 'center' }}>
           <Typography variant="h4" sx={{ mb: 2, fontWeight: 600 }}>
             Ready to get started?

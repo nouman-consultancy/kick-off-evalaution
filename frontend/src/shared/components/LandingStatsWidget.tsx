@@ -41,7 +41,7 @@ export default function LandingStatsWidget() {
             >
               {item.value}
             </Typography>
-            {item.highlight && <StarIcon sx={{ color: '#ffd54f', fontSize: 28 }} />}
+            {item.highlight && <StarIcon sx={{ color: '#f59e0b', fontSize: 28 }} />}
           </Box>
           <Typography
             variant="body2"

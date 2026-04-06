@@ -28,8 +28,8 @@ function ModelListItem({ model, selected, onClick }: {
     <Box onClick={onClick} sx={{
       display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1,
       cursor: 'pointer', borderRadius: 2, mx: 1,
-      bgcolor: selected ? '#f0f2ff' : 'transparent',
-      '&:hover': { bgcolor: selected ? '#f0f2ff' : '#f9faff' },
+      bgcolor: selected ? '#eef2ff' : 'transparent',
+      '&:hover': { bgcolor: selected ? '#eef2ff' : '#f8fafc' },
       transition: 'background 0.15s',
     }}>
       {model.iconUrl ? (
@@ -37,9 +37,9 @@ function ModelListItem({ model, selected, onClick }: {
         <img src={model.iconUrl} alt={model.name} width={28} height={28}
           style={{ borderRadius: 6, objectFit: 'contain', flexShrink: 0 }} />
       ) : (
-        <Box sx={{ width: 28, height: 28, borderRadius: 1.5, bgcolor: '#e8eaff',
+        <Box sx={{ width: 28, height: 28, borderRadius: 1.5, bgcolor: '#eef2ff',
           display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-          <SmartToyIcon sx={{ fontSize: 16, color: '#3d52d5' }} />
+          <SmartToyIcon sx={{ fontSize: 16, color: '#6366f1' }} />
         </Box>
       )}
       <Box sx={{ minWidth: 0 }}>
@@ -67,19 +67,19 @@ function ChatBubble({ msg }: { msg: ChatMessage }) {
     }}>
       <Box sx={{
         width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
-        bgcolor: isUser ? '#3d52d5' : '#f0f2ff',
+        bgcolor: isUser ? '#6366f1' : '#f8fafc',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
         {isUser
           ? <PersonIcon sx={{ fontSize: 18, color: '#fff' }} />
-          : <SmartToyIcon sx={{ fontSize: 18, color: '#3d52d5' }} />
+          : <SmartToyIcon sx={{ fontSize: 18, color: '#6366f1' }} />
         }
       </Box>
       <Box sx={{
         maxWidth: '75%',
-        bgcolor: isUser ? '#3d52d5' : '#fff',
+        bgcolor: isUser ? '#6366f1' : '#fff',
         color: isUser ? '#fff' : 'text.primary',
-        border: isUser ? 'none' : '1px solid #eceef3',
+        border: isUser ? 'none' : '1px solid #e2e8f0',
         borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
         px: 2, py: 1.2,
         boxShadow: '0 1px 4px rgba(0,0,0,0.06)',
@@ -103,15 +103,15 @@ function ChatBubble({ msg }: { msg: ChatMessage }) {
 function TypingIndicator() {
   return (
     <Box sx={{ display: 'flex', gap: 1.5, mb: 2, alignItems: 'flex-start' }}>
-      <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: '#f0f2ff',
+      <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: '#f8fafc',
         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-        <SmartToyIcon sx={{ fontSize: 18, color: '#3d52d5' }} />
+        <SmartToyIcon sx={{ fontSize: 18, color: '#6366f1' }} />
       </Box>
-      <Box sx={{ bgcolor: '#fff', border: '1px solid #eceef3', borderRadius: '18px 18px 18px 4px',
+      <Box sx={{ bgcolor: '#fff', border: '1px solid #e2e8f0', borderRadius: '18px 18px 18px 4px',
         px: 2, py: 1.5, display: 'flex', gap: 0.5, alignItems: 'center' }}>
         {[0, 1, 2].map(i => (
           <Box key={i} sx={{
-            width: 7, height: 7, borderRadius: '50%', bgcolor: '#3d52d5',
+            width: 7, height: 7, borderRadius: '50%', bgcolor: '#6366f1',
             animation: 'typingDot 1.2s ease-in-out infinite',
             animationDelay: `${i * 0.2}s`,
             '@keyframes typingDot': { '0%,60%,100%': { opacity: 0.3, transform: 'scale(0.8)' }, '30%': { opacity: 1, transform: 'scale(1)' } },
@@ -142,11 +142,11 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
       alignItems: 'center', justifyContent: 'center', px: { xs: 2, md: 4 }, py: 4 }}>
       {/* welcome card */}
       <Box sx={{ width: '100%', maxWidth: 640, bgcolor: '#fff', borderRadius: 4,
-        border: '1px solid #eceef3', p: { xs: 3, md: 4 }, mb: 3, textAlign: 'center',
+        border: '1px solid #e2e8f0', p: { xs: 3, md: 4 }, mb: 3, textAlign: 'center',
         boxShadow: '0 2px 16px rgba(0,0,0,0.06)' }}>
-        <Box sx={{ width: 48, height: 48, borderRadius: '50%', bgcolor: '#f0f2ff',
+        <Box sx={{ width: 48, height: 48, borderRadius: '50%', bgcolor: '#eef2ff',
           display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
-          <SmartToyIcon sx={{ color: '#3d52d5', fontSize: 26 }} />
+          <SmartToyIcon sx={{ color: '#6366f1', fontSize: 26 }} />
         </Box>
         <Typography variant="h5" sx={{ fontWeight: 800, mb: 1 }}>
           Welcome! I'm here to help you 👋
@@ -158,7 +158,7 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
         </Typography>
 
         {/* what would you like to do */}
-        <Box sx={{ border: '1px solid #eceef3', borderRadius: 3, p: 2 }}>
+        <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 3, p: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 2 }}>
             <Typography sx={{ fontSize: 14 }}>🔥</Typography>
             <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary', letterSpacing: 0.5 }}>
@@ -170,9 +170,9 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
               ? Array.from({ length: 6 }).map((_, i) => <Skeleton key={i} variant="rounded" height={72} sx={{ borderRadius: 2 }} />)
               : cards.map(card => (
                   <Box key={card.id} onClick={() => onCardClick(card.title)}
-                    sx={{ border: '1px solid #eceef3', borderRadius: 2, p: 1.5, cursor: 'pointer',
+                    sx={{ border: '1px solid #e2e8f0', borderRadius: 2, p: 1.5, cursor: 'pointer',
                       textAlign: 'center', transition: 'all 0.15s',
-                      '&:hover': { bgcolor: '#f5f7ff', borderColor: '#3d52d5' } }}>
+                      '&:hover': { bgcolor: '#f0f4ff', borderColor: '#6366f1' } }}>
                     <Typography sx={{ fontSize: 22, mb: 0.3 }}>{card.emoji}</Typography>
                     <Typography variant="caption" sx={{ fontWeight: 700, display: 'block', lineHeight: 1.2 }}>
                       {card.title}
@@ -196,9 +196,9 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
           <Chip key={chip.id} label={chip.label} size="small" onClick={() => onChipClick(chip.label)}
             sx={{
               cursor: 'pointer', fontWeight: 600, fontSize: 12,
-              bgcolor: selectedChip === chip.label ? '#1a1a2e' : 'transparent',
+              bgcolor: selectedChip === chip.label ? '#0f172a' : 'transparent',
               color: selectedChip === chip.label ? '#fff' : 'text.secondary',
-              border: selectedChip === chip.label ? 'none' : '1px solid #eceef3',
+              border: selectedChip === chip.label ? 'none' : '1px solid #e2e8f0',
             }} />
         ))}
       </Box>
@@ -210,8 +210,8 @@ function WelcomeScreen({ onCardClick, onSuggestionClick, selectedChip, onChipCli
           <Box key={s.id} onClick={() => onSuggestionClick(s.text)}
             sx={{ display: 'flex', alignItems: 'center', gap: 1, px: 1.5, py: 1,
               borderRadius: 2, cursor: 'pointer', bgcolor: 'transparent',
-              '&:hover': { bgcolor: '#f5f7ff' }, transition: 'background 0.15s' }}>
-            <Typography sx={{ color: '#3d52d5', fontSize: 14, flexShrink: 0 }}>•</Typography>
+              '&:hover': { bgcolor: '#f0f4ff' }, transition: 'background 0.15s' }}>
+            <Typography sx={{ color: '#6366f1', fontSize: 14, flexShrink: 0 }}>•</Typography>
             <Typography variant="caption" sx={{ lineHeight: 1.4 }}>{s.text}</Typography>
           </Box>
         ))}
@@ -248,9 +248,9 @@ function RightSidebar() {
                 <Box key={item.id} sx={{
                   display: 'flex', alignItems: 'center', gap: 1, py: 0.6, px: 1,
                   borderRadius: 1.5, cursor: 'pointer',
-                  '&:hover': { bgcolor: '#f5f7ff' }, transition: 'background 0.15s',
+                  '&:hover': { bgcolor: '#f0f4ff' }, transition: 'background 0.15s',
                 }}>
-                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#3d52d5', flexShrink: 0 }} />
+                  <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#6366f1', flexShrink: 0 }} />
                   <Typography variant="caption" sx={{ fontSize: 12 }}>{item.label}</Typography>
                 </Box>
               ))}
@@ -361,8 +361,8 @@ export default function ChatHubPage() {
 
   const leftPanel = (
     <Box sx={{ width: 200, flexShrink: 0, display: 'flex', flexDirection: 'column',
-      borderRight: '1px solid #eceef3', bgcolor: '#fff', height: '100%' }}>
-      <Box sx={{ p: 1.5, borderBottom: '1px solid #eceef3' }}>
+      borderRight: '1px solid #e2e8f0', bgcolor: '#fff', height: '100%' }}>
+      <Box sx={{ p: 1.5, borderBottom: '1px solid #e2e8f0' }}>
         <Typography variant="caption" sx={{ fontWeight: 700, color: 'text.secondary',
           letterSpacing: 0.5, display: 'block', mb: 1 }}>MODELS</Typography>
         <TextField size="small" fullWidth
@@ -396,7 +396,7 @@ export default function ChatHubPage() {
   const rightPanel = <RightSidebar />;
 
   return (
-    <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)', overflow: 'hidden', bgcolor: '#f5f5f0' }}>
+    <Box sx={{ display: 'flex', height: 'calc(100vh - 64px)', overflow: 'hidden', bgcolor: '#f1f5f9' }}>
 
       {/* ── left: model list (desktop) ── */}
       {!isMobile && leftPanel}
@@ -412,7 +412,7 @@ export default function ChatHubPage() {
 
         {/* mobile top bar */}
         {isMobile && (
-          <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #eceef3', px: 2, py: 1,
+          <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #e2e8f0', px: 2, py: 1,
             display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <IconButton size="small" onClick={() => setLeftOpen(true)}><MenuIcon /></IconButton>
             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
@@ -424,9 +424,9 @@ export default function ChatHubPage() {
 
         {/* model indicator bar */}
         {selectedModel && (
-          <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #eceef3', px: 3, py: 0.8,
+          <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #e2e8f0', px: 3, py: 0.8,
             display: 'flex', alignItems: 'center', gap: 1 }}>
-            <SmartToyIcon sx={{ fontSize: 16, color: '#3d52d5' }} />
+            <SmartToyIcon sx={{ fontSize: 16, color: '#6366f1' }} />
             <Typography variant="caption" sx={{ fontWeight: 600 }}>{selectedModel.name}</Typography>
             <Typography variant="caption" color="text.disabled">· {selectedModel.provider}</Typography>
           </Box>
@@ -454,7 +454,7 @@ export default function ChatHubPage() {
           {selectedModel && (
             <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 0.5, pr: 1 }}>
               <Chip label={selectedModel.name} size="small"
-                sx={{ height: 20, fontSize: 11, bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none', fontWeight: 600 }} />
+                sx={{ height: 20, fontSize: 11, bgcolor: '#eef2ff', color: '#6366f1', border: 'none', fontWeight: 600 }} />
             </Box>
           )}
           <ChatInputBar
@@ -469,7 +469,7 @@ export default function ChatHubPage() {
 
       {/* ── right: quick actions (desktop) ── */}
       {!isTablet && (
-        <Box sx={{ borderLeft: '1px solid #eceef3', bgcolor: '#fff' }}>
+        <Box sx={{ borderLeft: '1px solid #e2e8f0', bgcolor: '#fff' }}>
           {rightPanel}
         </Box>
       )}

@@ -13,7 +13,7 @@ export default function BuiltForEveryBuilderSection() {
   const labs = data?.data ?? [];
 
   return (
-    <Box sx={{ backgroundColor: '#f9f8f5', py: 8 }}>
+    <Box sx={{ backgroundColor: '#f8fafc', py: 8 }}>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ fontWeight: 700, mb: 4 }}>
           Built for every builder

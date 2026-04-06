@@ -51,7 +51,7 @@ export default function Header() {
       position="static"
       color="transparent"
       elevation={0}
-      sx={{ borderBottom: "1px solid #e0e0e0" }}
+      sx={{ borderBottom: "1px solid #e2e8f0" }}
     >
       <Container maxWidth="xl">
         <Toolbar
@@ -159,13 +159,13 @@ export default function Header() {
                 height: 40,
                 fontSize: "0.9rem",
                 "& .MuiOutlinedInput-notchedOutline": {
-                  border: "1px solid #e0e0e0",
+                  border: "1px solid #e2e8f0",
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  border: "1px solid #bdbdbd",
+                  border: "1px solid #94a3b8",
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  border: "1px solid #1976d2",
+                  border: "1px solid #6366f1",
                 },
               }}
               renderValue={(selected) => {
@@ -216,10 +216,10 @@ export default function Header() {
                 px: 3,
                 py: 1,
                 borderRadius: 2,
-                boxShadow: "0 4px 14px rgba(25, 118, 210, 0.3)",
+                boxShadow: "0 4px 14px rgba(99,102,241,0.3)",
                 "&:hover": {
                   backgroundColor: "primary.dark",
-                  boxShadow: "0 6px 20px rgba(25, 118, 210, 0.4)",
+                  boxShadow: "0 6px 20px rgba(99,102,241,0.4)",
                 },
               }}
             >

@@ -14,11 +14,11 @@ export default function CommonNoDataState({
   return (
     <Box
       sx={{
-        border: '1px dashed #d0d4dd',
+        border: '1px dashed #e2e8f0',
         borderRadius: 3,
         p: 4,
         textAlign: 'center',
-        backgroundColor: '#fafbfc',
+        backgroundColor: '#f8fafc',
       }}
     >
       <Typography variant="h6" sx={{ mb: 1 }}>

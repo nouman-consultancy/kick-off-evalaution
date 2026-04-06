@@ -14,17 +14,17 @@ export default function CommonErrorState({
   return (
     <Box
       sx={{
-        border: '1px solid #f5c2c2',
+        border: '1px solid #fecaca',
         borderRadius: 3,
         p: 3,
         textAlign: 'center',
-        backgroundColor: '#fff7f7',
+        backgroundColor: '#fff1f2',
       }}
     >
-      <Typography variant="body1" sx={{ fontWeight: 600, color: '#b42318' }}>
+      <Typography variant="body1" sx={{ fontWeight: 600, color: '#b91c1c' }}>
         {title}
       </Typography>
-      <Typography variant="body2" sx={{ color: '#7a1f1f', mt: 0.5 }}>
+      <Typography variant="body2" sx={{ color: '#7f1d1d', mt: 0.5 }}>
         {description}
       </Typography>
     </Box>

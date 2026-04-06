@@ -17,11 +17,11 @@ import CommonNoDataState from '@/shared/components/CommonNoDataState';
 const TAGS = ['All', 'Reasoning', 'Multimodal', 'Alignment', 'Efficiency', 'Open Weights'];
 
 const TAG_COLORS: Record<string, { bg: string; color: string }> = {
-  Reasoning:     { bg: '#e8f4fd', color: '#1565c0' },
-  Multimodal:    { bg: '#f3e8fd', color: '#6a1b9a' },
-  Alignment:     { bg: '#fff3e0', color: '#e65100' },
-  Efficiency:    { bg: '#e8f5e9', color: '#2e7d32' },
-  'Open Weights':{ bg: '#e8f5e9', color: '#2e7d32' },
+  Reasoning:     { bg: '#eff6ff', color: '#2563eb' },
+  Multimodal:    { bg: '#faf5ff', color: '#7c3aed' },
+  Alignment:     { bg: '#fff7ed', color: '#c2410c' },
+  Efficiency:    { bg: '#f0fdf4', color: '#15803d' },
+  'Open Weights':{ bg: '#f0fdf4', color: '#15803d' },
 };
 
 // ─── date badge ───────────────────────────────────────────────────────────────
@@ -39,7 +39,7 @@ function DateBadge({ date }: { date: string }) {
 
 // ─── tag chip ─────────────────────────────────────────────────────────────────
 function TagChip({ label }: { label: string }) {
-  const style = TAG_COLORS[label] ?? { bg: '#f0f2ff', color: '#3d52d5' };
+  const style = TAG_COLORS[label] ?? { bg: '#eef2ff', color: '#6366f1' };
   return (
     <Chip label={label} size="small"
       sx={{ height: 20, fontSize: 10, fontWeight: 700, bgcolor: style.bg, color: style.color, border: 'none' }} />
@@ -55,9 +55,9 @@ function PaperListItem({ paper, selected, onClick }: {
       onClick={onClick}
       sx={{
         display: 'flex', gap: 2, p: 2, cursor: 'pointer',
-        bgcolor: selected ? '#f5f7ff' : 'transparent',
-        borderLeft: selected ? '3px solid #3d52d5' : '3px solid transparent',
-        '&:hover': { bgcolor: '#f9faff' },
+        bgcolor: selected ? '#f0f4ff' : 'transparent',
+        borderLeft: selected ? '3px solid #6366f1' : '3px solid transparent',
+        '&:hover': { bgcolor: '#f8fafc' },
         transition: 'background 0.15s',
       }}
     >
@@ -124,7 +124,7 @@ function PaperDetail({ paper, onBack }: { paper: ResearchPaper; onBack?: () => v
       {paper.stats && paper.stats.length > 0 && (
         <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
           {paper.stats.map((s) => (
-            <Box key={s.label} sx={{ flex: 1, minWidth: 120, border: '1px solid #eceef3',
+            <Box key={s.label} sx={{ flex: 1, minWidth: 120, border: '1px solid #e2e8f0',
               borderRadius: 2, p: 2, textAlign: 'center' }}>
               <Typography variant="h5" sx={{ fontWeight: 800 }}>{s.value}</Typography>
               <Typography variant="caption" color="text.secondary">{s.label}</Typography>
@@ -142,8 +142,8 @@ function PaperDetail({ paper, onBack }: { paper: ResearchPaper; onBack?: () => v
           <Box component="ol" sx={{ mt: 1, mb: 3, pl: 0, listStyle: 'none' }}>
             {paper.keyFindings.map((f, i) => (
               <Box key={i} component="li" sx={{ display: 'flex', gap: 1.5, mb: 1.5,
-                bgcolor: '#fafbff', border: '1px solid #eceef3', borderRadius: 2, p: 1.5 }}>
-                <Typography variant="body2" sx={{ fontWeight: 700, color: '#3d52d5', minWidth: 20 }}>
+                bgcolor: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 2, p: 1.5 }}>
+                <Typography variant="body2" sx={{ fontWeight: 700, color: '#6366f1', minWidth: 20 }}>
                   {i + 1}.
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={{ lineHeight: 1.6 }}>{f}</Typography>
@@ -162,7 +162,7 @@ function PaperDetail({ paper, onBack }: { paper: ResearchPaper; onBack?: () => v
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mt: 1, mb: 3 }}>
             {paper.modelsReferenced.map((m) => (
               <Chip key={m} label={m} size="small"
-                sx={{ bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none', fontWeight: 600 }} />
+                sx={{ bgcolor: '#eef2ff', color: '#6366f1', border: 'none', fontWeight: 600 }} />
             ))}
           </Box>
         </>
@@ -233,7 +233,7 @@ export default function DiscoverPage() {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', height: 'calc(100vh - 64px)', overflow: 'hidden' }}>
       {/* ── top bar ── */}
-      <Box sx={{ borderBottom: '1px solid #eceef3', px: { xs: 2, md: 3 }, py: 1.5,
+      <Box sx={{ borderBottom: '1px solid #e2e8f0', px: { xs: 2, md: 3 }, py: 1.5,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 1, bgcolor: '#fff' }}>
         <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1.5 }}>
           <Typography variant="h6" sx={{ fontWeight: 800 }}>AI Research Feed</Typography>
@@ -252,7 +252,7 @@ export default function DiscoverPage() {
       </Box>
 
       {/* ── tag filter row ── */}
-      <Box sx={{ borderBottom: '1px solid #eceef3', px: { xs: 2, md: 3 }, py: 1,
+      <Box sx={{ borderBottom: '1px solid #e2e8f0', px: { xs: 2, md: 3 }, py: 1,
         display: 'flex', gap: 1, overflowX: 'auto', bgcolor: '#fff',
         '&::-webkit-scrollbar': { height: 4 }, '&::-webkit-scrollbar-thumb': { borderRadius: 2, bgcolor: '#ddd' } }}>
         {TAGS.map((tag) => (
@@ -263,10 +263,10 @@ export default function DiscoverPage() {
             onClick={() => { setActiveTag(tag); setSelectedId(null); }}
             sx={{
               cursor: 'pointer', fontWeight: 600, whiteSpace: 'nowrap',
-              bgcolor: activeTag === tag ? '#1a1a2e' : 'transparent',
+              bgcolor: activeTag === tag ? '#0f172a' : 'transparent',
               color: activeTag === tag ? '#fff' : 'text.secondary',
-              border: activeTag === tag ? 'none' : '1px solid #eceef3',
-              '&:hover': { bgcolor: activeTag === tag ? '#1a1a2e' : '#f0f2ff' },
+              border: activeTag === tag ? 'none' : '1px solid #e2e8f0',
+              '&:hover': { bgcolor: activeTag === tag ? '#0f172a' : '#eef2ff' },
             }}
           />
         ))}
@@ -277,7 +277,7 @@ export default function DiscoverPage() {
         {/* list panel */}
         <Box sx={{
           width: { xs: '100%', md: 320 }, flexShrink: 0,
-          borderRight: '1px solid #eceef3', overflowY: 'auto', bgcolor: '#fff',
+          borderRight: '1px solid #e2e8f0', overflowY: 'auto', bgcolor: '#fff',
           display: isMobile && mobileDetailOpen ? 'none' : 'block',
         }}>
           {isError ? (
@@ -306,7 +306,7 @@ export default function DiscoverPage() {
 
         {/* detail panel — desktop */}
         {!isMobile && (
-          <Box sx={{ flex: 1, overflowY: 'auto', bgcolor: '#fafafa' }}>
+          <Box sx={{ flex: 1, overflowY: 'auto', bgcolor: '#f8fafc' }}>
             {isLoading ? (
               <Box sx={{ p: 4 }}>
                 <Skeleton width="60%" height={32} sx={{ mb: 1 }} />

@@ -73,18 +73,18 @@ export default function LandingActionWidgets() {
                 width: 28,
                 height: 28,
                 borderRadius: '50%',
-                backgroundColor: '#f3f4f6',
+                backgroundColor: '#eef2ff',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
               }}
             >
-              <item.icon sx={{ fontSize: 17, color: '#5f6368' }} />
+              <item.icon sx={{ fontSize: 17, color: '#6366f1' }} />
             </Box>
             <Typography
               variant="caption"
               sx={{
-                color: '#2f3133',
+                color: '#0f172a',
                 fontWeight: 600,
                 lineHeight: 1.2,
               }}

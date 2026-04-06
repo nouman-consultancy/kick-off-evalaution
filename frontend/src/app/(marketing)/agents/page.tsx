@@ -32,7 +32,7 @@ const SUGGESTION_CATEGORIES = [
 function TemplateCard({ template }: { template: AgentTemplate }) {
   return (
     <Card sx={{
-      borderRadius: 3, border: '1px solid #eceef3', boxShadow: 'none',
+      borderRadius: 3, border: '1px solid #e2e8f0', boxShadow: 'none',
       height: '100%', cursor: 'pointer',
       transition: 'box-shadow 0.2s',
       '&:hover': { boxShadow: '0 4px 16px rgba(0,0,0,0.10)' },
@@ -40,7 +40,7 @@ function TemplateCard({ template }: { template: AgentTemplate }) {
       <CardContent sx={{ p: 2.5 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
           <Box sx={{
-            width: 36, height: 36, borderRadius: 2, bgcolor: '#f0f2ff',
+            width: 36, height: 36, borderRadius: 2, bgcolor: '#eef2ff',
             display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, flexShrink: 0,
           }}>
             {template.iconEmoji ?? '🤖'}
@@ -53,11 +53,11 @@ function TemplateCard({ template }: { template: AgentTemplate }) {
         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
           {template.models.map((m) => (
             <Chip key={m} label={m} size="small"
-              sx={{ height: 20, fontSize: 10, fontWeight: 600, bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none' }} />
+              sx={{ height: 20, fontSize: 10, fontWeight: 600, bgcolor: '#eef2ff', color: '#6366f1', border: 'none' }} />
           ))}
           {template.tools.map((t) => (
             <Chip key={t} label={t} size="small"
-              sx={{ height: 20, fontSize: 10, fontWeight: 600, bgcolor: '#fff4e6', color: '#e65100', border: 'none' }} />
+              sx={{ height: 20, fontSize: 10, fontWeight: 600, bgcolor: '#fffbeb', color: '#d97706', border: 'none' }} />
           ))}
         </Box>
       </CardContent>
@@ -70,14 +70,14 @@ function TemplateCard({ template }: { template: AgentTemplate }) {
 function BuildFromScratchCard() {
   return (
     <Card sx={{
-      borderRadius: 3, border: '2px dashed #eceef3', boxShadow: 'none',
+      borderRadius: 3, border: '2px dashed #e2e8f0', boxShadow: 'none',
       height: '100%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
       transition: 'border-color 0.2s',
-      '&:hover': { borderColor: '#3d52d5' },
+      '&:hover': { borderColor: '#6366f1' },
     }}>
       <CardContent sx={{ textAlign: 'center', p: 3 }}>
         <AddIcon sx={{ fontSize: 28, color: 'text.disabled', mb: 0.5 }} />
-        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#e65100' }}>
+        <Typography variant="subtitle2" sx={{ fontWeight: 700, color: '#6366f1' }}>
           Build from Scratch
         </Typography>
       </CardContent>
@@ -94,9 +94,9 @@ function LeftSidebar() {
   return (
     <Box sx={{ width: 220, flexShrink: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
       {/* Agent Builder header */}
-      <Box sx={{ border: '1px solid #eceef3', borderRadius: 3, p: 2 }}>
+      <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 3, p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 1 }}>
-          <Box sx={{ width: 36, height: 36, borderRadius: 2, bgcolor: '#e65100',
+          <Box sx={{ width: 36, height: 36, borderRadius: 2, bgcolor: '#6366f1',
             display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <SmartToyIcon sx={{ color: '#fff', fontSize: 20 }} />
           </Box>
@@ -108,22 +108,22 @@ function LeftSidebar() {
           Create powerful AI agents using any model. Pick a template or start from scratch.
         </Typography>
         <Button fullWidth variant="contained" size="small" startIcon={<AddIcon />}
-          sx={{ bgcolor: '#e65100', borderRadius: 2, fontWeight: 700, '&:hover': { bgcolor: '#bf360c' } }}>
+          sx={{ bgcolor: '#6366f1', borderRadius: 2, fontWeight: 700, '&:hover': { bgcolor: '#4f46e5' } }}>
           + New Agent
         </Button>
       </Box>
 
       {/* Help */}
-      <Box sx={{ border: '1px solid #eceef3', borderRadius: 3, p: 2 }}>
+      <Box sx={{ border: '1px solid #e2e8f0', borderRadius: 3, p: 2 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-          <AddIcon sx={{ fontSize: 14, color: '#3d52d5' }} />
-          <Typography variant="caption" sx={{ fontWeight: 700, color: '#3d52d5' }}>Not sure where to start?</Typography>
+          <AddIcon sx={{ fontSize: 14, color: '#6366f1' }} />
+          <Typography variant="caption" sx={{ fontWeight: 700, color: '#6366f1' }}>Not sure where to start?</Typography>
         </Box>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1.5, lineHeight: 1.5 }}>
           Chat with our AI guide — describe what you want your agent to do and get a personalised setup plan.
         </Typography>
         <Button fullWidth variant="outlined" size="small"
-          sx={{ borderRadius: 2, fontSize: 12, borderColor: '#eceef3', color: 'text.secondary' }}>
+          sx={{ borderRadius: 2, fontSize: 12, borderColor: '#e2e8f0', color: 'text.secondary' }}>
           Ask the Hub →
         </Button>
       </Box>
@@ -131,7 +131,7 @@ function LeftSidebar() {
       {/* Tasks */}
       <Box>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 1 }}>
-          <AddIcon sx={{ fontSize: 14, color: '#3d52d5' }} />
+          <AddIcon sx={{ fontSize: 14, color: '#6366f1' }} />
           <Typography variant="caption" sx={{ fontWeight: 700 }}>New Task</Typography>
         </Box>
         {isLoading
@@ -140,7 +140,7 @@ function LeftSidebar() {
               <Box key={task.id} sx={{
                 display: 'flex', alignItems: 'center', gap: 1, py: 0.8, px: 1,
                 borderRadius: 2, cursor: 'pointer',
-                '&:hover': { bgcolor: '#f5f7ff' },
+                '&:hover': { bgcolor: '#f0f4ff' },
               }}>
                 <CheckBoxOutlineBlankIcon sx={{ fontSize: 14, color: 'text.disabled', flexShrink: 0 }} />
                 <Typography variant="caption" color="text.secondary"
@@ -182,10 +182,10 @@ export default function AgentsPage() {
   const sidebar = <LeftSidebar />;
 
   return (
-    <Box sx={{ bgcolor: '#fafafa', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+    <Box sx={{ bgcolor: '#f8fafc', minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
       {/* mobile top bar */}
       {isMobile && (
-        <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #eceef3', px: 2, py: 1,
+        <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #e2e8f0', px: 2, py: 1,
           display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton size="small" onClick={() => setSidebarOpen(true)}>
             <MenuIcon />
@@ -198,7 +198,7 @@ export default function AgentsPage() {
         {/* ── desktop sidebar ── */}
         {!isMobile && (
           <Box sx={{
-            width: 240, flexShrink: 0, borderRight: '1px solid #eceef3',
+            width: 240, flexShrink: 0, borderRight: '1px solid #e2e8f0',
             bgcolor: '#fff', p: 2, overflowY: 'auto',
           }}>
             {sidebar}
@@ -217,7 +217,7 @@ export default function AgentsPage() {
           <Box sx={{ textAlign: 'center', mb: 4 }}>
             <Typography variant="h4" sx={{ fontWeight: 800, mb: 0.5 }}>
               Agent works{' '}
-              <Box component="span" sx={{ color: '#e65100' }}>for you.</Box>
+              <Box component="span" sx={{ color: '#6366f1' }}>for you.</Box>
             </Typography>
             <Typography variant="body2" color="text.secondary">
               Your AI agent takes care of everything, end to end.
@@ -231,7 +231,7 @@ export default function AgentsPage() {
               topLabel="What should we work on next?"
               topBadge="Video"
               sendLabel="Agent"
-              accentColor="#e65100"
+              accentColor="#6366f1"
               elevation={0}
               maxWidth={760}
               onSend={({ text, audio }) => console.log('Agent prompt:', text, audio)}
@@ -248,10 +248,10 @@ export default function AgentsPage() {
                 onClick={() => setActiveCategory(cat)}
                 sx={{
                   cursor: 'pointer', fontWeight: 600, fontSize: 12,
-                  bgcolor: activeCategory === cat ? '#1a1a2e' : 'transparent',
+                  bgcolor: activeCategory === cat ? '#0f172a' : 'transparent',
                   color: activeCategory === cat ? '#fff' : 'text.secondary',
-                  border: activeCategory === cat ? 'none' : '1px solid #eceef3',
-                  '&:hover': { bgcolor: activeCategory === cat ? '#1a1a2e' : '#f0f2ff' },
+                  border: activeCategory === cat ? 'none' : '1px solid #e2e8f0',
+                  '&:hover': { bgcolor: activeCategory === cat ? '#0f172a' : '#eef2ff' },
                 }}
               />
             ))}
@@ -272,7 +272,7 @@ export default function AgentsPage() {
                     key={s.id}
                     sx={{
                       display: 'flex', alignItems: 'center', gap: 1.5, px: 2, py: 1.2,
-                      mb: 0.8, borderRadius: 2, bgcolor: '#fff', border: '1px solid #eceef3',
+                      mb: 0.8, borderRadius: 2, bgcolor: '#fff', border: '1px solid #e2e8f0',
                       cursor: 'pointer', transition: 'box-shadow 0.15s',
                       '&:hover': { boxShadow: '0 2px 8px rgba(0,0,0,0.08)' },
                     }}
@@ -286,7 +286,7 @@ export default function AgentsPage() {
 
           {/* view all + shuffle */}
           <Box sx={{ maxWidth: 760, mx: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
-            <Typography variant="caption" sx={{ color: '#3d52d5', cursor: 'pointer', fontWeight: 600,
+            <Typography variant="caption" sx={{ color: '#6366f1', cursor: 'pointer', fontWeight: 600,
               display: 'flex', alignItems: 'center', gap: 0.3 }}>
               View all suggestions <ArrowForwardIcon sx={{ fontSize: 13 }} />
             </Typography>
@@ -305,7 +305,7 @@ export default function AgentsPage() {
               </Typography>
               {!templatesLoading && (
                 <Chip label={templates.length} size="small"
-                  sx={{ height: 18, fontSize: 11, bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none' }} />
+                  sx={{ height: 18, fontSize: 11, bgcolor: '#eef2ff', color: '#6366f1', border: 'none' }} />
               )}
             </Box>
 

@@ -40,7 +40,7 @@ function ModelCard({ model }: { model: any }) {
     <Card
       sx={{
         borderRadius: 3,
-        border: '1px solid #eceef3',
+        border: '1px solid #e2e8f0',
         boxShadow: 'none',
         height: '100%',
         display: 'flex',
@@ -76,8 +76,8 @@ function ModelCard({ model }: { model: any }) {
               size="small"
               sx={{
                 height: 20, fontSize: 11, fontWeight: 700,
-                bgcolor: model.badge === 'Hot' ? '#fff0ee' : '#eefff4',
-                color: model.badge === 'Hot' ? '#e53935' : '#2e7d32',
+                bgcolor: model.badge === 'Hot' ? '#fef2f2' : '#f0fdf4',
+                color: model.badge === 'Hot' ? '#dc2626' : '#16a34a',
                 border: 'none',
               }}
             />
@@ -94,7 +94,7 @@ function ModelCard({ model }: { model: any }) {
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mb: 1.5 }}>
             {model.tags.slice(0, 3).map((tag: string) => (
               <Chip key={tag} label={tag} size="small"
-                sx={{ height: 22, fontSize: 11, bgcolor: '#f0f2ff', color: '#3d52d5', border: 'none' }} />
+                sx={{ height: 22, fontSize: 11, bgcolor: '#eef2ff', color: '#6366f1', border: 'none' }} />
             ))}
           </Box>
         )}
@@ -135,7 +135,7 @@ function ModelCard({ model }: { model: any }) {
 
 function ModelCardSkeleton() {
   return (
-    <Card sx={{ borderRadius: 3, border: '1px solid #eceef3', boxShadow: 'none', p: 2.5 }}>
+    <Card sx={{ borderRadius: 3, border: '1px solid #e2e8f0', boxShadow: 'none', p: 2.5 }}>
       <Box sx={{ display: 'flex', gap: 1.5, mb: 1.5 }}>
         <Skeleton variant="rounded" width={36} height={36} />
         <Box sx={{ flex: 1 }}>
@@ -188,7 +188,7 @@ function SidebarFilters({
         label={`All Labs`}
         size="small"
         icon={<ExtensionIcon sx={{ fontSize: '14px !important' }} />}
-        sx={{ mb: 2, bgcolor: '#3d52d5', color: '#fff', fontWeight: 600,
+        sx={{ mb: 2, bgcolor: '#6366f1', color: '#fff', fontWeight: 600,
           '& .MuiChip-icon': { color: '#fff' } }}
       />
 
@@ -246,7 +246,7 @@ function SidebarFilters({
         value={maxPrice}
         min={0} max={100} step={1}
         onChange={(_, v) => onMaxPriceChange(v as number)}
-        sx={{ color: '#e53935', mb: 0.5 }}
+        sx={{ color: '#6366f1', mb: 0.5 }}
       />
       <Typography variant="caption" color="text.secondary">
         Up to ${maxPrice === 100 ? '100+' : maxPrice}
@@ -267,8 +267,8 @@ function SidebarFilters({
             onClick={() => onMinRatingChange(r.value)}
             sx={{
               cursor: 'pointer', fontSize: 12,
-              bgcolor: minRating === r.value ? '#3d52d5' : '#f0f2ff',
-              color: minRating === r.value ? '#fff' : '#3d52d5',
+              bgcolor: minRating === r.value ? '#6366f1' : '#eef2ff',
+              color: minRating === r.value ? '#fff' : '#6366f1',
             }}
           />
         ))}
@@ -368,9 +368,9 @@ export default function MarketplacePage() {
   );
 
   return (
-    <Box sx={{ bgcolor: '#fafafa', minHeight: '100vh' }}>
+    <Box sx={{ bgcolor: '#f8fafc', minHeight: '100vh' }}>
       {/* ── top bar ── */}
-      <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #eceef3', px: { xs: 2, md: 4 }, py: 1.5 }}>
+      <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #e2e8f0', px: { xs: 2, md: 4 }, py: 1.5 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
           <Typography variant="h6" sx={{ fontWeight: 700, whiteSpace: 'nowrap' }}>
             Model Marketplace
@@ -402,10 +402,10 @@ export default function MarketplacePage() {
                 onClick={() => { setCategory(cat); setPage(1); }}
                 sx={{
                   cursor: 'pointer', fontWeight: 600, fontSize: 13,
-                  bgcolor: category === cat ? '#3d52d5' : 'transparent',
+                  bgcolor: category === cat ? '#6366f1' : 'transparent',
                   color: category === cat ? '#fff' : 'text.secondary',
-                  border: category === cat ? 'none' : '1px solid #eceef3',
-                  '&:hover': { bgcolor: category === cat ? '#3d52d5' : '#f0f2ff' },
+                  border: category === cat ? 'none' : '1px solid #e2e8f0',
+                  '&:hover': { bgcolor: category === cat ? '#6366f1' : '#eef2ff' },
                 }}
               />
             ))}
@@ -420,7 +420,7 @@ export default function MarketplacePage() {
       </Box>
 
       {/* ── lab tabs row ── */}
-      <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #eceef3', px: { xs: 2, md: 4 }, py: 1 }}>
+      <Box sx={{ bgcolor: '#fff', borderBottom: '1px solid #e2e8f0', px: { xs: 2, md: 4 }, py: 1 }}>
         <Box sx={{ display: 'flex', gap: 1, overflowX: 'auto', pb: 0.5,
           '&::-webkit-scrollbar': { height: 4 }, '&::-webkit-scrollbar-thumb': { borderRadius: 2, bgcolor: '#ddd' } }}>
           {/* All Labs */}
@@ -431,9 +431,9 @@ export default function MarketplacePage() {
             onClick={() => { setSelectedLab('All Labs'); setPage(1); }}
             sx={{
               whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 600,
-              bgcolor: selectedLab === 'All Labs' ? '#3d52d5' : '#f0f2ff',
-              color: selectedLab === 'All Labs' ? '#fff' : '#3d52d5',
-              '& .MuiChip-icon': { color: selectedLab === 'All Labs' ? '#fff' : '#3d52d5' },
+              bgcolor: selectedLab === 'All Labs' ? '#6366f1' : '#eef2ff',
+              color: selectedLab === 'All Labs' ? '#fff' : '#6366f1',
+              '& .MuiChip-icon': { color: selectedLab === 'All Labs' ? '#fff' : '#6366f1' },
             }}
           />
           {labs.map((lab) => (
@@ -444,9 +444,9 @@ export default function MarketplacePage() {
               onClick={() => { setSelectedLab(lab.name); setPage(1); }}
               sx={{
                 whiteSpace: 'nowrap', cursor: 'pointer', fontWeight: 500,
-                bgcolor: selectedLab === lab.name ? '#3d52d5' : 'transparent',
+                bgcolor: selectedLab === lab.name ? '#6366f1' : 'transparent',
                 color: selectedLab === lab.name ? '#fff' : 'text.secondary',
-                border: selectedLab === lab.name ? 'none' : '1px solid #eceef3',
+                border: selectedLab === lab.name ? 'none' : '1px solid #e2e8f0',
               }}
             />
           ))}

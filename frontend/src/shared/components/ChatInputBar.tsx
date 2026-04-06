@@ -286,8 +286,8 @@ export default function ChatInputBar({
           mx: 'auto',
           borderRadius: 4,
           overflow: 'hidden',
-          bgcolor: elevation === 0 ? '#fafafa' : 'white',
-          border: elevation === 0 ? '1px solid #e0e0e0' : 'none',
+          bgcolor: elevation === 0 ? '#f8fafc' : 'white',
+          border: elevation === 0 ? '1px solid #e2e8f0' : 'none',
         }}
       >
         {/* optional top label */}
@@ -301,7 +301,7 @@ export default function ChatInputBar({
         {topBadge && (
           <Box sx={{ px: 2, pt: 0.5 }}>
             <Chip label={topBadge} size="small"
-              sx={{ height: 20, fontSize: 11, bgcolor: '#1a1a2e', color: '#fff', fontWeight: 600 }} />
+              sx={{ height: 20, fontSize: 11, bgcolor: '#0f172a', color: '#fff', fontWeight: 600 }} />
           </Box>
         )}
 
@@ -335,13 +335,13 @@ export default function ChatInputBar({
 
         {/* ── speech-to-text listening indicator ── */}
         {isListening && (
-          <Box sx={{ px: 2, py: 0.8, bgcolor: 'rgba(25,118,210,0.05)',
+          <Box sx={{ px: 2, py: 0.8, bgcolor: 'rgba(99,102,241,0.05)',
             display: 'flex', alignItems: 'center', gap: 1 }}>
             <GraphicEqIcon color="primary" sx={{ fontSize: 18 }} />
             <Box sx={{ display: 'flex', gap: 0.4, alignItems: 'center' }}>
               {[...Array(6)].map((_, i) => (
                 <Box key={i} sx={{
-                  width: 3, borderRadius: 2, bgcolor: 'primary.main',
+                  width: 3, borderRadius: 2, bgcolor: '#6366f1',
                   animation: 'stBar 0.6s ease-in-out infinite',
                   animationDelay: `${i * 0.1}s`,
                   '@keyframes stBar': { '0%,100%': { height: 5 }, '50%': { height: 18 } },
@@ -359,7 +359,7 @@ export default function ChatInputBar({
 
         {/* ── audio recording waveform ── */}
         {isRecording && (
-          <Box sx={{ px: 2, py: 0.8, bgcolor: 'rgba(211,47,47,0.05)',
+          <Box sx={{ px: 2, py: 0.8, bgcolor: 'rgba(239,68,68,0.05)',
             display: 'flex', alignItems: 'center', gap: 1 }}>
             <MicIcon color="error" sx={{ fontSize: 18 }} />
             <Box sx={{ display: 'flex', gap: 0.4, alignItems: 'center' }}>
@@ -383,8 +383,8 @@ export default function ChatInputBar({
 
         {/* ── recorded audio player ── */}
         {recordedAudio && !isRecording && (
-          <Box sx={{ px: 2, py: 1, bgcolor: 'rgba(25,118,210,0.04)',
-            borderTop: '1px solid rgba(25,118,210,0.1)' }}>
+          <Box sx={{ px: 2, py: 1, bgcolor: 'rgba(99,102,241,0.04)',
+            borderTop: '1px solid rgba(99,102,241,0.1)' }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1,
               bgcolor: 'white', borderRadius: 2, px: 1.5, py: 0.5 }}>
               <AudioFileIcon color="primary" sx={{ fontSize: 20 }} />
@@ -411,7 +411,7 @@ export default function ChatInputBar({
         {/* ── toolbar ── */}
         <Box sx={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          px: 1, py: 1, borderTop: '1px solid #e0e0e0', bgcolor: '#f8f9fa',
+          px: 1, py: 1, borderTop: '1px solid #e2e8f0', bgcolor: '#f8fafc',
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
 
@@ -444,7 +444,7 @@ export default function ChatInputBar({
             <Tooltip title={isListening ? 'Stop voice typing' : 'Voice typing (speech to text)'}>
               <IconButton onClick={handleSpeechToggle}
                 sx={{ color: isListening ? 'primary.main' : 'text.secondary',
-                  bgcolor: isListening ? 'rgba(25,118,210,0.08)' : 'transparent',
+                  bgcolor: isListening ? 'rgba(99,102,241,0.08)' : 'transparent',
                   '&:hover': { color: 'primary.main' } }}>
                 <KeyboardVoiceIcon />
               </IconButton>

@@ -69,7 +69,7 @@ export default function BrowseByLabSection() {
                   <Card
                     sx={{
                       borderRadius: 3,
-                      border: '1px solid #ebebeb',
+                      border: '1px solid #e2e8f0',
                       boxShadow: 'none',
                       height: '100%',
                       cursor: 'pointer',

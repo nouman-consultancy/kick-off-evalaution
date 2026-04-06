@@ -11,10 +11,10 @@ import CommonNoDataState from '@/shared/components/CommonNoDataState';
 import CommonErrorState from '@/shared/components/CommonErrorState';
 
 const cardGradients = [
-  'linear-gradient(135deg, #f6f7fb 0%, #eef1ff 100%)',
-  'linear-gradient(135deg, #f8f8ff 0%, #f3f0ff 100%)',
-  'linear-gradient(135deg, #f8fff9 0%, #effaf3 100%)',
-  'linear-gradient(135deg, #fffaf5 0%, #fff4e9 100%)',
+  'linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%)',
+  'linear-gradient(135deg, #faf8ff 0%, #f5f3ff 100%)',
+  'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+  'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
 ];
 
 function formatNumber(value?: number): string {
@@ -64,7 +64,7 @@ export default function FeaturedModelsSection() {
                 sx={{
                   height: '100%',
                   borderRadius: 3,
-                  border: '1px solid #eceef3',
+                  border: '1px solid #e2e8f0',
                   background: cardGradients[index % cardGradients.length],
                   transition: 'all 0.2s ease',
                   '&:hover': {
@@ -100,7 +100,7 @@ export default function FeaturedModelsSection() {
 
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mt: 'auto', pt: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.4 }}>
-                      <StarIcon sx={{ color: '#f4b400', fontSize: 18 }} />
+                      <StarIcon sx={{ color: '#f59e0b', fontSize: 18 }} />
                       <Typography variant="caption" sx={{ fontWeight: 600 }}>
                         4.8
                       </Typography>
