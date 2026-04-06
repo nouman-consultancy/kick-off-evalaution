@@ -1,51 +1,11 @@
 'use client';
 
 import Link from 'next/link';
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Grid,
-  Card,
-  CardContent,
-} from '@mui/material';
-import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
-import SmartToyIcon from '@mui/icons-material/SmartToy';
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import ExploreIcon from '@mui/icons-material/Explore';
+import { Box, Container, Typography, Button } from '@mui/material';
 import SearchBar from '@/shared/components/SearchBar';
-
-const highlights = [
-  {
-    icon: ChatBubbleOutlineIcon,
-    title: 'Chat Hub',
-    description: 'Centralized messaging platform for seamless team communication',
-    href: '/chat-hub',
-    color: '#667eea',
-  },
-  {
-    icon: StorefrontIcon,
-    title: 'Marketplace',
-    description: 'Discover and install AI agents built by the community',
-    href: '/marketplace',
-    color: '#f5576c',
-  },
-  {
-    icon: SmartToyIcon,
-    title: 'Agents',
-    description: 'Deploy intelligent AI agents that work 24/7',
-    href: '/agents',
-    color: '#11998e',
-  },
-  {
-    icon: ExploreIcon,
-    title: 'Discover',
-    description: 'Explore trending AI innovations and solutions',
-    href: '/discover',
-    color: '#764ba2',
-  },
-];
+import LandingActionWidgets from '@/shared/components/LandingActionWidgets';
+import LandingStatsWidget from '@/shared/components/LandingStatsWidget';
+import FeaturedModelsSection from '@/shared/components/FeaturedModelsSection';
 
 export default function LandingPage() {
   return (
@@ -84,6 +44,14 @@ export default function LandingPage() {
           {/* Search Bar */}
           <Box sx={{ mb: 4, px: { xs: 2, sm: 0 } }}>
             <SearchBar />
+          </Box>
+
+          <Box sx={{ mb: 4, px: { xs: 2, sm: 0 } }}>
+            <LandingActionWidgets />
+          </Box>
+
+          <Box sx={{ mb: 5, px: { xs: 2, sm: 0 } }}>
+            <LandingStatsWidget />
           </Box>
 
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
@@ -128,69 +96,7 @@ export default function LandingPage() {
         </Container>
       </Box>
 
-      {/* Features Section */}
-      <Container maxWidth="xl" sx={{ py: 8 }}>
-        <Typography
-          variant="h4"
-          textAlign="center"
-          sx={{ mb: 2, fontWeight: 600 }}
-        >
-          Everything You Need
-        </Typography>
-        <Typography
-          variant="body1"
-          textAlign="center"
-          color="text.secondary"
-          sx={{ mb: 6, maxWidth: 600, mx: 'auto' }}
-        >
-          Powerful tools to build, deploy, and manage AI-powered conversations at scale
-        </Typography>
-        <Grid container spacing={4}>
-          {highlights.map((item) => (
-            <Grid item xs={12} sm={6} md={3} key={item.title}>
-              <Card
-                component={Link}
-                href={item.href}
-                sx={{
-                  height: '100%',
-                  textAlign: 'center',
-                  p: 2,
-                  textDecoration: 'none',
-                  '&:hover': {
-                    boxShadow: 6,
-                    transform: 'translateY(-4px)',
-                    transition: 'all 0.3s ease',
-                  },
-                }}
-              >
-                <CardContent>
-                  <Box
-                    sx={{
-                      width: 60,
-                      height: 60,
-                      borderRadius: '50%',
-                      backgroundColor: `${item.color}20`,
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      mx: 'auto',
-                      mb: 2,
-                    }}
-                  >
-                    <item.icon sx={{ fontSize: 32, color: item.color }} />
-                  </Box>
-                  <Typography variant="h6" sx={{ mb: 1, fontWeight: 600 }}>
-                    {item.title}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    {item.description}
-                  </Typography>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <FeaturedModelsSection />
 
       {/* CTA Section */}
       <Box sx={{ backgroundColor: '#f5f5f5', py: 8 }}>

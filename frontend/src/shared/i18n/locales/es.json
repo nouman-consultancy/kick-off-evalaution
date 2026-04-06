@@ -1,0 +1,257 @@
+{
+  "common": {
+    "signIn": "Iniciar Sesión",
+    "tryFree": "Prueba Gratis",
+    "send": "Enviar",
+    "cancel": "Cancelar",
+    "search": "Buscar",
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "close": "Cerrar",
+    "delete": "Eliminar",
+    "play": "Reproducir",
+    "pause": "Pausar"
+  },
+  "header": {
+    "logo": "ChatFlow",
+    "menu": {
+      "chatHub": "Chat Hub",
+      "marketplace": "Mercado",
+      "agents": "Agentes",
+      "discover": "Descubrir Ahora"
+    },
+    "language": "Idioma"
+  },
+  "footer": {
+    "description": "Empoderando negocios con agentes de IA inteligentes y experiencias de chat sin problemas. Construye, despliega y escala tus soluciones de IA.",
+    "product": "Producto",
+    "company": "Compañía",
+    "resources": "Recursos",
+    "legal": "Legal",
+    "links": {
+      "aboutUs": "Sobre Nosotros",
+      "careers": "Carreras",
+      "blog": "Blog",
+      "press": "Prensa",
+      "documentation": "Documentación",
+      "helpCenter": "Centro de Ayuda",
+      "apiReference": "Referencia API",
+      "community": "Comunidad",
+      "privacyPolicy": "Política de Privacidad",
+      "termsOfService": "Términos de Servicio",
+      "cookiePolicy": "Política de Cookies"
+    },
+    "copyright": "© {{year}} ChatFlow. Todos los derechos reservados.",
+    "privacy": "Privacidad",
+    "terms": "Términos",
+    "cookies": "Cookies"
+  },
+  "landing": {
+    "hero": {
+      "title": "Bienvenido a ChatFlow",
+      "subtitle": "Construye, despliega y escala tus agentes de IA con la plataforma de chat más avanzada",
+      "cta": {
+        "tryFree": "Prueba Gratis",
+        "signIn": "Iniciar Sesión"
+      }
+    },
+    "features": {
+      "title": "Todo lo que necesitas",
+      "subtitle": "Herramientas poderosas para construir, desplegar y gestionar conversaciones de IA a escala",
+      "chatHub": {
+        "title": "Chat Hub",
+        "description": "Plataforma de mensajería centralizada para comunicación fluida del equipo"
+      },
+      "marketplace": {
+        "title": "Mercado",
+        "description": "Descubre e instala agentes de IA construidos por la comunidad"
+      },
+      "agents": {
+        "title": "Agentes",
+        "description": "Despliega agentes de IA inteligentes que trabajan 24/7"
+      },
+      "discover": {
+        "title": "Descubrir",
+        "description": "Explora tendencias de IA y soluciones innovadoras"
+      }
+    },
+    "cta": {
+      "title": "¿Listo para comenzar?",
+      "subtitle": "Únete a miles de equipos que ya usan ChatFlow para potenciar sus conversaciones de IA",
+      "button": "Crear Cuenta Gratis"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Escribe tu mensaje o usa las herramientas de abajo...",
+    "tools": {
+      "microphone": "Grabar Mensaje de Voz",
+      "stopRecording": "Detener Grabación",
+      "attachment": "Adjuntar Archivo",
+      "image": "Subir Imagen",
+      "voiceTyping": "Dictado por Voz",
+      "stopVoiceTyping": "Detener Dictado",
+      "video": "Subir Video",
+      "screenShare": "Compartir Pantalla",
+      "agent": "Seleccionar Agente"
+    },
+    "recording": {
+      "recording": "Grabando mensaje de voz...",
+      "listening": "Escuchando...",
+      "audioFile": "Grabación de Voz",
+      "delete": "Eliminar grabación"
+    },
+    "dialogs": {
+      "attachFiles": {
+        "title": "Adjuntar Archivos",
+        "dropzone": "Suelta archivos aquí o haz clic para explorar",
+        "supports": "Soporta documentos, PDFs y más"
+      },
+      "uploadImages": {
+        "title": "Subir Imágenes",
+        "dropzone": "Suelta imágenes aquí o haz clic para explorar",
+        "supports": "Soporta JPG, PNG, GIF, WebP"
+      },
+      "uploadVideo": {
+        "title": "Subir Video",
+        "dropzone": "Suelta videos aquí o haz clic para explorar",
+        "supports": "Soporta MP4, WebM, MOV hasta 100MB"
+      },
+      "screenShare": {
+        "title": "Compartir Pantalla",
+        "started": "¡Compartir pantalla iniciado!",
+        "instruction": "Elige qué compartir en el diálogo del navegador",
+        "stop": "Detener Compartir"
+      },
+      "selectAgent": {
+        "title": "Seleccionar un Agente",
+        "agents": {
+          "support": {
+            "name": "Agente de Soporte",
+            "description": "Manejar consultas de clientes"
+          },
+          "sales": {
+            "name": "Agente de Ventas",
+            "description": "Calificar leads y cerrar ventas"
+          },
+          "research": {
+            "name": "Agente de Investigación",
+            "description": "Encontrar y analizar información"
+          },
+          "code": {
+            "name": "Agente de Código",
+            "description": "Ayuda con tareas de programación"
+          }
+        }
+      }
+    }
+  },
+  "chatHub": {
+    "hero": {
+      "title": "Chat Hub",
+      "subtitle": "El lugar central para todas tus conversaciones",
+      "cta": "Iniciar Chat"
+    },
+    "features": {
+      "title": "Funciones Poderosas de Chat",
+      "realtime": {
+        "title": "Mensajería en Tiempo Real",
+        "description": "Mensajería instantánea con indicadores de escritura y confirmación de lectura."
+      },
+      "groups": {
+        "title": "Chats Grupales",
+        "description": "Crea chats grupales ilimitados con permisos avanzados."
+      },
+      "security": {
+        "title": "Cifrado de Extremo a Extremo",
+        "description": "Tus conversaciones están aseguradas con cifrado de grado militar."
+      },
+      "speed": {
+        "title": "Ultra Rápido",
+        "description": "Optimizado para velocidad con entrega de mensajes en menos de 50ms."
+      }
+    }
+  },
+  "marketplace": {
+    "hero": {
+      "title": "Mercado",
+      "subtitle": "Descubre agentes de IA e integraciones construidos por la comunidad"
+    },
+    "categories": "Categorías",
+    "featured": {
+      "title": "Destacados",
+      "items": {
+        "supportPro": {
+          "name": "Soporte al Cliente Pro",
+          "description": "Agente de soporte al cliente con IA y soporte multi-idioma"
+        },
+        "salesAssistant": {
+          "name": "Asistente de Ventas",
+          "description": "Agente automatizado de ventas y calificación de leads"
+        },
+        "ecommerceBot": {
+          "name": "Bot de E-commerce",
+          "description": "Solución completa de e-commerce con seguimiento de pedidos y recomendaciones"
+        }
+      }
+    },
+    "price": "{{price}}/mes",
+    "reviews": "{{count}} reseñas",
+    "install": "Instalar",
+    "items": "{{count}} artículos"
+  },
+  "agents": {
+    "hero": {
+      "title": "Agentes de IA",
+      "subtitle": "Despliega agentes inteligentes que trabajan para ti las 24 horas",
+      "cta": "Crear Agente"
+    },
+    "howItWorks": {
+      "title": "Cómo Funciona",
+      "steps": ["Diseñar", "Entrenar", "Desplegar", "Monitorear"]
+    },
+    "chooseAgent": {
+      "title": "Elige tu Agente",
+      "support": {
+        "name": "Agente de Soporte",
+        "description": "Manejar consultas de clientes 24/7 con respuestas humanas",
+        "features": ["Gestión de Tickets", "Base de Conocimientos", "Análisis de Sentimientos"]
+      },
+      "sales": {
+        "name": "Agente de Ventas",
+        "description": "Calificar leads y guiar prospectos en tu embudo",
+        "features": ["Puntuación de Leads", "Integración CRM", "Automatización de Seguimiento"]
+      },
+      "custom": {
+        "name": "Agente Personalizado",
+        "description": "Construye tu propio agente de IA adaptado a tus necesidades",
+        "features": ["Entrenamiento Personalizado", "Acceso API", "Constructor de Flujos"]
+      }
+    }
+  },
+  "discover": {
+    "hero": {
+      "title": "Descubrir Ahora",
+      "subtitle": "Explora las últimas innovaciones en IA y soluciones tendencia",
+      "placeholder": "Buscar agentes, plantillas, integraciones..."
+    },
+    "trending": {
+      "title": "Tendencia Ahora",
+      "users": "{{count}} usuarios"
+    },
+    "featured": {
+      "title": "Destacados",
+      "badges": {
+        "new": "Nuevo",
+        "popular": "Popular",
+        "trending": "Tendencia"
+      }
+    }
+  },
+  "languages": {
+    "en": "Inglés",
+    "es": "Español",
+    "fr": "Francés",
+    "de": "Alemán"
+  }
+}

@@ -1,7 +1,5 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { baseApi } from './baseApi';
 import { User } from '@/features/auth/types/auth.types';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
 
 export interface LoginCredentials {
   email: string;
@@ -20,20 +18,7 @@ export interface AuthResponse {
   token: string;
 }
 
-export const authApi = createApi({
-  reducerPath: 'authApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: API_URL,
-    prepareHeaders: (headers) => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
-        if (token) {
-          headers.set('authorization', `Bearer ${token}`);
-        }
-      }
-      return headers;
-    },
-  }),
+export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<AuthResponse, LoginCredentials>({
       query: (credentials) => ({
@@ -51,14 +36,17 @@ export const authApi = createApi({
     }),
     getProfile: builder.query<User, void>({
       query: () => '/auth/profile',
+      providesTags: ['Auth'],
     }),
     refreshToken: builder.mutation<{ token: string }, void>({
       query: () => ({
         url: '/auth/refresh',
         method: 'POST',
       }),
+      invalidatesTags: ['Auth'],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const { useLoginMutation, useRegisterMutation, useGetProfileQuery, useRefreshTokenMutation } = authApi;

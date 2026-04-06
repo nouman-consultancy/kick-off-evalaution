@@ -1,0 +1,257 @@
+{
+  "common": {
+    "signIn": "Se Connecter",
+    "tryFree": "Essai Gratuit",
+    "send": "Envoyer",
+    "cancel": "Annuler",
+    "search": "Rechercher",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "close": "Fermer",
+    "delete": "Supprimer",
+    "play": "Lire",
+    "pause": "Pause"
+  },
+  "header": {
+    "logo": "ChatFlow",
+    "menu": {
+      "chatHub": "Chat Hub",
+      "marketplace": "Marché",
+      "agents": "Agents",
+      "discover": "Découvrir Maintenant"
+    },
+    "language": "Langue"
+  },
+  "footer": {
+    "description": "Donner aux entreprises des agents IA intelligents et des expériences de chat fluides. Construisez, déployez et scalez vos solutions IA.",
+    "product": "Produit",
+    "company": "Entreprise",
+    "resources": "Ressources",
+    "legal": "Légal",
+    "links": {
+      "aboutUs": "À Propos",
+      "careers": "Carrières",
+      "blog": "Blog",
+      "press": "Presse",
+      "documentation": "Documentation",
+      "helpCenter": "Centre d'Aide",
+      "apiReference": "Référence API",
+      "community": "Communauté",
+      "privacyPolicy": "Politique de Confidentialité",
+      "termsOfService": "Conditions d'Utilisation",
+      "cookiePolicy": "Politique de Cookies"
+    },
+    "copyright": "© {{year}} ChatFlow. Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies"
+  },
+  "landing": {
+    "hero": {
+      "title": "Bienvenue sur ChatFlow",
+      "subtitle": "Construisez, déployez et scalez vos agents IA avec la plateforme de chat la plus avancée",
+      "cta": {
+        "tryFree": "Essai Gratuit",
+        "signIn": "Se Connecter"
+      }
+    },
+    "features": {
+      "title": "Tout ce dont vous avez besoin",
+      "subtitle": "Des outils puissants pour construire, déployer et gérer des conversations IA à grande échelle",
+      "chatHub": {
+        "title": "Chat Hub",
+        "description": "Plateforme de messagerie centralisée pour une communication d'équipe fluide"
+      },
+      "marketplace": {
+        "title": "Marché",
+        "description": "Découvrez et installez des agents IA construits par la communauté"
+      },
+      "agents": {
+        "title": "Agents",
+        "description": "Déployez des agents IA intelligents qui travaillent 24h/24 et 7j/7"
+      },
+      "discover": {
+        "title": "Découvrir",
+        "description": "Explorez les tendances et innovations IA"
+      }
+    },
+    "cta": {
+      "title": "Prêt à commencer ?",
+      "subtitle": "Rejoignez des milliers d'équipes qui utilisent déjà ChatFlow pour leurs conversations IA",
+      "button": "Créer un Compte Gratuit"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Tapez votre message ou utilisez les outils ci-dessous...",
+    "tools": {
+      "microphone": "Enregistrer un Message Vocal",
+      "stopRecording": "Arrêter l'Enregistrement",
+      "attachment": "Joindre un Fichier",
+      "image": "Télécharger une Image",
+      "voiceTyping": "Saisie Vocale",
+      "stopVoiceTyping": "Arrêter la Saisie Vocale",
+      "video": "Télécharger une Vidéo",
+      "screenShare": "Partager l'Écran",
+      "agent": "Sélectionner un Agent"
+    },
+    "recording": {
+      "recording": "Enregistrement du message vocal...",
+      "listening": "Écoute...",
+      "audioFile": "Enregistrement Vocal",
+      "delete": "Supprimer l'enregistrement"
+    },
+    "dialogs": {
+      "attachFiles": {
+        "title": "Joindre des Fichiers",
+        "dropzone": "Déposez des fichiers ici ou cliquez pour parcourir",
+        "supports": "Prend en charge les documents, PDF et plus"
+      },
+      "uploadImages": {
+        "title": "Télécharger des Images",
+        "dropzone": "Déposez des images ici ou cliquez pour parcourir",
+        "supports": "Prend en charge JPG, PNG, GIF, WebP"
+      },
+      "uploadVideo": {
+        "title": "Télécharger une Vidéo",
+        "dropzone": "Déposez des vidéos ici ou cliquez pour parcourir",
+        "supports": "Prend en charge MP4, WebM, MOV jusqu'à 100MB"
+      },
+      "screenShare": {
+        "title": "Partage d'Écran",
+        "started": "Partage d'écran démarré !",
+        "instruction": "Choisissez quoi partager dans la boîte de dialogue du navigateur",
+        "stop": "Arrêter le Partage"
+      },
+      "selectAgent": {
+        "title": "Sélectionner un Agent",
+        "agents": {
+          "support": {
+            "name": "Agent de Support",
+            "description": "Gérer les demandes clients"
+          },
+          "sales": {
+            "name": "Agent Commercial",
+            "description": "Qualifier les leads et conclure les ventes"
+          },
+          "research": {
+            "name": "Agent de Recherche",
+            "description": "Trouver et analyser des informations"
+          },
+          "code": {
+            "name": "Agent de Code",
+            "description": "Aide pour les tâches de codage"
+          }
+        }
+      }
+    }
+  },
+  "chatHub": {
+    "hero": {
+      "title": "Chat Hub",
+      "subtitle": "L'endroit central pour toutes vos conversations",
+      "cta": "Démarrer le Chat"
+    },
+    "features": {
+      "title": "Fonctionnalités de Chat Puissantes",
+      "realtime": {
+        "title": "Messagerie en Temps Réel",
+        "description": "Messagerie instantanée avec indicateurs de frappe et accusés de lecture."
+      },
+      "groups": {
+        "title": "Chats de Groupe",
+        "description": "Créez des chats de groupe illimités avec des permissions avancées."
+      },
+      "security": {
+        "title": "Chiffrement de Bout en Bout",
+        "description": "Vos conversations sont sécurisées avec un chiffrement de niveau militaire."
+      },
+      "speed": {
+        "title": "Ultra Rapide",
+        "description": "Optimisé pour la vitesse avec une livraison de messages en moins de 50ms."
+      }
+    }
+  },
+  "marketplace": {
+    "hero": {
+      "title": "Marché",
+      "subtitle": "Découvrez les agents IA et intégrations construits par la communauté"
+    },
+    "categories": "Catégories",
+    "featured": {
+      "title": "En Vedette",
+      "items": {
+        "supportPro": {
+          "name": "Support Client Pro",
+          "description": "Agent de support client IA avec support multi-langues"
+        },
+        "salesAssistant": {
+          "name": "Assistant Commercial",
+          "description": "Agent automatisé de prospection et qualification de leads"
+        },
+        "ecommerceBot": {
+          "name": "Bot E-commerce",
+          "description": "Solution e-commerce complète avec suivi de commande et recommandations"
+        }
+      }
+    },
+    "price": "{{price}}/mois",
+    "reviews": "{{count}} avis",
+    "install": "Installer",
+    "items": "{{count}} articles"
+  },
+  "agents": {
+    "hero": {
+      "title": "Agents IA",
+      "subtitle": "Déployez des agents intelligents qui travaillent pour vous 24h/24",
+      "cta": "Créer un Agent"
+    },
+    "howItWorks": {
+      "title": "Comment Ça Marche",
+      "steps": ["Concevoir", "Entraîner", "Déployer", "Surveiller"]
+    },
+    "chooseAgent": {
+      "title": "Choisissez Votre Agent",
+      "support": {
+        "name": "Agent de Support",
+        "description": "Gérez les demandes clients 24h/24 avec des réponses humaines",
+        "features": ["Gestion des Tickets", "Base de Connaissances", "Analyse des Sentiments"]
+      },
+      "sales": {
+        "name": "Agent Commercial",
+        "description": "Qualifiez les leads et guidez les prospects dans votre entonnoir",
+        "features": ["Scoring des Leads", "Intégration CRM", "Automatisation du Suivi"]
+      },
+      "custom": {
+        "name": "Agent Personnalisé",
+        "description": "Construisez votre propre agent IA adapté à vos besoins spécifiques",
+        "features": ["Entraînement Personnalisé", "Accès API", "Constructeur de Workflow"]
+      }
+    }
+  },
+  "discover": {
+    "hero": {
+      "title": "Découvrir Maintenant",
+      "subtitle": "Explorez les dernières innovations IA et solutions tendance",
+      "placeholder": "Rechercher des agents, modèles, intégrations..."
+    },
+    "trending": {
+      "title": "Tendance Actuelle",
+      "users": "{{count}} utilisateurs"
+    },
+    "featured": {
+      "title": "En Vedette",
+      "badges": {
+        "new": "Nouveau",
+        "popular": "Populaire",
+        "trending": "Tendance"
+      }
+    }
+  },
+  "languages": {
+    "en": "Anglais",
+    "es": "Espagnol",
+    "fr": "Français",
+    "de": "Allemand"
+  }
+}

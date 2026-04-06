@@ -1,6 +1,4 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+import { baseApi } from './baseApi';
 
 export interface User {
   id: number;
@@ -33,28 +31,7 @@ export interface PaginatedResponse<T> {
   total: number;
 }
 
-interface BaseQueryFn {
-  url: string | URL;
-  method: string;
-  body?: unknown;
-  headers?: HeadersInit;
-}
-
-export const usersApi = createApi({
-  reducerPath: 'usersApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: API_URL,
-    prepareHeaders: (headers) => {
-      if (typeof window !== 'undefined') {
-        const token = localStorage.getItem('token');
-        if (token) {
-          headers.set('authorization', `Bearer ${token}`);
-        }
-      }
-      return headers;
-    },
-  }) as (args: BaseQueryFn) => ReturnType<fetchBaseQuery>,
-  tagTypes: ['Users'],
+export const usersApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getUsers: builder.query<PaginatedResponse<User>, { page?: number; limit?: number }>({
       query: ({ page = 1, limit = 10 }) => ({
@@ -90,6 +67,7 @@ export const usersApi = createApi({
       invalidatesTags: ['Users'],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

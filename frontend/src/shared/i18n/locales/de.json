@@ -1,0 +1,257 @@
+{
+  "common": {
+    "signIn": "Anmelden",
+    "tryFree": "Kostenlos Testen",
+    "send": "Senden",
+    "cancel": "Abbrechen",
+    "search": "Suchen",
+    "loading": "Laden...",
+    "error": "Fehler",
+    "success": "Erfolg",
+    "close": "Schließen",
+    "delete": "Löschen",
+    "play": "Abspielen",
+    "pause": "Pause"
+  },
+  "header": {
+    "logo": "ChatFlow",
+    "menu": {
+      "chatHub": "Chat Hub",
+      "marketplace": "Marktplatz",
+      "agents": "Agenten",
+      "discover": "Jetzt Entdecken"
+    },
+    "language": "Sprache"
+  },
+  "footer": {
+    "description": "Stärken Sie Unternehmen mit intelligenten KI-Agenten und nahtlosen Chat-Erlebnissen. Entwickeln, bereitstellen und skalieren Sie Ihre KI-Lösungen.",
+    "product": "Produkt",
+    "company": "Unternehmen",
+    "resources": "Ressourcen",
+    "legal": "Rechtliches",
+    "links": {
+      "aboutUs": "Über Uns",
+      "careers": "Karriere",
+      "blog": "Blog",
+      "press": "Presse",
+      "documentation": "Dokumentation",
+      "helpCenter": "Hilfezentrum",
+      "apiReference": "API-Referenz",
+      "community": "Community",
+      "privacyPolicy": "Datenschutzrichtlinie",
+      "termsOfService": "Nutzungsbedingungen",
+      "cookiePolicy": "Cookie-Richtlinie"
+    },
+    "copyright": "© {{year}} ChatFlow. Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "terms": "Bedingungen",
+    "cookies": "Cookies"
+  },
+  "landing": {
+    "hero": {
+      "title": "Willkommen bei ChatFlow",
+      "subtitle": "Entwickeln, bereitstellen und skalieren Sie Ihre KI-Agenten mit der fortschrittlichsten Chat-Plattform",
+      "cta": {
+        "tryFree": "Kostenlos Testen",
+        "signIn": "Anmelden"
+      }
+    },
+    "features": {
+      "title": "Alles, was Sie brauchen",
+      "subtitle": "Leistungsstarke Tools zum Entwickeln, Bereitstellen und Verwalten von KI-Gesprächen im großen Maßstab",
+      "chatHub": {
+        "title": "Chat Hub",
+        "description": "Zentralisierte Messaging-Plattform für nahtlose Teamkommunikation"
+      },
+      "marketplace": {
+        "title": "Marktplatz",
+        "description": "Entdecken und installieren Sie KI-Agenten, die von der Community entwickelt wurden"
+      },
+      "agents": {
+        "title": "Agenten",
+        "description": "Setzen Sie intelligente KI-Agenten ein, die rund um die Uhr arbeiten"
+      },
+      "discover": {
+        "title": "Entdecken",
+        "description": "Erkunden Sie KI-Trends und innovative Lösungen"
+      }
+    },
+    "cta": {
+      "title": "Bereit loszulegen?",
+      "subtitle": "Schließen Sie sich Tausenden von Teams an, die bereits ChatFlow für ihre KI-Gespräche nutzen",
+      "button": "Kostenloses Konto Erstellen"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Geben Sie Ihre Nachricht ein oder nutzen Sie die Tools unten...",
+    "tools": {
+      "microphone": "Sprachnachricht Aufnehmen",
+      "stopRecording": "Aufnahme Stoppen",
+      "attachment": "Datei Anhängen",
+      "image": "Bild Hochladen",
+      "voiceTyping": "Spracheingabe",
+      "stopVoiceTyping": "Spracheingabe Stoppen",
+      "video": "Video Hochladen",
+      "screenShare": "Bildschirm Freigeben",
+      "agent": "Agent Auswählen"
+    },
+    "recording": {
+      "recording": "Sprachnachricht wird aufgenommen...",
+      "listening": "Zuhören...",
+      "audioFile": "Sprachaufnahme",
+      "delete": "Aufnahme löschen"
+    },
+    "dialogs": {
+      "attachFiles": {
+        "title": "Dateien Anhängen",
+        "dropzone": "Dateien hier ablegen oder zum Durchsuchen klicken",
+        "supports": "Unterstützt Dokumente, PDFs und mehr"
+      },
+      "uploadImages": {
+        "title": "Bilder Hochladen",
+        "dropzone": "Bilder hier ablegen oder zum Durchsuchen klicken",
+        "supports": "Unterstützt JPG, PNG, GIF, WebP"
+      },
+      "uploadVideo": {
+        "title": "Video Hochladen",
+        "dropzone": "Videos hier ablegen oder zum Durchsuchen klicken",
+        "supports": "Unterstützt MP4, WebM, MOV bis zu 100MB"
+      },
+      "screenShare": {
+        "title": "Bildschirmfreigabe",
+        "started": "Bildschirmfreigabe gestartet!",
+        "instruction": "Wählen Sie im Browser-Dialog aus, was geteilt werden soll",
+        "stop": "Freigabe Stoppen"
+      },
+      "selectAgent": {
+        "title": "Agent Auswählen",
+        "agents": {
+          "support": {
+            "name": "Support-Agent",
+            "description": "Kundenanfragen bearbeiten"
+          },
+          "sales": {
+            "name": "Vertriebs-Agent",
+            "description": "Leads qualifizieren und Verkäufe abschließen"
+          },
+          "research": {
+            "name": "Recherche-Agent",
+            "description": "Informationen finden und analysieren"
+          },
+          "code": {
+            "name": "Code-Agent",
+            "description": "Hilfe bei Codierungsaufgaben"
+          }
+        }
+      }
+    }
+  },
+  "chatHub": {
+    "hero": {
+      "title": "Chat Hub",
+      "subtitle": "Der zentrale Ort für alle Ihre Gespräche",
+      "cta": "Chat Starten"
+    },
+    "features": {
+      "title": "Leistungsstarke Chat-Funktionen",
+      "realtime": {
+        "title": "Echtzeit-Messaging",
+        "description": "Sofortige Nachrichtenübermittlung mit Tipp-Indikatoren und Lesebestätigungen."
+      },
+      "groups": {
+        "title": "Gruppen-Chats",
+        "description": "Erstellen Sie unbegrenzte Gruppen-Chats mit erweiterten Berechtigungen."
+      },
+      "security": {
+        "title": "Ende-zu-Ende-Verschlüsselung",
+        "description": "Ihre Gespräche sind mit militärischer Verschlüsselung gesichert."
+      },
+      "speed": {
+        "title": "Blitzschnell",
+        "description": "Optimiert für Geschwindigkeit mit Nachrichtenübermittlung in unter 50ms."
+      }
+    }
+  },
+  "marketplace": {
+    "hero": {
+      "title": "Marktplatz",
+      "subtitle": "Entdecken Sie KI-Agenten und Integrationen, die von der Community entwickelt wurden"
+    },
+    "categories": "Kategorien",
+    "featured": {
+      "title": "Empfohlen",
+      "items": {
+        "supportPro": {
+          "name": "Kundensupport Pro",
+          "description": "KI-gestützter Kundensupport-Agent mit mehrsprachiger Unterstützung"
+        },
+        "salesAssistant": {
+          "name": "Vertriebsassistent",
+          "description": "Automatisierter Vertrieb für Lead-Qualifizierung und Abschlüsse"
+        },
+        "ecommerceBot": {
+          "name": "E-Commerce-Bot",
+          "description": "Komplette E-Commerce-Lösung mit Bestellverfolgung und Empfehlungen"
+        }
+      }
+    },
+    "price": "{{price}}/Monat",
+    "reviews": "{{count}} Bewertungen",
+    "install": "Installieren",
+    "items": "{{count}} Artikel"
+  },
+  "agents": {
+    "hero": {
+      "title": "KI-Agenten",
+      "subtitle": "Setzen Sie intelligente Agenten ein, die rund um die Uhr für Sie arbeiten",
+      "cta": "Agent Erstellen"
+    },
+    "howItWorks": {
+      "title": "So Funktioniert's",
+      "steps": ["Entwerfen", "Trainieren", "Bereitstellen", "Überwachen"]
+    },
+    "chooseAgent": {
+      "title": "Wählen Sie Ihren Agenten",
+      "support": {
+        "name": "Support-Agent",
+        "description": "Bearbeitung von Kundenanfragen rund um die Uhr mit menschlichen Antworten",
+        "features": ["Ticket-Verwaltung", "Wissensdatenbank", "Stimmungsanalyse"]
+      },
+      "sales": {
+        "name": "Vertriebs-Agent",
+        "description": "Leads qualifizieren und Interessenten durch Ihren Trichter führen",
+        "features": ["Lead-Bewertung", "CRM-Integration", "Follow-up-Automatisierung"]
+      },
+      "custom": {
+        "name": "Benutzerdefinierter Agent",
+        "description": "Erstellen Sie Ihren eigenen KI-Agenten, maßgeschneidert für Ihre Bedürfnisse",
+        "features": ["Benutzerdefiniertes Training", "API-Zugriff", "Workflow-Builder"]
+      }
+    }
+  },
+  "discover": {
+    "hero": {
+      "title": "Jetzt Entdecken",
+      "subtitle": "Erkunden Sie die neuesten KI-Innovationen und Trendlösungen",
+      "placeholder": "Agenten, Vorlagen, Integrationen suchen..."
+    },
+    "trending": {
+      "title": "Aktuelle Trends",
+      "users": "{{count}} Benutzer"
+    },
+    "featured": {
+      "title": "Empfohlen",
+      "badges": {
+        "new": "Neu",
+        "popular": "Beliebt",
+        "trending": "Trending"
+      }
+    }
+  },
+  "languages": {
+    "en": "Englisch",
+    "es": "Spanisch",
+    "fr": "Französisch",
+    "de": "Deutsch"
+  }
+}

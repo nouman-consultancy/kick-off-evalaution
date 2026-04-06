@@ -1,0 +1,257 @@
+{
+  "common": {
+    "signIn": "Sign In",
+    "tryFree": "Try Free",
+    "send": "Send",
+    "cancel": "Cancel",
+    "search": "Search",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "close": "Close",
+    "delete": "Delete",
+    "play": "Play",
+    "pause": "Pause"
+  },
+  "header": {
+    "logo": "ChatFlow",
+    "menu": {
+      "chatHub": "Chat Hub",
+      "marketplace": "Marketplace",
+      "agents": "Agents",
+      "discover": "Discover Now"
+    },
+    "language": "Language"
+  },
+  "footer": {
+    "description": "Empowering businesses with intelligent AI agents and seamless chat experiences. Build, deploy, and scale your AI solutions.",
+    "product": "Product",
+    "company": "Company",
+    "resources": "Resources",
+    "legal": "Legal",
+    "links": {
+      "aboutUs": "About Us",
+      "careers": "Careers",
+      "blog": "Blog",
+      "press": "Press",
+      "documentation": "Documentation",
+      "helpCenter": "Help Center",
+      "apiReference": "API Reference",
+      "community": "Community",
+      "privacyPolicy": "Privacy Policy",
+      "termsOfService": "Terms of Service",
+      "cookiePolicy": "Cookie Policy"
+    },
+    "copyright": "© {{year}} ChatFlow. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies"
+  },
+  "landing": {
+    "hero": {
+      "title": "Welcome to ChatFlow",
+      "subtitle": "Build, deploy, and scale your AI agents with the most advanced chat platform",
+      "cta": {
+        "tryFree": "Try Free",
+        "signIn": "Sign In"
+      }
+    },
+    "features": {
+      "title": "Everything You Need",
+      "subtitle": "Powerful tools to build, deploy, and manage AI-powered conversations at scale",
+      "chatHub": {
+        "title": "Chat Hub",
+        "description": "Centralized messaging platform for seamless team communication"
+      },
+      "marketplace": {
+        "title": "Marketplace",
+        "description": "Discover and install AI agents built by the community"
+      },
+      "agents": {
+        "title": "Agents",
+        "description": "Deploy intelligent AI agents that work 24/7"
+      },
+      "discover": {
+        "title": "Discover",
+        "description": "Explore trending AI innovations and solutions"
+      }
+    },
+    "cta": {
+      "title": "Ready to get started?",
+      "subtitle": "Join thousands of teams already using ChatFlow to power their AI conversations",
+      "button": "Create Free Account"
+    }
+  },
+  "searchBar": {
+    "placeholder": "Type your message or use the tools below...",
+    "tools": {
+      "microphone": "Record Voice Message",
+      "stopRecording": "Stop Recording",
+      "attachment": "Attach File",
+      "image": "Upload Image",
+      "voiceTyping": "Voice Typing",
+      "stopVoiceTyping": "Stop Voice Typing",
+      "video": "Upload Video",
+      "screenShare": "Share Screen",
+      "agent": "Select Agent"
+    },
+    "recording": {
+      "recording": "Recording voice message...",
+      "listening": "Listening...",
+      "audioFile": "Voice Recording",
+      "delete": "Delete recording"
+    },
+    "dialogs": {
+      "attachFiles": {
+        "title": "Attach Files",
+        "dropzone": "Drop files here or click to browse",
+        "supports": "Supports documents, PDFs, and more"
+      },
+      "uploadImages": {
+        "title": "Upload Images",
+        "dropzone": "Drop images here or click to browse",
+        "supports": "Supports JPG, PNG, GIF, WebP"
+      },
+      "uploadVideo": {
+        "title": "Upload Video",
+        "dropzone": "Drop video here or click to browse",
+        "supports": "Supports MP4, WebM, MOV up to 100MB"
+      },
+      "screenShare": {
+        "title": "Screen Sharing",
+        "started": "Screen sharing started!",
+        "instruction": "Choose what to share in your browser dialog",
+        "stop": "Stop Sharing"
+      },
+      "selectAgent": {
+        "title": "Select an Agent",
+        "agents": {
+          "support": {
+            "name": "Support Agent",
+            "description": "Handle customer inquiries"
+          },
+          "sales": {
+            "name": "Sales Agent",
+            "description": "Qualify leads and close deals"
+          },
+          "research": {
+            "name": "Research Agent",
+            "description": "Find and analyze information"
+          },
+          "code": {
+            "name": "Code Agent",
+            "description": "Help with coding tasks"
+          }
+        }
+      }
+    }
+  },
+  "chatHub": {
+    "hero": {
+      "title": "Chat Hub",
+      "subtitle": "The central place for all your conversations",
+      "cta": "Start Chatting"
+    },
+    "features": {
+      "title": "Powerful Chat Features",
+      "realtime": {
+        "title": "Real-time Messaging",
+        "description": "Instant messaging with typing indicators and read receipts."
+      },
+      "groups": {
+        "title": "Group Chats",
+        "description": "Create unlimited group conversations with advanced permissions."
+      },
+      "security": {
+        "title": "End-to-End Encryption",
+        "description": "Your conversations are secured with military-grade encryption."
+      },
+      "speed": {
+        "title": "Lightning Fast",
+        "description": "Optimized for speed with sub-50ms message delivery."
+      }
+    }
+  },
+  "marketplace": {
+    "hero": {
+      "title": "Marketplace",
+      "subtitle": "Discover AI agents and integrations built by the community"
+    },
+    "categories": "Categories",
+    "featured": {
+      "title": "Featured",
+      "items": {
+        "supportPro": {
+          "name": "Customer Support Pro",
+          "description": "AI-powered customer support agent with multi-language support"
+        },
+        "salesAssistant": {
+          "name": "Sales Assistant",
+          "description": "Automated sales outreach and lead qualification agent"
+        },
+        "ecommerceBot": {
+          "name": "E-commerce Bot",
+          "description": "Complete e-commerce solution with order tracking and recommendations"
+        }
+      }
+    },
+    "price": "{{price}}/month",
+    "reviews": "{{count}} reviews",
+    "install": "Install",
+    "items": "{{count}} items"
+  },
+  "agents": {
+    "hero": {
+      "title": "AI Agents",
+      "subtitle": "Deploy intelligent agents that work for you around the clock",
+      "cta": "Create Agent"
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "steps": ["Design", "Train", "Deploy", "Monitor"]
+    },
+    "chooseAgent": {
+      "title": "Choose Your Agent",
+      "support": {
+        "name": "Support Agent",
+        "description": "Handle customer inquiries 24/7 with human-like responses",
+        "features": ["Ticket Management", "Knowledge Base", "Sentiment Analysis"]
+      },
+      "sales": {
+        "name": "Sales Agent",
+        "description": "Qualify leads and guide prospects through your funnel",
+        "features": ["Lead Scoring", "CRM Integration", "Follow-up Automation"]
+      },
+      "custom": {
+        "name": "Custom Agent",
+        "description": "Build your own AI agent tailored to your specific needs",
+        "features": ["Custom Training", "API Access", "Workflow Builder"]
+      }
+    }
+  },
+  "discover": {
+    "hero": {
+      "title": "Discover Now",
+      "subtitle": "Explore the latest AI innovations and trending solutions",
+      "placeholder": "Search agents, templates, integrations..."
+    },
+    "trending": {
+      "title": "Trending Now",
+      "users": "{{count}} users"
+    },
+    "featured": {
+      "title": "Featured",
+      "badges": {
+        "new": "New",
+        "popular": "Popular",
+        "trending": "Trending"
+      }
+    }
+  },
+  "languages": {
+    "en": "English",
+    "es": "Spanish",
+    "fr": "French",
+    "de": "German"
+  }
+}
