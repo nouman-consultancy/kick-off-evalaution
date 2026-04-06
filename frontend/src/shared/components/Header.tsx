@@ -19,10 +19,10 @@ import { useTranslation } from "react-i18next";
 import i18n from "@/shared/i18n/i18n";
 
 const menuItems = [
-  { label: "Chat Hub", href: "/chat-hub" },
-  { label: "Marketplace", href: "/marketplace" },
-  { label: "Agents", href: "/agents" },
-  { label: "Discover Now", href: "/discover" },
+  { labelKey: "header.menu.chatHub", href: "/chat-hub" },
+  { labelKey: "header.menu.marketplace", href: "/marketplace" },
+  { labelKey: "header.menu.agents", href: "/agents" },
+  { labelKey: "header.menu.discover", href: "/discover" },
 ];
 
 const languages = [
@@ -134,7 +134,7 @@ export default function Header() {
                     },
                   }}
                 >
-                  {item.label}
+                  {t(item.labelKey)}
                 </Typography>
               </Link>
             ))}
