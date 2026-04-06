@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import {
   Box,
   TextField,
@@ -20,7 +20,7 @@ import {
   DialogActions,
   Button,
   Paper,
-  Fade,
+  Slider,
 } from '@mui/material';
 import MicIcon from '@mui/icons-material/Mic';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
@@ -37,6 +37,10 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import DescriptionIcon from '@mui/icons-material/Description';
 import PhotoLibraryIcon from '@mui/icons-material/PhotoLibrary';
 import MicNoneIcon from '@mui/icons-material/MicNone';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
+import DeleteIcon from '@mui/icons-material/Delete';
+import AudioFileIcon from '@mui/icons-material/AudioFile';
 
 interface Agent {
   id: string;
@@ -44,6 +48,12 @@ interface Agent {
   description: string;
   icon: React.ElementType;
   color: string;
+}
+
+interface RecordedAudio {
+  blob: Blob;
+  url: string;
+  duration: number;
 }
 
 const agents: Agent[] = [
@@ -59,16 +69,51 @@ export default function SearchBar() {
   const [isRecording, setIsRecording] = useState(false);
   const [isVoiceTyping, setIsVoiceTyping] = useState(false);
   const [showWaveform, setShowWaveform] = useState(false);
+  const [recordedAudio, setRecordedAudio] = useState<RecordedAudio | null>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
   const [agentAnchorEl, setAgentAnchorEl] = useState<HTMLElement | null>(null);
   const [attachmentDialogOpen, setAttachmentDialogOpen] = useState(false);
   const [imageDialogOpen, setImageDialogOpen] = useState(false);
   const [videoDialogOpen, setVideoDialogOpen] = useState(false);
   const [screenShareDialogOpen, setScreenShareDialogOpen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState<string[]>([]);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
   const imageInputRef = useRef<HTMLInputElement>(null);
   const videoInputRef = useRef<HTMLInputElement>(null);
   const recognitionRef = useRef<any>(null);
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+  const audioChunksRef = useRef<Blob[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const recordingTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [recordingDuration, setRecordingDuration] = useState(0);
+
+  // Initialize audio element for playback
+  useEffect(() => {
+    if (recordedAudio?.url) {
+      audioRef.current = new Audio(recordedAudio.url);
+      audioRef.current.addEventListener('ended', () => setIsPlaying(false));
+      audioRef.current.addEventListener('timeupdate', () => {
+        setCurrentTime(audioRef.current?.currentTime || 0);
+      });
+    }
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+      }
+    };
+  }, [recordedAudio]);
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (recordedAudio?.url) {
+        URL.revokeObjectURL(recordedAudio.url);
+      }
+    };
+  }, []);
 
   // Initialize speech recognition
   const initSpeechRecognition = useCallback(() => {
@@ -99,21 +144,74 @@ export default function SearchBar() {
     }
   }, []);
 
+  // Format time for display
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
   // Microphone recording (for audio message)
-  const handleMicClick = () => {
+  const handleMicClick = async () => {
     if (isRecording) {
-      setIsRecording(false);
-      setShowWaveform(false);
+      // Stop recording
+      stopRecording();
     } else {
-      setIsRecording(true);
-      setShowWaveform(true);
-      // Simulate recording for 3 seconds
-      setTimeout(() => {
-        setIsRecording(false);
-        setShowWaveform(false);
-        setSearchQuery((prev) => prev + '[Voice message recorded] ');
-      }, 3000);
+      // Start recording
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        const mediaRecorder = new MediaRecorder(stream);
+        mediaRecorderRef.current = mediaRecorder;
+        audioChunksRef.current = [];
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunksRef.current.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const duration = recordingDuration;
+
+          setRecordedAudio({
+            blob: audioBlob,
+            url: audioUrl,
+            duration: duration,
+          });
+
+          // Stop all tracks
+          stream.getTracks().forEach(track => track.stop());
+        };
+
+        mediaRecorder.start(100); // Collect data every 100ms
+        setIsRecording(true);
+        setShowWaveform(true);
+        setRecordingDuration(0);
+
+        // Update recording duration every second
+        recordingTimerRef.current = setInterval(() => {
+          setRecordingDuration((prev) => prev + 1);
+        }, 1000);
+
+      } catch (err) {
+        console.error('Error accessing microphone:', err);
+        alert('Could not access microphone. Please check permissions.');
+      }
     }
+  };
+
+  const stopRecording = () => {
+    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+      mediaRecorderRef.current.stop();
+    }
+    if (recordingTimerRef.current) {
+      clearInterval(recordingTimerRef.current);
+      recordingTimerRef.current = null;
+    }
+    setIsRecording(false);
+    setShowWaveform(false);
   };
 
   // Voice typing (speech to text)
@@ -131,6 +229,36 @@ export default function SearchBar() {
       setShowWaveform(true);
       recognitionRef.current?.start();
     }
+  };
+
+  // Audio playback controls
+  const handlePlayPause = () => {
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
+    } else {
+      audioRef.current.play();
+      setIsPlaying(true);
+    }
+  };
+
+  const handleSeek = (_: Event, value: number | number[]) => {
+    const newTime = value as number;
+    if (audioRef.current) {
+      audioRef.current.currentTime = newTime;
+      setCurrentTime(newTime);
+    }
+  };
+
+  const handleDeleteAudio = () => {
+    if (recordedAudio?.url) {
+      URL.revokeObjectURL(recordedAudio.url);
+    }
+    setRecordedAudio(null);
+    setIsPlaying(false);
+    setCurrentTime(0);
   };
 
   // Attachment handling
@@ -183,7 +311,6 @@ export default function SearchBar() {
         const stream = await navigator.mediaDevices.getDisplayMedia({ video: true });
         setScreenShareDialogOpen(true);
 
-        // Stop the stream after user stops sharing
         stream.getVideoTracks()[0].onended = () => {
           setSearchQuery((prev) => prev + '[Screen recording shared] ');
           setScreenShareDialogOpen(false);
@@ -212,12 +339,18 @@ export default function SearchBar() {
   };
 
   const handleSend = () => {
-    if (searchQuery.trim()) {
-      console.log('Sending:', searchQuery);
-      // Here you would typically send the message to your backend
+    if (searchQuery.trim() || recordedAudio) {
+      console.log('Sending:', { text: searchQuery, audio: recordedAudio });
+      // Reset everything
       setSearchQuery('');
       setUploadedFiles([]);
       setSelectedAgent(null);
+      if (recordedAudio?.url) {
+        URL.revokeObjectURL(recordedAudio.url);
+      }
+      setRecordedAudio(null);
+      setIsPlaying(false);
+      setCurrentTime(0);
     }
   };
 
@@ -294,7 +427,7 @@ export default function SearchBar() {
             }}
           >
             <GraphicEqIcon color="primary" />
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: 1 }}>
               {[...Array(8)].map((_, i) => (
                 <Box
                   key={i}
@@ -313,12 +446,71 @@ export default function SearchBar() {
                 />
               ))}
             </Box>
+            <Typography variant="caption" color="primary" sx={{ fontWeight: 600 }}>
+              {formatTime(recordingDuration)}
+            </Typography>
             <Typography variant="caption" color="primary" sx={{ ml: 1 }}>
               {isRecording ? 'Recording voice message...' : 'Listening...'}
             </Typography>
-            <IconButton size="small" onClick={isRecording ? handleMicClick : handleVoiceTypingClick} sx={{ ml: 'auto' }}>
+            <IconButton size="small" onClick={isRecording ? stopRecording : handleVoiceTypingClick} sx={{ ml: 'auto' }}>
               <StopIcon color="error" />
             </IconButton>
+          </Box>
+        )}
+
+        {/* Audio Player (when recorded) */}
+        {recordedAudio && !showWaveform && (
+          <Box
+            sx={{
+              px: 2,
+              py: 1.5,
+              backgroundColor: 'rgba(25, 118, 210, 0.05)',
+              borderTop: '1px solid rgba(25, 118, 210, 0.1)',
+            }}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                backgroundColor: 'white',
+                borderRadius: 2,
+                px: 1.5,
+                py: 0.5,
+              }}
+            >
+              <AudioFileIcon color="primary" />
+
+              <IconButton size="small" onClick={handlePlayPause}>
+                {isPlaying ? <PauseIcon /> : <PlayArrowIcon />}
+              </IconButton>
+
+              <Box sx={{ flex: 1, px: 1 }}>
+                <Slider
+                  size="small"
+                  value={currentTime}
+                  max={recordedAudio.duration || 100}
+                  onChange={handleSeek}
+                  sx={{
+                    color: 'primary.main',
+                    '& .MuiSlider-thumb': {
+                      width: 12,
+                      height: 12,
+                    },
+                  }}
+                />
+              </Box>
+
+              <Typography variant="caption" color="text.secondary" sx={{ minWidth: 80 }}>
+                {formatTime(currentTime)} / {formatTime(recordedAudio.duration)}
+              </Typography>
+
+              <Tooltip title="Delete recording">
+                <IconButton size="small" onClick={handleDeleteAudio}>
+                  <DeleteIcon color="error" fontSize="small" />
+                </IconButton>
+              </Tooltip>
+            </Box>
           </Box>
         )}
 
@@ -340,12 +532,13 @@ export default function SearchBar() {
             <Tooltip title={isRecording ? 'Stop Recording' : 'Record Voice Message'}>
               <IconButton
                 onClick={handleMicClick}
+                disabled={!!recordedAudio}
                 sx={{
-                  color: isRecording ? 'error.main' : 'text.secondary',
+                  color: isRecording ? 'error.main' : recordedAudio ? 'success.main' : 'text.secondary',
                   '&:hover': { color: 'primary.main' },
                 }}
               >
-                {isRecording ? <MicIcon /> : <MicNoneIcon />}
+                {isRecording ? <MicIcon /> : recordedAudio ? <CheckCircleIcon /> : <MicNoneIcon />}
               </IconButton>
             </Tooltip>
 
@@ -431,12 +624,12 @@ export default function SearchBar() {
           {/* Send Button */}
           <IconButton
             onClick={handleSend}
-            disabled={!searchQuery.trim()}
+            disabled={!searchQuery.trim() && !recordedAudio}
             sx={{
-              backgroundColor: searchQuery.trim() ? 'primary.main' : 'grey.300',
+              backgroundColor: searchQuery.trim() || recordedAudio ? 'primary.main' : 'grey.300',
               color: 'white',
               '&:hover': {
-                backgroundColor: searchQuery.trim() ? 'primary.dark' : 'grey.300',
+                backgroundColor: searchQuery.trim() || recordedAudio ? 'primary.dark' : 'grey.300',
               },
             }}
           >
