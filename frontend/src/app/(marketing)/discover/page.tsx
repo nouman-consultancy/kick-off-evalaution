@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useState } from 'react';
 import {
   Box, Chip, Typography, Divider, Skeleton, useMediaQuery, useTheme,
@@ -173,6 +174,7 @@ function PaperDetail({ paper, onBack }: { paper: ResearchPaper; onBack?: () => v
       {/* actions */}
       <Box sx={{ display: 'flex', gap: 1.5, flexWrap: 'wrap' }}>
         <Button variant="contained" startIcon={<ChatBubbleOutlineIcon />}
+          component={Link} href="/chat-hub"
           sx={{ flex: 1, minWidth: 160, bgcolor: '#c0392b', '&:hover': { bgcolor: '#a93226' }, borderRadius: 2 }}>
           Discuss in Chat Hub
         </Button>
