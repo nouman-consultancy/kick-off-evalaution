@@ -24,3 +24,23 @@ export interface AgentTask {
   title: string;
   status: 'pending' | 'in_progress' | 'done';
 }
+
+export interface MyAgent {
+  id: number;
+  name: string;
+  model: string;
+  tools: number;
+  isActive: boolean;
+  iconEmoji?: string;
+  createdAt: Date;
+}
+
+export interface LibraryAgent {
+  id: number;
+  name: string;
+  description: string;
+  models: string[];
+  tools: string[];
+  iconEmoji?: string;
+  category: string;
+}

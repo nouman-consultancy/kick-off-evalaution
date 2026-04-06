@@ -109,3 +109,60 @@ export const AGENT_TASKS_SEED: Omit<AgentTask, 'id'>[] = [
   { title: 'Design agent system prompt', status: 'in_progress' },
   { title: 'Configure tool integrations', status: 'pending' },
 ];
+
+import { MyAgent, LibraryAgent } from '../entities/agent.entity';
+
+export const MY_AGENTS_SEED: Omit<MyAgent, 'id' | 'createdAt'>[] = [
+  { name: 'My Agent', model: 'GPT-5', tools: 0, isActive: true, iconEmoji: '🤖' },
+];
+
+export const LIBRARY_AGENTS_SEED: Omit<LibraryAgent, 'id'>[] = [
+  {
+    name: 'Research Agent',
+    description: 'Automates web research, synthesises findings from multiple sources.',
+    models: ['GPT-5'],
+    tools: ['Web Search', 'Summariser', 'Citation Builder'],
+    iconEmoji: '🔍',
+    category: 'Research',
+  },
+  {
+    name: 'Customer Support Agent',
+    description: 'Handles product questions, order issues, billing inquiries, and technical support.',
+    models: ['Claude Sonnet 4.6'],
+    tools: ['Ticket System', 'Knowledge Base', 'CRM'],
+    iconEmoji: '🎧',
+    category: 'Support',
+  },
+  {
+    name: 'Code Review Agent',
+    description: 'Reviews pull requests, flags bugs, and suggests improvements.',
+    models: ['Claude Opus 4.6'],
+    tools: ['GitHub API', 'AST Parser', 'Linter'],
+    iconEmoji: '💻',
+    category: 'Engineering',
+  },
+  {
+    name: 'Data Analysis Agent',
+    description: 'Processes spreadsheets, generates insights, creates visualisations.',
+    models: ['GPT-5'],
+    tools: ['CSV Parser', 'Chart Builder', 'Statistics'],
+    iconEmoji: '📊',
+    category: 'Analytics',
+  },
+  {
+    name: 'Content Writer Agent',
+    description: 'Creates blog posts, social content, email campaigns, and marketing copy.',
+    models: ['Claude Opus 4.5'],
+    tools: ['SEO Optimiser', 'Tone Checker', 'Plagiarism Scan'],
+    iconEmoji: '✍️',
+    category: 'Marketing',
+  },
+  {
+    name: 'Sales Outreach Agent',
+    description: 'Automates personalised outreach, follows up with leads, and manages pipeline.',
+    models: ['GPT-5 Turbo'],
+    tools: ['Email Sender', 'CRM', 'Lead Scorer'],
+    iconEmoji: '📈',
+    category: 'Sales',
+  },
+];

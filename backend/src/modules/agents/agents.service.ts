@@ -1,9 +1,11 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
-import { AgentTemplate, AgentSuggestion, AgentTask } from './entities/agent.entity';
+import { AgentTemplate, AgentSuggestion, AgentTask, MyAgent, LibraryAgent } from './entities/agent.entity';
 import {
   AGENT_TEMPLATES_SEED,
   AGENT_SUGGESTIONS_SEED,
   AGENT_TASKS_SEED,
+  MY_AGENTS_SEED,
+  LIBRARY_AGENTS_SEED,
 } from './data/agents.seed';
 
 @Injectable()
@@ -11,6 +13,8 @@ export class AgentsService implements OnModuleInit {
   private templates: AgentTemplate[] = [];
   private suggestions: AgentSuggestion[] = [];
   private tasks: AgentTask[] = [];
+  private myAgents: MyAgent[] = [];
+  private libraryAgents: LibraryAgent[] = [];
   private idCounter = 1;
 
   onModuleInit() {
@@ -22,6 +26,8 @@ export class AgentsService implements OnModuleInit {
     }));
     this.suggestions = AGENT_SUGGESTIONS_SEED.map((s, i) => ({ id: i + 1, ...s }));
     this.tasks = AGENT_TASKS_SEED.map((t, i) => ({ id: i + 1, ...t }));
+    this.myAgents = MY_AGENTS_SEED.map((a, i) => ({ id: i + 1, ...a, createdAt: new Date() }));
+    this.libraryAgents = LIBRARY_AGENTS_SEED.map((a, i) => ({ id: i + 1, ...a }));
   }
 
   getTemplates(filters?: { search?: string; category?: string }) {
@@ -53,5 +59,20 @@ export class AgentsService implements OnModuleInit {
 
   getTasks() {
     return { data: this.tasks, total: this.tasks.length };
+  }
+
+  getMyAgents() {
+    return { data: this.myAgents, total: this.myAgents.length };
+  }
+
+  getLibraryAgents(search?: string) {
+    let result = [...this.libraryAgents];
+    if (search) {
+      const q = search.toLowerCase();
+      result = result.filter(
+        (a) => a.name.toLowerCase().includes(q) || a.description.toLowerCase().includes(q),
+      );
+    }
+    return { data: result, total: result.length };
   }
 }

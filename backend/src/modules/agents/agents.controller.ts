@@ -30,4 +30,17 @@ export class AgentsController {
   getTasks() {
     return this.agentsService.getTasks();
   }
+
+  @Get('my-agents')
+  @ApiOperation({ summary: "Get user's agents" })
+  getMyAgents() {
+    return this.agentsService.getMyAgents();
+  }
+
+  @Get('library')
+  @ApiOperation({ summary: 'Get agent library' })
+  @ApiQuery({ name: 'search', required: false, type: String })
+  getLibraryAgents(@Query('search') search?: string) {
+    return this.agentsService.getLibraryAgents(search);
+  }
 }
