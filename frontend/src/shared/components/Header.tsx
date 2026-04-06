@@ -87,7 +87,7 @@ export default function Header() {
                   letterSpacing: "-0.5px",
                 }}
               >
-                ChatFlow
+                NexusAI
               </Typography>
             </Link>
           </Box>

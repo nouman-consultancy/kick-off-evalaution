@@ -1,10 +1,10 @@
 import { Box } from '@mui/material';
 import Header from '@/shared/components/Header';
-import Footer from '@/shared/components/Footer';
+// import Footer from '@/shared/components/Footer';
 
 export const metadata = {
-  title: 'ChatFlow - AI Chat Platform',
-  description: 'Build, deploy, and scale your AI agents with ChatFlow',
+  title: 'NexusAI - AI Chat Platform',
+  description: 'Build, deploy, and scale your AI agents with NexusAI',
 };
 
 export default function MarketingLayout({
@@ -24,7 +24,7 @@ export default function MarketingLayout({
       <Box component="main" sx={{ flexGrow: 1 }}>
         {children}
       </Box>
-      <Footer />
+      {/* <Footer /> */}
     </Box>
   );
 }
