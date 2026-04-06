@@ -14,6 +14,7 @@ import ChatBubbleOutlineIcon from '@mui/icons-material/ChatBubbleOutline';
 import SmartToyIcon from '@mui/icons-material/SmartToy';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ExploreIcon from '@mui/icons-material/Explore';
+import SearchBar from '@/shared/components/SearchBar';
 
 const highlights = [
   {
@@ -79,6 +80,12 @@ export default function LandingPage() {
           >
             Build, deploy, and scale your AI agents with the most advanced chat platform
           </Typography>
+
+          {/* Search Bar */}
+          <Box sx={{ mb: 4, px: { xs: 2, sm: 0 } }}>
+            <SearchBar />
+          </Box>
+
           <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
             <Button
               component={Link}
