@@ -6,6 +6,8 @@ import SearchBar from '@/shared/components/SearchBar';
 import LandingActionWidgets from '@/shared/components/LandingActionWidgets';
 import LandingStatsWidget from '@/shared/components/LandingStatsWidget';
 import FeaturedModelsSection from '@/shared/components/FeaturedModelsSection';
+import BuiltForEveryBuilderSection from '@/shared/components/BuiltForEveryBuilderSection';
+import BrowseByLabSection from '@/shared/components/BrowseByLabSection';
 
 export default function LandingPage() {
   return (
@@ -97,6 +99,10 @@ export default function LandingPage() {
       </Box>
 
       <FeaturedModelsSection />
+
+      <BuiltForEveryBuilderSection />
+
+      <BrowseByLabSection />
 
       {/* CTA Section */}
       <Box sx={{ backgroundColor: '#f5f5f5', py: 8 }}>

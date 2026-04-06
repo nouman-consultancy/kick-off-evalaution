@@ -1,12 +1,22 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateModelDto } from './dto/create-model.dto';
 import { UpdateModelDto } from './dto/update-model.dto';
 import { Model } from './entities/model.entity';
+import { MODELS_SEED_DATA } from './data/models.seed';
 
 @Injectable()
-export class ModelsService {
+export class ModelsService implements OnModuleInit {
   private models: Model[] = [];
   private idCounter = 1;
+
+  onModuleInit() {
+    this.models = MODELS_SEED_DATA.map((model) => ({
+      id: this.idCounter++,
+      ...model,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
+  }
 
   async create(createModelDto: CreateModelDto): Promise<Model> {
     const model: Model = {

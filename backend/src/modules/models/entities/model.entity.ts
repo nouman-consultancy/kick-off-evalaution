@@ -11,6 +11,11 @@ export interface Model {
   contextLimit?: number;
   maxOutputTokens?: number;
   iconUrl?: string;
+  tags?: string[];
+  rating?: number;
+  reviewCount?: number;
+  pricePerMToken?: string;
+  badge?: 'Hot' | 'New';
   createdAt: Date;
   updatedAt: Date;
 }
