@@ -1,6 +1,7 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as bcrypt from 'bcrypt';
 
 export interface User {
   id: number;
@@ -15,9 +16,26 @@ export interface User {
 }
 
 @Injectable()
-export class UsersService {
+export class UsersService implements OnModuleInit {
   private users: User[] = [];
   private idCounter = 1;
+
+  async onModuleInit() {
+    // seed a demo user so login works out of the box
+    const hashed = await bcrypt.hash('demo1234', 10);
+    this.users = [
+      {
+        id: this.idCounter++,
+        email: 'demo@nexusai.com',
+        password: hashed,
+        firstName: 'Demo',
+        lastName: 'User',
+        role: 'user',
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+    ];
+  }
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     const user: User = {
